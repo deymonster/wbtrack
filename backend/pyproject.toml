@@ -24,7 +24,7 @@ aiohttp = "^3.9.5"
 aiogram = "^3.7.0"
 fastapi-users = { version = "^13.0.0", extras = ["sqlalchemy", "redis"] }
 fastapi-users-db-sqlmodel = "^0.3.0"
-
+fastapi-cache2 = { version = "^0.2.2", extras = ["redis"] }
 
 
 [build-system]
