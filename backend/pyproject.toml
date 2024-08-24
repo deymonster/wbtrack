@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "wbtrack"
+version = "0.1.0"
+description = ""
+authors = ["deymonster <deymonster@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+fastapi = "^0.111.0"
+SQLAlchemy = "^2.0.30"
+sqlmodel = { git = "https://github.com/50Bytes-dev/sqlmodel.git", rev = "c980f31" }
+wb-franchise-api-client = { git = "https://github.com/deymonster/WB_Franchise_api_client", branch = "main" }
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
+uvicorn = "^0.30.0"
+pydantic = "^2.7.2"
+pydantic-settings = "^2.2.1"
+alembic-postgresql-enum = "^1.0.0"
+fastapi-pagination = "^0.12.24"
+fastapi-async-sqlalchemy = "^0.6.1"
+greenlet = "^3.0.3"
+aiohttp = "^3.9.5"
+aiogram = "^3.7.0"
+fastapi-users = { version = "^13.0.0", extras = ["sqlalchemy", "redis"] }
+fastapi-users-db-sqlmodel = "^0.3.0"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
