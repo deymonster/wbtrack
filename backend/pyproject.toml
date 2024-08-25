@@ -25,6 +25,9 @@ aiogram = "^3.7.0"
 fastapi-users = { version = "^13.0.0", extras = ["sqlalchemy", "redis"] }
 fastapi-users-db-sqlmodel = "^0.3.0"
 fastapi-cache2 = { version = "^0.2.2", extras = ["redis"] }
+prefect = "3.0.0rc14"
+pillow = "^10.4.0"
+itsdangerous = "^2.2.0"
 
 
 [build-system]
