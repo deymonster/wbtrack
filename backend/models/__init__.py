@@ -2,5 +2,6 @@
 from . import (
     company_user,
     company,
-    user
+    user,
+    office
 )

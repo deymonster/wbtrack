@@ -6,6 +6,7 @@ from fastapi_users.authentication import (
     RedisStrategy,
     AuthenticationBackend,
     BearerTransport,
+    JWTStrategy
 )
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 
@@ -17,11 +18,22 @@ bearer_transport = BearerTransport(
     tokenUrl="api/v1/auth/login",
 )
 
+
+def get_jwt_strategy():
+    return JWTStrategy(secret="SECRET", lifetime_seconds=3600)
+
+
 auth_backend = AuthenticationBackend(
     name="redis",
     transport=bearer_transport,
     get_strategy=lambda: RedisStrategy(redis_client, lifetime_seconds=3600),
 )
+#auth_backend = AuthenticationBackend(
+#    name="jwt",
+#    transport=BearerTransport(tokenUrl="api/v1/auth/login"),
+#    get_strategy=get_jwt_strategy,
+#)
+
 
 
 async def get_user_session():

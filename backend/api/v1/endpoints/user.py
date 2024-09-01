@@ -9,3 +9,4 @@ router = APIRouter()
 router.include_router(
     fastapi_users.get_users_router(IUserRead, IUserUpdate),
 )
+

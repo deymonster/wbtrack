@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class UserBase(SQLModel):
-    phone: str = None
+    phone: str | None
     role: UserRoleEnum = Field(UserRoleEnum.MANAGER, description="Role of the user")
 
 

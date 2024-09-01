@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     # Wildberries
 
     WILDBERRIES_BASE_PATH: str
+    AUTH_BASE_PATH: str
+    WB_BASIC_TOKEN: str
 
     # Redis
 

@@ -8,6 +8,7 @@ from models.company_user import CompanyUser
 
 if TYPE_CHECKING:
     from models.user import User
+    from models.office import Office
 
 
 class CompanyBase(SQLModel):
@@ -21,3 +22,7 @@ class Company(CompanyBase, BaseTableID, table=True):
         back_populates="companies",
         link_model=CompanyUser,
     )
+    offices: list["Office"] = Relationship(
+        back_populates="company",
+    )
+

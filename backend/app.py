@@ -8,6 +8,9 @@ from fastapi_pagination import add_pagination
 from api.router import api_router
 from config import settings
 from core.db import pydantic_serializer
+from middleware.token_refresh_middleware import TokenRefreshMiddleware
+from core.redis import redis_client
+from wb_franchise_api_client import APIConfig, ApiAuth
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from redis import asyncio as aioredis
@@ -22,6 +25,13 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 
 def create_app():
+    api_auth = ApiAuth(
+        api_config=APIConfig(
+            auth_base_path=settings.AUTH_BASE_PATH,
+            base_path=settings.WILDBERRIES_BASE_PATH,
+            basic_token=settings.WB_BASIC_TOKEN
+        ),
+    )
     app = FastAPI(
         title="WB-Track",
         version="0.1",
@@ -57,6 +67,7 @@ def create_app():
                 allow_methods=["*"],
                 allow_headers=["*"],
             ),
+            Middleware(TokenRefreshMiddleware, redis_client=redis_client, api_auth=api_auth),
         ],
     )
 
