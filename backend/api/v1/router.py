@@ -4,6 +4,7 @@ from .endpoints import (
     auth,
     user,
     company,
+    employee
 )
 
 api_router = APIRouter()
@@ -25,4 +26,12 @@ api_router.include_router(
     prefix="/company",
     tags=["company"],
 )
+
+
+api_router.include_router(
+    employee.router,
+    prefix="/employee",
+    tags=["employee"],
+)
+
 

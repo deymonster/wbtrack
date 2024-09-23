@@ -8,30 +8,45 @@ from fastapi_pagination import add_pagination
 from api.router import api_router
 from config import settings
 from core.db import pydantic_serializer
-from middleware.token_refresh_middleware import TokenRefreshMiddleware
-from core.redis import redis_client
-from wb_franchise_api_client import APIConfig, ApiAuth
+import asyncio
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from redis import asyncio as aioredis
 from fastapi_cache.backends.redis import RedisBackend
+from services.bot.run import start_bot, stop_bot
+
+import signal
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     redis = aioredis.from_url(settings.REDIS_URL)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
+    # bot_task = asyncio.create_task(start_bot())
+
+    # def handle_shutdown(signal, frame):
+    #     print(f"Received {signal} signal, shutting down...")
+    #     asyncio.create_task(shutdown_bot(bot_task))
+    #
+    # signal.signal(signal.SIGINT, handle_shutdown)
+    # signal.signal(signal.SIGTERM, handle_shutdown)
+
     yield
+    # await stop_bot()
+
+
+    # await shutdown_bot(bot_task)
+
+    # yield
+    # bot_task.cancel()
+    # try:
+    #     await bot_task
+    # except asyncio.CancelledError:
+    #     pass
 
 
 def create_app():
-    api_auth = ApiAuth(
-        api_config=APIConfig(
-            auth_base_path=settings.AUTH_BASE_PATH,
-            base_path=settings.WILDBERRIES_BASE_PATH,
-            basic_token=settings.WB_BASIC_TOKEN
-        ),
-    )
     app = FastAPI(
         title="WB-Track",
         version="0.1",
@@ -66,8 +81,7 @@ def create_app():
                 allow_credentials=True,
                 allow_methods=["*"],
                 allow_headers=["*"],
-            ),
-            Middleware(TokenRefreshMiddleware, redis_client=redis_client, api_auth=api_auth),
+            )
         ],
     )
 

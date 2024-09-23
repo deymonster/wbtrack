@@ -14,6 +14,14 @@ class Settings(BaseSettings):
     ALLOW_ORIGINS: list[str]
     ALLOW_ORIGIN_REGEX: str
 
+    ACCESS_TOKEN_LIFETIME: int
+    REFRESH_TOKEN_LIFETIME: int
+
+    # Telegram
+    TELEGRAM_BOT_TOKEN: str
+
+
+
     # Wildberries
 
     WILDBERRIES_BASE_PATH: str

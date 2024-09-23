@@ -2,38 +2,46 @@ from fastapi import APIRouter, Depends
 from fastapi_pagination import LimitOffsetParams
 from sqlmodel import col, select
 
+from api.dependencies.api_auth import get_api_auth, get_api_client
 from core.exceptions import NotFound, ValidationError
 from config import settings
+from core.redis import redis_client
 from core.utils.sqlmodel import relations
+from core.redis import redis_client
 from api.dependencies.user import current_active_user
+from crud.employee import employee_crud
+from crud.office import office_crud
 from enums.common import ListOrderEnum
 from models.company import Company
 from crud.company import company_crud
 from models.company_user import CompanyUser
+from models.employee import Employee
+from models.office import OfficeBase, Office
 from models.user import User
 from schemas.company import ICompanyCreate, ICompanyRead, ICompanyUpdate
+from schemas.employee import IEmployeeCreate
+from schemas.office import IOfficeCreate
 from schemas.response import IResponsePaginated
 
 import wb_franchise_api_client as wb
-from wb_franchise_api_client.models import RequestCodeResponse, TokenResponse
+from wb_franchise_api_client.models import RequestCodeResponse, TokenResponse, AccountData
+from wb_franchise_api_client.api_client import ApiAuth
 
 
 router = APIRouter(
     generate_unique_id_function=lambda route: f"company_{route.name}",
 )
 
-api_config = wb.APIConfig(
-    base_path=settings.WILDBERRIES_BASE_PATH,
-    auth_base_path=settings.AUTH_BASE_PATH,
-    basic_token=settings.WB_BASIC_TOKEN,
-)
-api_auth = wb.ApiAuth(api_config=api_config)
-
 
 @router.post(path="/request_code", response_model=RequestCodeResponse)
-async def request_code(phone: str, user: User = Depends(current_active_user)):
+async def request_code(
+        phone: str,
+        api_auth: ApiAuth = Depends(get_api_auth),
+        user: User = Depends(current_active_user),
+    ):
     """Request code to auth in Franchise
     :param phone: Phone number
+    :param api_auth: API auth client
     :param user: Current active user
     :return Response from WB API
     """
@@ -42,14 +50,21 @@ async def request_code(phone: str, user: User = Depends(current_active_user)):
 
 
 @router.post(path="/verify_code", response_model=TokenResponse)
-async def verify_code(phone: str, code: str, user: User = Depends(current_active_user)):
+async def verify_code(
+        phone: str,
+        code: str,
+        api_auth: ApiAuth = Depends(get_api_auth),
+        user: User = Depends(current_active_user)):
     """Verify code from WB API and obtain tokens
 
     :param phone: Phone number
     :param code: Code from WB API
+    :param api_auth: API auth client
     :param user: Current active user
     """
     token_response = await api_auth.connect_code(username=phone, password=code)
+    await redis_client.set(f"{phone}:access_token", token_response.access_token)
+    await redis_client.set(f"{phone}:refresh_token", token_response.refresh_token)
     return token_response
 
 
@@ -107,9 +122,10 @@ async def get_by_id(
     return company
 
 
+@router.post('', response_model=ICompanyRead)
 async def create(
     payload: ICompanyCreate,
-    user: User = Depends(current_active_user),
+    user: User = Depends(current_active_user)
 ):
     """Create company
 
@@ -117,20 +133,58 @@ async def create(
     :param user: Current active user
     :return: Company
     """
-    company = await company_crud.create(
-        obj_in=payload,
-    )
+    api_client = await get_api_client(phone=payload.phone)
+    company_data = await api_client.get_account_data()
 
+    company = await company_crud.create(
+        obj_in=ICompanyCreate(
+            supplier_id=company_data.supplier_id,
+            name=company_data.name,
+            phone=payload.phone
+        )
+    )
     company = await company_crud.add_user(
         company=company,
         user=user,
     )
 
+    # Добавляем офисы в компанию
+    await office_crud.create_or_update_multi(
+        list_in=company_data.offices,
+        index_elements=[col(Office.office_id)],
+        on_conflict_set={"name", "office_shk", "is_site_active"},
+        additionals=dict(company_id=company.id)
+
+    )
+
+    #  Добавляем сотрудников в компанию
+    await employee_crud.create_or_update_multi(
+        list_in=company_data.employees,
+        index_elements=[col(Employee.employee_id)],
+        on_conflict_set={
+            "first_name",
+            "is_deleted",
+            "last_name",
+            "middle_name",
+            "phones",
+            "rating",
+            "shortages_sum"
+        },
+        additionals=dict(company_id=company.id)
+    )
+
+    return company
+
+    #company = await company_crud.add_user(
+    #    company=company,
+    #    user=user,
+    #)
+
     #await CompanyService.sync_cards( TODO : here will be request to get company info from external api
     #    company=company,
     #)
 
-    return company
+
 
 @router.put(
     path="/{id}",

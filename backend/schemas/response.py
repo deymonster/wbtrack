@@ -16,3 +16,9 @@ class INextCursor(BaseModel):
 
 class IResponsePaginated(LimitOffsetPage[T], Generic[T]):
     next: Optional[INextCursor] = None
+
+
+class LoginResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str

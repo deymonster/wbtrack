@@ -1010,11 +1010,11 @@ files = [
 email-validator = ">=1.1.0,<2.2"
 fastapi = ">=0.65.2"
 fastapi-users-db-sqlalchemy = {version = ">=6.0.0", optional = true, markers = "extra == \"sqlalchemy\""}
+httpx-oauth = {version = ">=0.13", optional = true, markers = "extra == \"oauth\""}
 makefun = ">=1.11.2,<2.0.0"
 pwdlib = {version = "0.2.0", extras = ["argon2", "bcrypt"]}
 pyjwt = {version = "2.8.0", extras = ["crypto"]}
 python-multipart = "0.0.9"
-redis = {version = ">=4.3.3,<6.0.0", optional = true, markers = "extra == \"redis\""}
 
 [package.extras]
 beanie = ["fastapi-users-db-beanie (>=3.0.0)"]
@@ -1410,6 +1410,20 @@ cli = ["click (==8.*)", "pygments (==2.*)", "rich (>=10,<14)"]
 http2 = ["h2 (>=3,<5)"]
 socks = ["socksio (==1.*)"]
 zstd = ["zstandard (>=0.18.0)"]
+
+[[package]]
+name = "httpx-oauth"
+version = "0.15.1"
+description = "Async OAuth client using HTTPX"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "httpx_oauth-0.15.1-py3-none-any.whl", hash = "sha256:89b45f250e93e42bbe9631adf349cab0e3d3ced958c07e06651735198d1bdf00"},
+    {file = "httpx_oauth-0.15.1.tar.gz", hash = "sha256:4094cf0938fc7252b5f5dfd62cd1ab5aee2fcb6734e621942ee17d1af4806b74"},
+]
+
+[package.dependencies]
+httpx = ">=0.18,<1.0.0"
 
 [[package]]
 name = "humanize"
@@ -3516,12 +3530,13 @@ develop = false
 aiohttp = "^3.9.5"
 pydantic = "^2.8.2"
 pydantic-settings = "^2.3.4"
+redis = ">=4.2.0,<5.0.0"
 
 [package.source]
 type = "git"
 url = "https://github.com/deymonster/WB_Franchise_api_client.git"
 reference = "main"
-resolved_reference = "a2ee0d975e573217d12dcae9a60f0dfb447540d1"
+resolved_reference = "394e795fd1b11c37850c53502efe9865981b5109"
 
 [[package]]
 name = "websockets"
@@ -3791,4 +3806,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.12"
-content-hash = "38448daf9bd026736b8ed565b935c66fd5fa9e0fe405d5bb883dce7b916d3381"
+content-hash = "c37a84d315cdb2bffc74cace8d9fa2196bd510d207c10f3d0fe3f08d2458990c"

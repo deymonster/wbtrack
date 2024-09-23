@@ -1,4 +1,5 @@
 from models.company import CompanyBase
+from pydantic import BaseModel
 
 
 class ICompanyRead(CompanyBase):

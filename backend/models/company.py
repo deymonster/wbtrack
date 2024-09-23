@@ -9,11 +9,13 @@ from models.company_user import CompanyUser
 if TYPE_CHECKING:
     from models.user import User
     from models.office import Office
+    from models.employee import Employee
 
 
 class CompanyBase(SQLModel):
-    name: str
-    phone: str
+    supplier_id: int | None = None
+    name: str | None = None
+    phone: str = Field(unique=True, index=True)
 
 
 class Company(CompanyBase, BaseTableID, table=True):
@@ -25,4 +27,9 @@ class Company(CompanyBase, BaseTableID, table=True):
     offices: list["Office"] = Relationship(
         back_populates="company",
     )
+    employees: list["Employee"] = Relationship(
+        back_populates="company"
+    )
+
+
 

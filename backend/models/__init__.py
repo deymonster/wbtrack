@@ -3,5 +3,6 @@ from . import (
     company_user,
     company,
     user,
-    office
+    office,
+    employee
 )

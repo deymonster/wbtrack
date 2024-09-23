@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class OfficeBase(SQLModel):
-    office_id: int | None = Field(alias="id")
+    office_id: int | None = Field(default=None, alias="id", sa_column=Column(Integer, unique=True, index=True))
     is_site_active: bool = Field(default=True)
     name: str
     office_shk: str

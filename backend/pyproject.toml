@@ -21,13 +21,14 @@ fastapi-async-sqlalchemy = "^0.6.1"
 greenlet = "^3.0.3"
 aiohttp = "^3.9.5"
 aiogram = "^3.7.0"
-fastapi-users = { version = "^13.0.0", extras = ["sqlalchemy", "redis"] }
+fastapi-users = {extras = ["oauth", "sqlalchemy"], version = "^13.0.0"}
 fastapi-users-db-sqlmodel = "^0.3.0"
 fastapi-cache2 = { version = "^0.2.2", extras = ["redis"] }
 prefect = "3.0.0rc14"
 pillow = "^10.4.0"
 itsdangerous = "^2.2.0"
 wb-franchise-api-client = {git = "https://github.com/deymonster/WB_Franchise_api_client.git", rev = "main"}
+httpx = "^0.27.2"
 
 
 [build-system]
