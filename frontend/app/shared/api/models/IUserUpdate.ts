@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 export type IUserUpdate = {
     password?: (string | null);
     email?: (string | null);

@@ -23,30 +23,30 @@ client = httpx.AsyncClient()
 BASE_URL = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}"
 
 
-def encode_phone_number(phone: str) -> str:
-    encoded_bytes = base64.b64encode(phone.encode('utf-8'))
-    return encoded_bytes.decode('utf-8')
+# def encode_phone_number(phone: str) -> str:
+#     encoded_bytes = base64.b64encode(phone.encode('utf-8'))
+#     return encoded_bytes.decode('utf-8')
 
-
-@router.post(path="/register", response_model=RegisterResponse)
-async def get_employee_by_phone(request: RegistrationRequest):
-    """Register new user by phone number and generate OTP
-
-    """
-    employee = await employee_crud.get_by_phone(request.phone)
-    if not employee:
-        raise NotFound
-
-    otp = secrets.randbelow(1000000)
-    encoded_phone = base64.b64encode(request.phone.encode('utf-8')).decode()
-    redis_key = f"otp:{encoded_phone}"
-    await redis_client.hset(redis_key, mapping={'otp': otp, 'email': request.email})
-    exists = await redis_client.exists(redis_key)
-    if not exists:
-        print("Key does not exist.")
-    await redis_client.expire(redis_key, 10 * 60)
-    bot_link = f"https://t.me/WBtrackAuth_bot?start={encoded_phone}_{otp}"
-    return RegisterResponse(registration_link=bot_link)
+#
+# @router.post(path="/register", response_model=RegisterResponse)
+# async def get_employee_by_phone(request: RegistrationRequest):
+#     """Register new user by phone number and generate OTP
+#
+#     """
+#     employee = await employee_crud.get_by_phone(request.phone)
+#     if not employee:
+#         raise NotFound
+#
+#     otp = secrets.randbelow(1000000)
+#     encoded_phone = base64.b64encode(request.phone.encode('utf-8')).decode()
+#     redis_key = f"otp:{encoded_phone}"
+#     await redis_client.hset(redis_key, mapping={'otp': otp, 'email': request.email})
+#     exists = await redis_client.exists(redis_key)
+#     if not exists:
+#         print("Key does not exist.")
+#     await redis_client.expire(redis_key, 10 * 60)
+#     bot_link = f"https://t.me/WBtrackAuth_bot?start={encoded_phone}_{otp}"
+#     return RegisterResponse(registration_link=bot_link)
 
 
 @router.post("/login")

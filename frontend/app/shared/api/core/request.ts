@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 import axios from 'axios';
 import type { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios';
 import FormData from 'form-data';
@@ -12,6 +13,7 @@ import type { ApiResult } from './ApiResult';
 import { CancelablePromise } from './CancelablePromise';
 import type { OnCancel } from './CancelablePromise';
 import type { OpenAPIConfig } from './OpenAPI';
+import { AuthService } from '../services/AuthService';
 
 export const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -295,10 +297,53 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions, ax
             const url = getUrl(config, options);
             const formData = getFormData(options);
             const body = getRequestBody(options);
-            const headers = await getHeaders(config, options, formData);
+            let headers = await getHeaders(config, options, formData);
 
             if (!onCancel.isCancelled) {
-                const response = await sendRequest<T>(config, options, url, body, formData, headers, onCancel, axiosClient, axiosConfig);
+                let response: AxiosResponse<T>;
+                response = await sendRequest<T>(config, options, url, body, formData, headers, onCancel, axiosClient, axiosConfig);
+                
+                try {
+                    catchErrorCodes(options, {
+                        url,
+                        ok: isSuccess(response.status),
+                        status: response.status,
+                        statusText: response.statusText,
+                        body: getResponseHeader(response, options.getResponseHeader) ?? getResponseBody(response),
+                    });
+                } catch (error) {
+                    if (error instanceof ApiError && error.status === 401) {
+                        try {
+                            const refreshToken = localStorage.getItem('refresh_token');
+                            if (!refreshToken) {
+                                throw new Error('Refresh token is missing');
+                            }
+                            const new_token = await AuthService.refreshTokenApiV1AuthRefreshTokenPost({
+                                requestBody: { refresh_token: refreshToken}
+                            });
+                            localStorage.setItem('access_token', new_token.access_token);
+                            headers = await getHeaders(config, options, formData);
+                            response = await sendRequest<T>(
+                                    config,
+                                    options,
+                                    url,
+                                    body,
+                                    formData,
+                                    headers,
+                                    onCancel,
+                                    axiosClient,
+                                    axiosConfig
+                            );
+                        } catch (refreshError) {
+                            reject(refreshError);
+                            return;
+                        }
+                    } else {
+                        reject(error);
+                        return;
+                    }
+                }
+                
                 const responseBody = getResponseBody(response);
                 const responseHeader = getResponseHeader(response, options.responseHeader);
 
@@ -310,7 +355,6 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions, ax
                     body: responseHeader ?? responseBody,
                 };
 
-                catchErrorCodes(options, result);
 
                 resolve(result.body);
             }

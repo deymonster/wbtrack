@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 export type ApiResult = {
     readonly url: string;
     readonly ok: boolean;

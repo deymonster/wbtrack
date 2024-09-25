@@ -4,6 +4,8 @@ import "./globals.css";
 
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AppWrapper } from "./context/index";
+
 
 const fontSans = Plus_Jakarta_Sans(
   { subsets: ["cyrillic-ext", "latin"],
@@ -14,7 +16,7 @@ const fontSans = Plus_Jakarta_Sans(
 
 
 export const metadata: Metadata = {
-  title: "WB Track App",
+  title: "App",
   description: "Web UI for WB Track",
 };
 
@@ -24,19 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    
     <html lang="en">
       <body
-        className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}
+        className={cn('min-h-screen font-sans antialiased', fontSans.variable)}
       >
-      <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      
-      >
-          {children}
-      </ThemeProvider>
+        <AppWrapper>
+          {children}    
+        </AppWrapper>
         
       </body>
     </html>
+    
   );
 }

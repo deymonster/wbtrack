@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 export type Body_login_api_v1_auth_login_post = {
     grant_type?: (string | null);
     username: string;

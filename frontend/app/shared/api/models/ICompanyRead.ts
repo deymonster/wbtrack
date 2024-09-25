@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 export type ICompanyRead = {
     supplier_id?: (number | null);
     name?: (string | null);

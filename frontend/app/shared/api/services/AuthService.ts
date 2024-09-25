@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 import type { Body_login_api_v1_auth_login_post } from '../models/Body_login_api_v1_auth_login_post';
 import type { Body_reset_forgot_password_api_v1_auth_forgot_password_post } from '../models/Body_reset_forgot_password_api_v1_auth_forgot_password_post';
 import type { Body_reset_reset_password_api_v1_auth_reset_password_post } from '../models/Body_reset_reset_password_api_v1_auth_reset_password_post';

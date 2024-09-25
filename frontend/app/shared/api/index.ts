@@ -2,11 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 export { ApiError } from './core/ApiError';
 export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AuthRequest } from './models/AuthRequest';
 export type { Body_login_api_v1_auth_login_post } from './models/Body_login_api_v1_auth_login_post';
 export type { Body_reset_forgot_password_api_v1_auth_forgot_password_post } from './models/Body_reset_forgot_password_api_v1_auth_forgot_password_post';
 export type { Body_reset_reset_password_api_v1_auth_reset_password_post } from './models/Body_reset_reset_password_api_v1_auth_reset_password_post';
@@ -27,8 +29,10 @@ export type { LoginResponse } from './models/LoginResponse';
 export type { RefreshTokenRequest } from './models/RefreshTokenRequest';
 export type { RequestCodeResponse } from './models/RequestCodeResponse';
 export type { TokenResponse } from './models/TokenResponse';
+export { UserRoleEnum } from './models/UserRoleEnum';
 export type { ValidationError } from './models/ValidationError';
 
 export { AuthService } from './services/AuthService';
 export { CompanyService } from './services/CompanyService';
+export { EmployeeService } from './services/EmployeeService';
 export { UserService } from './services/UserService';

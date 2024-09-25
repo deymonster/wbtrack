@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 export enum ListOrderEnum {
     ASCENDENT = 'ascendent',
     DESCENDENT = 'descendent',

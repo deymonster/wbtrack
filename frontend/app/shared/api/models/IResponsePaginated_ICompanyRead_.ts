@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 import type { ICompanyRead } from './ICompanyRead';
 import type { INextCursor } from './INextCursor';
 export type IResponsePaginated_ICompanyRead_ = {

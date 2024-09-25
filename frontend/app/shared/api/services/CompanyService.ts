@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 import type { ICompanyCreate } from '../models/ICompanyCreate';
 import type { ICompanyRead } from '../models/ICompanyRead';
 import type { ICompanyUpdate } from '../models/ICompanyUpdate';

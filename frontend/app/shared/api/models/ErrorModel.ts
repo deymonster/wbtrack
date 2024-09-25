@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 export type ErrorModel = {
     detail: (string | Record<string, string>);
 };

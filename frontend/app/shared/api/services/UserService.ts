@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 import type { IUserRead } from '../models/IUserRead';
 import type { IUserUpdate } from '../models/IUserUpdate';
 import type { CancelablePromise } from '../core/CancelablePromise';
