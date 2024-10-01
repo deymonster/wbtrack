@@ -4,6 +4,8 @@
 /* eslint-disable */
 // @ts-nocheck
 import type { AuthRequest } from '../models/AuthRequest';
+import type { IResponsePaginated_IEmployeeRead_ } from '../models/IResponsePaginated_IEmployeeRead_';
+import type { ListOrderEnum } from '../models/ListOrderEnum';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -57,6 +59,49 @@ export class EmployeeService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/employee/me',
+        });
+    }
+    /**
+     * Get List
+     * Get list of all employees
+     *
+     * :param order_by: Order by field
+     * :param order: Order direction (asc or desc) Default: desc
+     * :param params: Pagination parameters
+     * :param user: Current active user
+     * :return: List of employees paginated
+     * @returns IResponsePaginated_IEmployeeRead_ Successful Response
+     * @throws ApiError
+     */
+    public static employeeGetList({
+        orderBy = 'id',
+        order,
+        limit = 50,
+        offset,
+    }: {
+        orderBy?: string,
+        order?: ListOrderEnum,
+        /**
+         * Page size limit
+         */
+        limit?: number,
+        /**
+         * Page offset
+         */
+        offset?: number,
+    }): CancelablePromise<IResponsePaginated_IEmployeeRead_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/employee',
+            query: {
+                'order_by': orderBy,
+                'order': order,
+                'limit': limit,
+                'offset': offset,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
         });
     }
 }

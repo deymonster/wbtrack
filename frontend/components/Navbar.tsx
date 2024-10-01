@@ -1,9 +1,19 @@
+"use client";
+
 import React from 'react';
 import { Search, Bell, CircleUser } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { AuthDialog } from './modals/AuthDialog';
+import { useState } from "react";
 
 const Navbar = () => {
+
+  const [isAuthDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleAuthDialogOpen = () => setIsDialogOpen(true);
+  const handleAuthDialogClose = () => setIsDialogOpen(false);
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <form className="w-full flex-1">
@@ -23,8 +33,10 @@ const Navbar = () => {
           <div>My Account</div>
           <div>Settings</div>
           <div>Logout</div>
+          <div onClick={handleAuthDialogOpen} className='cursor-pointer'>Auth</div>
         </DropdownMenuContent>
       </DropdownMenu>
+      <AuthDialog isOpen={isAuthDialogOpen} onClose={handleAuthDialogClose} />
     </header>
   );
 };

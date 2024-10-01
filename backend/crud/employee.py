@@ -17,6 +17,7 @@ class EmployeeCRUD(CRUDBase[Employee, IEmployeeCreate, IEmployeeUpdate]):
         """
         session: AsyncSession = db_session or self.db.session
         query = select(Employee).where(text(':phone = ANY(phones)'))
+        # query = select(Employee).where(phone == col(Employee.phones.any()))
         response = await session.execute(query, {'phone': phone})
         return response.scalar_one_or_none()
 

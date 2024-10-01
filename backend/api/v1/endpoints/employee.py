@@ -1,16 +1,21 @@
 from fastapi import APIRouter, Request, Depends
-
+from fastapi_pagination import LimitOffsetParams
 from api.dependencies.employee import get_currrent_employee
+from api.dependencies.user import current_active_user
 from core.exceptions import NotFound, ValidationError
 from core.user_management import create_employee_jwt_access, create_employee_jwt_refresh
 from crud.employee import employee_crud
+from enums.common import ListOrderEnum
 from models.employee import Employee
+from models.user import User
 from schemas.employee import IEmployeeRead, RegistrationRequest, AuthRequest
 from core.redis import redis_client
 import base64
 import string
 import secrets
 from config import settings
+from schemas.response import IResponsePaginated
+from sqlmodel import col, select
 
 from schemas.user import RegisterResponse
 import httpx
@@ -89,6 +94,38 @@ async def confirm_code(request: AuthRequest):
 @router.get("/me")
 async def get_info_employee(employee: Employee = Depends(get_currrent_employee)):
     return employee
+
+
+@router.get(path="",
+            response_model=IResponsePaginated[IEmployeeRead])
+async def get_list(
+        order_by: str = "id",
+        order: ListOrderEnum = ListOrderEnum.descendent,
+        params: LimitOffsetParams = Depends(),
+        user: User = Depends(current_active_user),
+):
+    """Get list of all employees
+
+    :param order_by: Order by field
+    :param order: Order direction (asc or desc) Default: desc
+    :param params: Pagination parameters
+    :param user: Current active user
+    :return: List of employees paginated
+    """
+    query = select(Employee)
+    page = await employee_crud.get_multi_paginated_ordered(
+        query=query,
+        order_by=order_by,
+        order=order,
+        params=params,
+    )
+    return page
+
+
+
+
+
+
 
 
 

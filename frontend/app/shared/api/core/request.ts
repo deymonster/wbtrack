@@ -14,6 +14,7 @@ import { CancelablePromise } from './CancelablePromise';
 import type { OnCancel } from './CancelablePromise';
 import type { OpenAPIConfig } from './OpenAPI';
 import { AuthService } from '../services/AuthService';
+import Cookies from 'js-cookie';
 
 export const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -196,6 +197,48 @@ export const getRequestBody = (options: ApiRequestOptions): any => {
     return undefined;
 };
 
+const addTokenInterceptor = (axiosInstance: AxiosInstance) => {
+    axiosInstance.interceptors.response.use(
+        (response) => response,
+        async (error: AxiosError) => {
+            if (error.response?.status === 401) {
+                try {
+                    const refreshToken = Cookies.get('refresh_token');
+                    if (!refreshToken) {
+                        throw new Error('Refresh token not found');
+                    }
+                    const newToken = await AuthService.refreshTokenApiV1AuthRefreshTokenPost({
+                        requestBody: { refresh_token: refreshToken },
+                    });
+
+                    Cookies.set('access_token', newToken.access_token, {
+                        expires: 7,
+                        // secure: true,
+                        sameSite: 'Strict',
+                        // httpOnly: true
+                    } );
+
+                    if (error.config) {
+                        error.config.headers = {
+                            ...error.config.headers,
+                            Authorization: `Bearer ${newToken.access_token}`
+                        };
+                        return axiosInstance.request(error.config);
+                    }
+                    
+                } catch (refreshError) {
+                    return Promise.reject(refreshError);
+                }
+            }
+            return Promise.reject(error);
+        }
+    )
+
+};
+
+export const axiosClient:  AxiosInstance = axios.create();
+addTokenInterceptor(axiosClient);
+
 export const sendRequest = async <T>(
     config: OpenAPIConfig,
     options: ApiRequestOptions,
@@ -226,9 +269,16 @@ export const sendRequest = async <T>(
     } catch (error) {
         const axiosError = error as AxiosError<T>;
         if (axiosError.response) {
-            return axiosError.response;
+            throw new ApiError(options, {
+                url,
+                ok: false,
+                status: axiosError.response.status,
+                statusText: axiosError.response.statusText,
+                body: axiosError.response.data,
+            });
+            // return axiosError.response;
         }
-        throw error;
+        throw new Error(`Request failed: ${error.message}`);
     }
 };
 
@@ -291,7 +341,11 @@ export const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): 
  * @returns CancelablePromise<T>
  * @throws ApiError
  */
-export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions, axiosClient: AxiosInstance = axios): CancelablePromise<T> => {
+export const request = <T>(
+    config: OpenAPIConfig, 
+    options: ApiRequestOptions, 
+    customAxiosClient: AxiosInstance = axiosClient
+): CancelablePromise<T> => {
     return new CancelablePromise(async (resolve, reject, onCancel, axiosConfig) => {
         try {
             const url = getUrl(config, options);
@@ -300,49 +354,17 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions, ax
             let headers = await getHeaders(config, options, formData);
 
             if (!onCancel.isCancelled) {
-                let response: AxiosResponse<T>;
-                response = await sendRequest<T>(config, options, url, body, formData, headers, onCancel, axiosClient, axiosConfig);
-                
-                try {
-                    catchErrorCodes(options, {
-                        url,
-                        ok: isSuccess(response.status),
-                        status: response.status,
-                        statusText: response.statusText,
-                        body: getResponseHeader(response, options.getResponseHeader) ?? getResponseBody(response),
-                    });
-                } catch (error) {
-                    if (error instanceof ApiError && error.status === 401) {
-                        try {
-                            const refreshToken = localStorage.getItem('refresh_token');
-                            if (!refreshToken) {
-                                throw new Error('Refresh token is missing');
-                            }
-                            const new_token = await AuthService.refreshTokenApiV1AuthRefreshTokenPost({
-                                requestBody: { refresh_token: refreshToken}
-                            });
-                            localStorage.setItem('access_token', new_token.access_token);
-                            headers = await getHeaders(config, options, formData);
-                            response = await sendRequest<T>(
-                                    config,
-                                    options,
-                                    url,
-                                    body,
-                                    formData,
-                                    headers,
-                                    onCancel,
-                                    axiosClient,
-                                    axiosConfig
-                            );
-                        } catch (refreshError) {
-                            reject(refreshError);
-                            return;
-                        }
-                    } else {
-                        reject(error);
-                        return;
-                    }
-                }
+                const response: AxiosResponse<T>= await sendRequest<T>(
+                    config, 
+                    options, 
+                    url, 
+                    body, 
+                    formData, 
+                    headers, 
+                    onCancel, 
+                    customAxiosClient, 
+                    axiosConfig
+                );
                 
                 const responseBody = getResponseBody(response);
                 const responseHeader = getResponseHeader(response, options.responseHeader);

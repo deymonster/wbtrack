@@ -26,7 +26,7 @@ class EmployeeBase(SQLModel):
     phones: List[str] = Field(sa_column=Column(ARRAY(String)))
     rating: float | None = None
     shortages_sum: float | None = None
-    tg_id: int | None
+    tg_id: Optional[int]
 
 
 class Employee(EmployeeBase, BaseTableID, table=True):
