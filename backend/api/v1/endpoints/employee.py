@@ -1,3 +1,5 @@
+from typing import Optional
+from pydantic import BaseModel
 from fastapi import APIRouter, Request, Depends
 from fastapi_pagination import LimitOffsetParams
 from api.dependencies.employee import get_currrent_employee
@@ -15,7 +17,7 @@ import string
 import secrets
 from config import settings
 from schemas.response import IResponsePaginated
-from sqlmodel import col, select
+from sqlmodel import col, select, func
 
 from schemas.user import RegisterResponse
 import httpx
@@ -113,6 +115,52 @@ async def get_list(
     :return: List of employees paginated
     """
     query = select(Employee)
+    page = await employee_crud.get_multi_paginated_ordered(
+        query=query,
+        order_by=order_by,
+        order=order,
+        params=params,
+    )
+    return page
+
+
+class SearchParams(BaseModel):
+    search_field: str
+    search_value: str
+
+
+@router.post(path="/search", response_model=IResponsePaginated[IEmployeeRead])
+async def search_employees(
+        *,
+        order_by: str = "id",
+        order: ListOrderEnum = ListOrderEnum.descendent,
+        search_params: SearchParams,
+        params: LimitOffsetParams = Depends(),
+        user: User = Depends(current_active_user),
+):
+    """Search employees by last name or phone
+
+    :param order_by: Order by field
+    :param order: Order direction (asc or desc) Default: desc
+    :param search_field: Search field
+    :param search_value: Search value
+    :param params: Pagination parameters
+    :param user: Current active user
+    """
+    query = select(Employee)
+    search_field = search_params.search_field
+    search_value = search_params.search_value
+
+    print(f"Search field: {search_field}, value: {search_value}")
+    if search_field and search_value:
+        if search_field == "last_name":
+            query = query.where(Employee.last_name.startswith(search_value))
+
+        elif search_field == "phone_number":
+            query = query.where(
+                func.array_to_string(Employee.phones, ',').ilike(f"%{search_value}%")
+            )
+
     page = await employee_crud.get_multi_paginated_ordered(
         query=query,
         order_by=order_by,

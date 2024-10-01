@@ -11,34 +11,96 @@ import {
    DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown } from "lucide-react"
+
+
 
 
 
 export const columns: ColumnDef<IEmployeeRead>[] = [
    {
     accessorKey: "employee_id",
-    header: "Employee ID"
+    header: ({ column }) =>{
+      return (
+         <Button
+           variant='ghost'
+           onClick={()=> column.toggleSorting(column.getIsSorted() === "asc")}
+         >
+            Employee ID
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+         </Button>
+      )
+    }
    },
    {
     accessorKey: "first_name",
-    header: "First name"
+    header: ({ column }) =>{
+      return (
+         <Button
+           variant='ghost'
+           onClick={()=> column.toggleSorting(column.getIsSorted() === "asc")}
+         >
+            First Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+         </Button>
+      )
+    } 
    },
    {
       accessorKey: "middle_name",
-      header: "Middle name"
+      header: ({ column }) =>{
+         return (
+            <Button
+              variant='ghost'
+              onClick={()=> column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+               Middle Name
+               <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+         )
+       }
    },
    {
       accessorKey: "last_name",
-      header: "Last name"
+      header: ({ column }) =>{
+         return (
+            <Button
+              variant='ghost'
+              onClick={()=> column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+               Last Name
+               <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+         )
+       }
    },
    {
     accessorKey: "phones",
-    header: "Phone"
+    header: ({ column }) =>{
+      return (
+         <Button
+           variant='ghost'
+           onClick={()=> column.toggleSorting(column.getIsSorted() === "asc")}
+         >
+            Phone
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+         </Button>
+      )
+    }
    },
    {
       accessorKey: "create_date",
-      header: "Create date",
+      header: ({ column }) =>{
+         return (
+            <Button
+              variant='ghost'
+              onClick={()=> column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+               Create Date
+               <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+         )
+       },
       cell: ({row}) => {
          const date = new Date(row.getValue("create_date"))
          const formatted = date.toLocaleDateString("ru-RU")
@@ -47,11 +109,31 @@ export const columns: ColumnDef<IEmployeeRead>[] = [
    },
    {
       accessorKey: "rating",
-      header: "Rating"
+      header: ({ column }) =>{
+         return (
+            <Button
+              variant='ghost'
+              onClick={()=> column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+               Rating
+               <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+         )
+       }
    },
    {
       accessorKey: "shortages_sum",
-      header: "Shortages sum"
+      header: ({ column }) =>{
+         return (
+            <Button
+              variant='ghost'
+              onClick={()=> column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+               Shortage Sum
+               <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+         )
+       }
    },
    // {
    //    accessorKey: "tg_id",
