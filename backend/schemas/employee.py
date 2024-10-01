@@ -24,3 +24,8 @@ class RegistrationRequest(BaseModel):
 class AuthRequest(BaseModel):
     phone: str
     otp: Optional[str] = None
+
+
+class SearchParams(BaseModel):
+    search_field: str
+    search_value: str

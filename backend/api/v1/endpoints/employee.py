@@ -10,7 +10,7 @@ from crud.employee import employee_crud
 from enums.common import ListOrderEnum
 from models.employee import Employee
 from models.user import User
-from schemas.employee import IEmployeeRead, RegistrationRequest, AuthRequest
+from schemas.employee import IEmployeeRead, RegistrationRequest, AuthRequest, SearchParams
 from core.redis import redis_client
 import base64
 import string
@@ -122,11 +122,6 @@ async def get_list(
         params=params,
     )
     return page
-
-
-class SearchParams(BaseModel):
-    search_field: str
-    search_value: str
 
 
 @router.post(path="/search", response_model=IResponsePaginated[IEmployeeRead])

@@ -32,7 +32,7 @@ import {
 
 import { Button} from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Input } from '../ui/input';
+
 
 interface DataTableProps<TData, TValue>{
     columns: ColumnDef<TData, TValue>[]
@@ -57,8 +57,7 @@ export function DataTable<TData, TValue>({
 
     const [sorting, setSorting] = useState<SortingState>([])
     // const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-    const [searchField, setSearchField] = useState<string>('')
-    const [searchValue, setSearchValue] = useState<string>('')
+    
 
     const table = useReactTable({
         data,
@@ -88,6 +87,7 @@ export function DataTable<TData, TValue>({
       setSearchValue(value);
       try {
           // const result = await UserService.search({ field: searchField, value }); // Вызов метода на сервере
+          
           console.log('Результат поиска:', value);
       } catch (error) {
           console.error('Ошибка поиска:', error);
@@ -98,45 +98,7 @@ export function DataTable<TData, TValue>({
     return (
     <>
     
-     {/* Filter by last name */}
-    <div>
-      <div className="flex items-center py-4 space-x-4">
-
-        {/* <Input
-          placeholder="Filter last name"
-          value={(table.getColumn("last_name")?.getFilterValue() as string) ?? ""}
-          onChange={(event)=>
-            table.getColumn("last_name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
-
-        <Select
-          value={searchField}
-          onValueChange={(value)=>setSearchField(value)}
-        >
-          <SelectTrigger className="w-[150px]">
-            <SelectValue placeholder="Filter by"/>
-          </SelectTrigger>
-          <SelectContent side="top">
-            <SelectItem value="last_name">Фамилия</SelectItem>
-            <SelectItem value="phone">Телефон</SelectItem>
-          </SelectContent>
-        </Select>
-
-        {/* Input for search value */}
-        <Input
-          placeholder={
-            searchField === "last_name"
-            ? "Поиск по фамилии"
-            : "Поиск по телефону"
-          }
-          value={searchValue}
-          onChange={(event)=>handleSearchChange(event.target.value)}
-          className="max-w-sm"
-        />
-      </div>
-    </div>
+    
 
     {/* Table */}
     <div className="rounded-md border overflow-x-auto w-full">

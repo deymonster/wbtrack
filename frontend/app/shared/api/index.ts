@@ -30,6 +30,7 @@ export { ListOrderEnum } from './models/ListOrderEnum';
 export type { LoginResponse } from './models/LoginResponse';
 export type { RefreshTokenRequest } from './models/RefreshTokenRequest';
 export type { RequestCodeResponse } from './models/RequestCodeResponse';
+export type { SearchParams } from './models/SearchParams';
 export type { TokenResponse } from './models/TokenResponse';
 export { UserRoleEnum } from './models/UserRoleEnum';
 export type { ValidationError } from './models/ValidationError';

@@ -6,6 +6,7 @@
 import type { AuthRequest } from '../models/AuthRequest';
 import type { IResponsePaginated_IEmployeeRead_ } from '../models/IResponsePaginated_IEmployeeRead_';
 import type { ListOrderEnum } from '../models/ListOrderEnum';
+import type { SearchParams } from '../models/SearchParams';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -99,6 +100,54 @@ export class EmployeeService {
                 'limit': limit,
                 'offset': offset,
             },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Search Employees
+     * Search employees by last name or phone
+     *
+     * :param order_by: Order by field
+     * :param order: Order direction (asc or desc) Default: desc
+     * :param search_field: Search field
+     * :param search_value: Search value
+     * :param params: Pagination parameters
+     * :param user: Current active user
+     * @returns IResponsePaginated_IEmployeeRead_ Successful Response
+     * @throws ApiError
+     */
+    public static employeeSearchEmployees({
+        requestBody,
+        orderBy = 'id',
+        order,
+        limit = 50,
+        offset,
+    }: {
+        requestBody: SearchParams,
+        orderBy?: string,
+        order?: ListOrderEnum,
+        /**
+         * Page size limit
+         */
+        limit?: number,
+        /**
+         * Page offset
+         */
+        offset?: number,
+    }): CancelablePromise<IResponsePaginated_IEmployeeRead_> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/employee/search',
+            query: {
+                'order_by': orderBy,
+                'order': order,
+                'limit': limit,
+                'offset': offset,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 422: `Validation Error`,
             },
