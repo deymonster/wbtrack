@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import ENUM, ARRAY
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel, String, Integer
 
 from models.base import BaseTableID
 from models.company_user import CompanyUser
@@ -13,9 +13,12 @@ if TYPE_CHECKING:
 
 
 class CompanyBase(SQLModel):
-    supplier_id: int | None = None
+    wb_user_id: int | None = Field(
+        sa_column=Column(Integer, unique=True, index=True)
+    )
     name: str | None = None
-    phone: str = Field(unique=True, index=True)
+    phone: str = Field(sa_column=Column(String, unique=True, index=True))
+    org_name: str | None = None
 
 
 class Company(CompanyBase, BaseTableID, table=True):
@@ -27,9 +30,7 @@ class Company(CompanyBase, BaseTableID, table=True):
     offices: list["Office"] = Relationship(
         back_populates="company",
     )
-    employees: list["Employee"] = Relationship(
-        back_populates="company"
-    )
+ 
 
 
 

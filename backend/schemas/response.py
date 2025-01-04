@@ -22,3 +22,12 @@ class LoginResponse(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str
+
+
+class PVZRequestCodeResponse(BaseModel):
+    message: str
+    code_length: int
+
+
+class PVZValidateCodeResponse(BaseModel):
+    access_token: str

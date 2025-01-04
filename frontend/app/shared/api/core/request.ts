@@ -337,7 +337,7 @@ export const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): 
  * Request method
  * @param config The OpenAPI configuration object
  * @param options The request options from the service
- * @param axiosClient The axios client instance to use
+ * @param customAxiosClient The axios client instance to use
  * @returns CancelablePromise<T>
  * @throws ApiError
  */
@@ -377,7 +377,8 @@ export const request = <T>(
                     body: responseHeader ?? responseBody,
                 };
 
-
+                catchErrorCodes(options, result);
+                
                 resolve(result.body);
             }
         } catch (error) {

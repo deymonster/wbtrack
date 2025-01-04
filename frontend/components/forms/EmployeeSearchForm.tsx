@@ -29,7 +29,7 @@ export const EmployeeSearchForm: React.FC<EmployeeSearchFormProps> = ({ onSearch
                 </SelectTrigger>
                 <SelectContent side='top'>
                     <SelectItem value='last_name'>Фамилия</SelectItem>
-                    <SelectItem value='phone'>Телефон</SelectItem>
+                    <SelectItem value='phone_number'>Телефон</SelectItem>
                 </SelectContent>
             </Select>
             

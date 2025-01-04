@@ -16,7 +16,10 @@ from pydantic import BaseModel
 router = APIRouter()
 
 
-@router.post("/login", response_model=LoginResponse)
+@router.post("/login", 
+            response_model=LoginResponse, 
+            
+    )
 async def login(
         credentials: OAuth2PasswordRequestForm = Depends(),
         user_manager: UserService = Depends(fastapi_users.get_user_manager),
@@ -62,7 +65,9 @@ router.include_router(
 )
 
 
-@router.post("/refresh-token")
+@router.post("/refresh-token", openapi_extra={
+        "security": [{"BearerAuth": []}]  # Указываем отдельную схему для обновления токена
+    })
 async def refresh_token(
         request: RefreshTokenRequest,
         user_manager: UserService = Depends(fastapi_users.get_user_manager),

@@ -54,6 +54,28 @@ def create_app():
         docs_url="/docs" if settings.DEBUG else None,
         debug=settings.DEBUG,
         lifespan=lifespan,
+        swagger_ui_parameters={"persistAuthorization": True},
+        
+        openapi_extra={
+            "components": {
+                "securitySchemes": {
+                    "OAuth2PasswordBearer": {
+                        "type": "oauth2",
+                        "flows": {
+                            "password": {
+                                "tokenUrl": "/api/v1/auth/login",
+                                "scopes": {}
+                            }
+                        }
+                    },
+                    "BearerAuth": {
+                        "type": "http",
+                        "scheme": "bearer"
+                    }
+                }
+            }
+        },
+
         middleware=[
             Middleware(
                 SQLAlchemyMiddleware,

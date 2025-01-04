@@ -1,8 +1,8 @@
 from uuid import UUID
 from sqlalchemy import Column, ForeignKey, Integer
-from sqlmodel import GUID, Field
+from sqlmodel import Field
 from models.base import BaseTable
-
+from sqlalchemy.dialects.postgresql import UUID as SAUUID
 
 class CompanyUser(BaseTable, table=True):
     company_id: int = Field(
@@ -14,7 +14,7 @@ class CompanyUser(BaseTable, table=True):
     )
     user_id: UUID = Field(
         sa_column=Column(
-            GUID,
+            SAUUID(as_uuid=True),
             ForeignKey("user.id", ondelete="CASCADE"),
             primary_key=True,
         )

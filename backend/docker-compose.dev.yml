@@ -34,6 +34,20 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+  
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.celery
+    command: celery -A core.celery_app worker --loglevel=info
+    environment:
+      ENVIRONMENT: docker
+      REDIS_URL: redis://redis:6379/0
+      PYTHONPATH: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
 
   #prefect-server:
   #  image: prefecthq/prefect:3.0.0rc14-python3.11

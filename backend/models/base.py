@@ -2,8 +2,9 @@ import re
 from uuid import UUID
 
 from sqlalchemy import text
-from sqlmodel import GUID, Field, SQLModel
+from sqlmodel import Field, SQLModel
 from models.base_mixin import TimestampMixin
+from sqlalchemy.dialects.postgresql import UUID as SAUUID
 
 
 class BaseTable(SQLModel):
@@ -26,7 +27,7 @@ class BaseTableUUID(BaseTable, TimestampMixin):
     id: UUID = Field(
         default=None,
         primary_key=True,
-        sa_type=GUID,
+        sa_type=SAUUID,
         sa_column_kwargs={"server_default": text("gen_random_uuid()")},
     )
 

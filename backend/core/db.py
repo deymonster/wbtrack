@@ -5,6 +5,7 @@ from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from config import settings
+from contextlib import asynccontextmanager
 
 
 def pydantic_serializer(value):
@@ -47,3 +48,15 @@ def get_db_session(poolclass=NullPool):
         class_=AsyncSession,
         expire_on_commit=False,
     )
+
+
+# Создаем фабрику сессий
+db_session_factory = get_db_session()
+
+
+
+@asynccontextmanager
+async def get_db_session_instance():
+    """Контекстный менеджер для получения сессии базы данных."""
+    async with db_session_factory() as session:
+        yield session

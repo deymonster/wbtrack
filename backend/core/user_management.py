@@ -18,10 +18,12 @@ from services.user import UserService
 from config import settings
 
 access_bearer_transport = BearerTransport(
-    tokenUrl="api/v1/auth/login",
+    tokenUrl="api/v1/auth/login"
 )
 
-refresh_bearer_transport = BearerTransport(tokenUrl="auth/v1/refresh-token")
+refresh_bearer_transport = BearerTransport(
+    tokenUrl="api/v1/auth/refresh-token"
+    )
 
 #
 # class RefreshJWTStrategy(JWTStrategy):
@@ -118,7 +120,7 @@ async def get_user_service(
     yield UserService(user_session)
 
 
-fastapi_users = FastAPIUsers[User, UUID](get_user_service, [access_backend, refresh_backend])
+fastapi_users = FastAPIUsers[User, UUID](get_user_service, [access_backend])
 
 __all__ = [
     "fastapi_users",

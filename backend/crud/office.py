@@ -2,15 +2,95 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import col, select
 
 from models.office import Office
+from models.employee import Employee, EmployeeOfficeLink
+from models.company import Company
+from models.company_user import CompanyUser
 from crud.base import CRUDBase
 from schemas.office import IOfficeRead, IOfficeCreate, IOfficeUpdate
+from schemas.response import IResponsePaginated
+import logging
+from enums.common import ListOrderEnum
+from fastapi_pagination import LimitOffsetParams, Page
+
+logger = logging.getLogger(__name__)
 
 
 class OfficeCRUD(CRUDBase[Office, IOfficeCreate, IOfficeUpdate]):
-    pass
+    async def get_by_external_office_id(self, office_id: int, db_session: AsyncSession | None = None) -> Office | None:
+        """Получить офис по office_id."""
 
+        session: AsyncSession = db_session or self.db.session
+        
+        query = select(Office).where(Office.office_id == office_id)
+        result = await session.execute(query)
+        office = result.scalar_one_or_none()
+        
+        return office
+
+    async def get_all_offices(self, db_session: AsyncSession | None = None) -> list[Office]:
+        """Загрузка всех офисов в виде словаря {external_id: Office}"""
+        session: AsyncSession = db_session or self.db.session
+        query = select(Office)
+        response = await session.execute(query)
+        offices = response.scalars().all()
+        return {office.external_id: office for office in offices}
+
+        
+    async def get_employee_by_office_id(self, office_id: int, db_session: AsyncSession | None = None) -> list[Employee]:
+        """Получаем всех сотрудников по office_id."""
+        session: AsyncSession = db_session or self.db.session
+        db_office = await self.get_by_external_office_id(office_id=office_id, db_session=session)
+        if not db_office:
+            raise ValueError(f"Office with office_id={office_id} not found in the database.")
+        query = (
+            select(Employee)
+            .join(EmployeeOfficeLink, Employee.id == EmployeeOfficeLink.employee_id)
+            .where(EmployeeOfficeLink.office_id == db_office.id)
+        )
+        response = await session.execute(query)
+        return response.scalars().all()
+
+    async def get_offices_paginated(
+        self, *, 
+        user_id: str, 
+        params: LimitOffsetParams, 
+        order_by: str = "id", 
+        order: ListOrderEnum = ListOrderEnum.descendent, 
+        db_session: AsyncSession | None = None) -> IResponsePaginated[Office]:
+        """Получение офисов с пагинацией.
+        
+        :param user_id: ID текущего пользователя
+        :param params: Параметры пагинации
+        :param order_by: Поле сортировки
+        :param order: Направление сортировки
+        :param db_session: Сессия базы данных
+        :return: Страница офисов с информацией о следующей странице
+        """
+        session: AsyncSession = db_session or self.db.session
+        company_user_query = select(CompanyUser).where(CompanyUser.user_id == user_id)
+
+        company_users = (await session.execute(company_user_query)).scalars().all()
+        logger.info(f"Found {len(company_users)} companies for user {user_id}")
+        
+        # Проверяем офисы в этих компаниях
+        query = (
+            select(Office)
+            .join(Company)
+            .join(CompanyUser, CompanyUser.company_id == Company.id)
+            .where(CompanyUser.user_id == user_id)
+        )
+        offices = (await session.execute(query)).scalars().all()
+        logger.info(f"Found {len(offices)} offices for user {user_id}")
+        return await self.get_multi_paginated_ordered(
+            query=query,
+            params=params,
+            order_by=order_by,
+            order=order,
+            db_session=session,
+        )
 
 office_crud = OfficeCRUD(Office)
+
 
 
 __all__ = [

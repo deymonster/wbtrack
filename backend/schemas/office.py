@@ -6,7 +6,7 @@ class IOfficeRead(OfficeBase):
 
 
 class IOfficeCreate(OfficeBase):
-    pass
+    company_id: int | None
 
 
 class IOfficeUpdate(OfficeBase):

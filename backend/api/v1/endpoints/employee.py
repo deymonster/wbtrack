@@ -17,7 +17,7 @@ import string
 import secrets
 from config import settings
 from schemas.response import IResponsePaginated
-from sqlmodel import col, select, func
+from sqlmodel import col, select, func, String
 
 from schemas.user import RegisterResponse
 import httpx
@@ -153,7 +153,7 @@ async def search_employees(
 
         elif search_field == "phone_number":
             query = query.where(
-                func.array_to_string(Employee.phones, ',').ilike(f"%{search_value}%")
+                func.array_to_string(Employee.phones, ',').ilike(f'{search_value}%')
             )
 
     page = await employee_crud.get_multi_paginated_ordered(

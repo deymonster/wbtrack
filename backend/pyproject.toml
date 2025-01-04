@@ -9,7 +9,7 @@ readme = "README.md"
 python = ">=3.11,<3.12"
 fastapi = "^0.111.0"
 SQLAlchemy = "^2.0.30"
-sqlmodel = { git = "https://github.com/50Bytes-dev/sqlmodel.git", rev = "c980f31" }
+sqlmodel = { path = "./sqlmodel_dist/sqlmodel-0.0.22-py3-none-any.whl" }
 alembic = "^1.13.1"
 asyncpg = "^0.29.0"
 uvicorn = "^0.30.0"
@@ -27,8 +27,10 @@ fastapi-cache2 = { version = "^0.2.2", extras = ["redis"] }
 prefect = "3.0.0rc14"
 pillow = "^10.4.0"
 itsdangerous = "^2.2.0"
-wb-franchise-api-client = {git = "https://github.com/deymonster/WB_Franchise_api_client.git", rev = "main"}
 httpx = "^0.27.2"
+celery = "^5.4.0"
+pvz-client = {git = "https://github.com/deymonster/pvz_client.git", rev = "main"}
+
 
 
 [build-system]

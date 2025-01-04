@@ -5,6 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(extra="ignore", env_file=".env")
 
+    ENVIRONMENT: str = "local"
+
     # App
 
     DEBUG: bool = False
@@ -28,6 +30,14 @@ class Settings(BaseSettings):
     AUTH_BASE_PATH: str
     WB_BASIC_TOKEN: str
 
+
+    # PVZ Client
+    AUTH_BASE_PATH: str
+    DISCOVERY_URL: str
+    S_POINT_URL: str
+    POINT_RATING_URL: str
+    POINT_BALANCE_URL: str
+
     # Redis
 
     REDIS_HOST: str = "localhost"
@@ -36,10 +46,11 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def REDIS_URL(self) -> str:
+        host = "redis" if self.ENVIRONMENT == "docker" else self.REDIS_HOST
         return str(
             RedisDsn.build(  # type: ignore
                 scheme="redis",
-                host=self.REDIS_HOST,
+                host=host,
                 port=int(self.REDIS_PORT),
             )
         )
@@ -59,15 +70,18 @@ class Settings(BaseSettings):
     def POSTGRES_POOL_SIZE_BY_SERVER(self) -> int:
         return self.POSTGRES_POOL_SIZE // self.WEB_CONCURRENCY
 
+    
+
     @computed_field
     @property
     def DB_ASYNC_CONNECTION_STR(self) -> str:
+        host = "postgres" if self.ENVIRONMENT == "docker" else self.POSTGRES_HOST
         return str(
             PostgresDsn.build(  # type: ignore
                 scheme="postgresql+asyncpg",
                 username=self.POSTGRES_USER,
                 password=self.POSTGRES_PASSWORD,
-                host=self.POSTGRES_HOST,
+                host=host,
                 port=int(self.POSTGRES_PORT),
                 path=self.POSTGRES_DB,
             )

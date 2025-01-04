@@ -3,8 +3,10 @@ from fastapi import APIRouter
 from .endpoints import (
     auth,
     user,
-    company,
-    employee
+    # company,
+    employee,
+    pvz,
+    checkpoint,
 )
 
 api_router = APIRouter()
@@ -21,17 +23,29 @@ api_router.include_router(
     tags=["user"],
 )
 
-api_router.include_router(
-    company.router,
-    prefix="/company",
-    tags=["company"],
-)
+# api_router.include_router(
+#     company.router,
+#     prefix="/company",
+#     tags=["company"],
+# )
 
 
 api_router.include_router(
     employee.router,
     prefix="/employee",
     tags=["employee"],
+)
+
+api_router.include_router(
+    pvz.router,
+    prefix="/pvz",
+    tags=["pvz"],
+)
+
+api_router.include_router(
+    checkpoint.router,
+    prefix="/checkpoint",
+    tags=["checkpoint"],
 )
 
 

@@ -10,34 +10,39 @@ from sqlmodel import (
 )
 from models.base import BaseTableID
 from typing import TYPE_CHECKING, Any, List, Optional
+from datetime import datetime
+
+
+class EmployeeOfficeLink(SQLModel, table=True):
+    employee_id: int = Field(foreign_key="employee.id", primary_key=True)
+    office_id: int = Field(foreign_key="office.id", primary_key=True)
+
 
 if TYPE_CHECKING:
-    from models.company import Company
-    from models.user import User
+    from models.office import Office
 
 
 class EmployeeBase(SQLModel):
-    create_date: str
-    employee_id: int = Field(unique=True, index=True)
-    first_name: str
-    is_deleted: bool
+    create_date: datetime = Field(default_factory=datetime.utcnow)
+    user_id: int = Field(unique=True, index=True)
+    name: str
     last_name: str
-    middle_name: str
-    phones: List[str] = Field(sa_column=Column(ARRAY(String)))
-    rating: float | None = None
-    shortages_sum: float | None = None
-    tg_id: Optional[int]
+    is_deleted: bool
+    phone: str = Field(sa_column=Column(String, unique=True, index=True))
+    tg_id: int | None = Field(default=None)
 
 
 class Employee(EmployeeBase, BaseTableID, table=True):
-    company_id: int | None = Field(
-        sa_column=Column(
-            Integer,
-            ForeignKey("company.id", ondelete="CASCADE"),
-        ),
-        default=None
+    
+    offices: list["Office"] = Relationship(
+        back_populates="employees",
+        link_model=EmployeeOfficeLink
     )
-    company: "Company" = Relationship(back_populates="employees")
+
+    operations: List["Operation"] = Relationship(
+        back_populates="employee",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+    )
 
 
 

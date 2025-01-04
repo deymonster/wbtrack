@@ -39,9 +39,32 @@ class CRUDCompany(CRUDBase[Company, ICompanyCreate, ICompanyUpdate]):
         db_session: AsyncSession | None = None,
     ):
         session = db_session or self.db.session
+
+        # Проверяем, связан ли пользователь с компанией
+        query = select(Company).where(
+            Company.id == company.id,
+            relations(Company.users).any(User.id == user.id)
+        )
+        result = await session.execute(query)
+        existing_link = result.scalar_one_or_none()
+
+        # Если связь уже существует, просто возвращаем компанию
+        if existing_link:
+            return company
+
+        # Если связи нет, добавляем пользователя к компании
         await session.refresh(company, attribute_names=["users"])
         company.users.append(user)
         await session.commit()
+        return company
+
+    async def get_company_by_wb_user_id(self, wb_user_id: int, db_session: AsyncSession | None = None) -> Company:
+        """Получение компании по wb_user_id"""
+        session = db_session or self.db.session
+        query = select(Company).where(Company.wb_user_id == wb_user_id)
+        result = await session.execute(query)
+        company = result.scalar_one_or_none()
+
         return company
 
 

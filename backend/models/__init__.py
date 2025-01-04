@@ -4,5 +4,6 @@ from . import (
     company,
     user,
     office,
-    employee
+    employee,
+    operation
 )
