@@ -5,5 +5,7 @@ from . import (
     user,
     office,
     employee,
-    operation
+    operation,
+    categories_operations,
+    operation_name
 )

@@ -1,23 +1,27 @@
 from fastapi import HTTPException
-from typing import Any, Generic, Sequence, Tuple, TypeVar, cast
+from typing import Any, Generic, Sequence, Tuple, TypeVar, cast, List
 
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.utils.pagination import paginate
 from enums.common import ListOrderEnum
 from fastapi_async_sqlalchemy import db
-from fastapi_pagination import LimitOffsetParams, Page
+from fastapi_pagination import LimitOffsetParams, Page, Params
 from sqlmodel import SQLModel, col, select, func
 from sqlmodel.sql.expression import SelectOfScalar
 from sqlalchemy import exc
 from sqlalchemy.dialects._typing import _OnConflictIndexElementsT
 
 from schemas.model import IModel, IModelUpdate
+import logging
 
 ModelType = TypeVar("ModelType", bound=IModel)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=SQLModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=IModelUpdate)
 T = TypeVar("T", bound=SQLModel)
+RelatedType = TypeVar("RelatedType", bound=SQLModel)
+
+logger = logging.getLogger(__name__)
 
 
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
@@ -33,6 +37,35 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
     def get_db(self):
         return self.db
+
+    async def get_related_objects(self, related_model: type[RelatedType], 
+                                 join_conditions: list[Tuple[type[SQLModel], Any]], 
+                                 filters: list[Any] = None,
+                                 ) -> SelectOfScalar[RelatedType]:
+        """Универсальный метод для формирования запроса получения связанных объектов
+        
+        :param related_model: Модель связанного объекта
+        :param join_condition: Условие соединения (join)
+        :param filters: Дополнительные условия (WHERE).
+        :param db_session: Сессия базы данных
+        :return: Список связанных объектов
+        """
+
+        query = select(related_model)
+
+        for join_table, join_condition in join_conditions:
+            query = query.join(join_table, join_condition)
+
+        if filters:
+            for condition in filters:
+                query = query.where(condition)
+
+        # Логируем скомпилированный SQL-запрос
+        logger.info(f"Generated query object: {query}")
+        compiled_query = query.compile(compile_kwargs={"literal_binds": True})
+        logger.info(f"Compiled SQL query: {compiled_query}")
+
+        return query
 
     async def get(
         self,
@@ -159,6 +192,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """Get multiple paginated ordered objects."""
         session: AsyncSession = db_session or self.db.session
 
+
         columns = self.model.__table__.columns
 
         if query is None:
@@ -169,8 +203,22 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 query = query.order_by(columns[order_by].asc())
             else:
                 query = query.order_by(columns[order_by].desc())
+        
+        # Добавляем подсчет уникальных записей
+        count_query = select(func.count(func.distinct(self.model.id))).select_from(query.subquery())
 
-        return await paginate(session, query, params)
+        total = (await session.execute(count_query)).scalar_one()
+
+        items = await session.execute(query.offset(params.offset).limit(params.limit))
+
+
+        # Возвращаем данные в формате {items, total, limit, offset}
+        return {
+            "items": items.scalars().all(),
+            "total": total,
+            "limit": params.limit,
+            "offset": params.offset
+        }
 
     async def get_multi_ordered(
         self,

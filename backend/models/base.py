@@ -1,7 +1,6 @@
 import re
 from uuid import UUID
-
-from sqlalchemy import text
+from sqlalchemy import Column, BigInteger, text
 from sqlmodel import Field, SQLModel
 from models.base_mixin import TimestampMixin
 from sqlalchemy.dialects.postgresql import UUID as SAUUID
@@ -36,5 +35,5 @@ class BaseTableID(BaseTable, TimestampMixin):
     id: int = Field(
         default=None,
         primary_key=True,
-        nullable=False,
+        sa_type=BigInteger,
     )

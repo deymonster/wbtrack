@@ -1,0 +1,17 @@
+                                            List of relations
+ Schema |        Name        |   Type   | Owner | Persistence | Access method |    Size    | Description 
+--------+--------------------+----------+-------+-------------+---------------+------------+-------------
+ public | alembic_version    | table    | root  | permanent   | heap          | 8192 bytes | 
+ public | company            | table    | root  | permanent   | heap          | 16 kB      | 
+ public | company_id_seq     | sequence | root  | permanent   |               | 8192 bytes | 
+ public | company_user       | table    | root  | permanent   | heap          | 8192 bytes | 
+ public | employee           | table    | root  | permanent   | heap          | 72 kB      | 
+ public | employee_id_seq    | sequence | root  | permanent   |               | 8192 bytes | 
+ public | employeeofficelink | table    | root  | permanent   | heap          | 64 kB      | 
+ public | office             | table    | root  | permanent   | heap          | 16 kB      | 
+ public | office_id_seq      | sequence | root  | permanent   |               | 8192 bytes | 
+ public | operation          | table    | root  | permanent   | heap          | 14 MB      | 
+ public | operation_id_seq   | sequence | root  | permanent   |               | 8192 bytes | 
+ public | user               | table    | root  | permanent   | heap          | 16 kB      | 
+(12 rows)
+

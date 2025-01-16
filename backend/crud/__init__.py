@@ -4,5 +4,7 @@ from . import (
     employee,
     office,
     operation,
-    employee_office_link
+    employee_office_link,
+    categories_operation,
+    operation_name
 )

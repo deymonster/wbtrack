@@ -2606,7 +2606,7 @@ pydantic-settings = "^2.6.1"
 type = "git"
 url = "https://github.com/deymonster/pvz_client.git"
 reference = "main"
-resolved_reference = "69fe489e76e4cf3e82248e334d8d5e7f895c5a13"
+resolved_reference = "89edfc71366d59d97c3d188e58e223f5d225445d"
 
 [[package]]
 name = "pwdlib"

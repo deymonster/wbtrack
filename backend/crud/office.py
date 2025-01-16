@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import col, select
-
+from pydantic import UUID4
 from models.office import Office
 from models.employee import Employee, EmployeeOfficeLink
 from models.company import Company
@@ -88,6 +88,25 @@ class OfficeCRUD(CRUDBase[Office, IOfficeCreate, IOfficeUpdate]):
             order=order,
             db_session=session,
         )
+
+    async def get_office_by_user_id(self, *, office_id: int, user_id: UUID4, db_session: AsyncSession | None = None) -> Office:
+        """Получаем офис по user_id
+        
+        :param office_id: ID офиса
+        :param user_id: ID пользователя
+        :param db_session: Сессия базы данных
+        :return: Офис
+        """
+
+        session: AsyncSession = db_session or self.db.session
+        query = (
+            select(Office)
+            .join(Company, Office.company_id == Company.id)
+            .join(CompanyUser, CompanyUser.company_id == Company.id)
+            .where(Office.office_id == office_id, CompanyUser.user_id == user_id)
+        )
+        result = await session.execute(query)
+        return result.scalar_one_or_none()
 
 office_crud = OfficeCRUD(Office)
 

@@ -1,10 +1,20 @@
-from models.employee import Employee
+from models.employee import Employee, EmployeeOfficeLink
 from models.office import Office
+from models.company import Company
+from models.company_user import CompanyUser
 from crud.base import CRUDBase
 from schemas.employee import IEmployeeRead, IEmployeeCreate, IEmployeeUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import col, select, text
+from pydantic import UUID4
 import logging
+from typing import List
+from fastapi_pagination import LimitOffsetParams, Page
+from enums.common import ListOrderEnum
+from schemas.response import IResponsePaginated
+
+from sqlalchemy.engine import Engine
+from sqlalchemy.sql import Select
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +66,54 @@ class EmployeeCRUD(CRUDBase[Employee, IEmployeeCreate, IEmployeeUpdate]):
         )
         response = await session.execute(query)
         return response.scalars().all()
+
+    async def get_employees_by_user_id(self, user_id: UUID4, 
+                                       params: LimitOffsetParams | None = LimitOffsetParams(),
+                                       order_by: str = "id",
+                                       order: ListOrderEnum = ListOrderEnum.descendent,
+                                       db_session: AsyncSession | None = None) -> IResponsePaginated[Employee]:
+        """Получение связанных сотрудников пользователя
+        
+        :param user_id: ID пользователя
+        :param params: Параметры пагинации
+        :param order_by: Поле сортировки
+        :param order: Направление сортировки
+        :param db_session: Сессия базы данных
+        :return: Страница сотрудников
+        """
+        session: AsyncSession = db_session or self.db.session
+
+        # Условие соединения: связываем Employee через Office и Company с User
+        # Формируем запрос с цепочкой join
+        join_conditions = [
+            (EmployeeOfficeLink, Employee.id == EmployeeOfficeLink.employee_id),
+            (Office, EmployeeOfficeLink.office_id == Office.id),
+            (Company, Office.company_id == Company.id),
+            (CompanyUser, Company.id == CompanyUser.company_id)
+        ]
+
+        # Дополнительный фильтр по user_id
+        filters = [
+            CompanyUser.user_id == user_id
+        ]
+        query = await self.get_related_objects(
+            related_model=Employee,
+            join_conditions=join_conditions,
+            filters=filters
+        )
+        query = query.distinct(Employee.id)
+
+
+
+        return await self.get_multi_paginated_ordered(
+            query=query,
+            params=params,
+            order_by=order_by,
+            order=order,
+            db_session=db_session
+        )
+
+
 
 
 employee_crud = EmployeeCRUD(Employee)

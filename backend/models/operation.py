@@ -1,4 +1,4 @@
-from sqlmodel import Field, Relationship, SQLModel, Column, ForeignKey, Integer, String, Float, DateTime
+from sqlmodel import Field, Relationship, SQLModel, Column, ForeignKey, Integer, String, Float, DateTime, BigInteger
 from models.base import BaseTableID
 from typing import TYPE_CHECKING, Optional, List
 from datetime import datetime
@@ -10,7 +10,9 @@ if TYPE_CHECKING:
 
 
 class OperationBase(SQLModel):
-    operation_id: int = Field(unique=True, index=True) 
+    operation_id: int = Field(
+        sa_column=Column(BigInteger, unique=True, index=True)
+    )
     operation_type: str
     summ: float
     rids: str
@@ -40,5 +42,3 @@ class Operation(OperationBase, BaseTableID, table=True):
     )
     employee: "Employee" = Relationship(back_populates="operations")
     # details: Optional[List["OperationDetails"]] = Relationship(back_populates="operation")
-
-

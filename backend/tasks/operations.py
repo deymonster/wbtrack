@@ -69,6 +69,9 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
     
     async def save_chunked_operations(operation_objects, chunk_size, db_session):
         """Сохранение операций по чанкам с асинхронной обработкой."""
+        total_operations = len(operation_objects)
+        saved_operations = 0
+        
         for chunk in chunks(operation_objects, chunk_size):
             try:
                 await operation_crud.create_or_update_multi(
@@ -87,6 +90,15 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
                     },
                     db_session=db_session
                 )
+                saved_operations += len(chunk)
+                progress = 50 + int((saved_operations / total_operations) * 50)  # От 50% до 100%
+                self.update_state(
+                    state='PROGRESS',
+                    meta={
+                        'progress': progress,
+                        'status': f'Сохранено операций: {saved_operations}/{total_operations}'
+                    }
+                )
             except Exception as e:
                 logger.error(f"Error saving chunk: {e}")
                 raise
@@ -101,7 +113,17 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
             service = PVZService(redis_client=redis_client, phone=phone)
 
             # Получаем операции
-            operations = await service.get_operations(date_from=date_from, date_to=date_to)
+            operations = await service.get_operations(
+                date_from=date_from,
+                date_to=date_to,
+                progress_callback=lambda current, total: self.update_state(
+                    state='PROGRESS',
+                    meta={
+                        'progress': int((current / total) * 50),  # 50% на получение данных
+                        'status': f'Получено операций: {current}/{total}'
+                    }
+                )
+            )
             logger.info(f"Received {len(operations)} operations from service")
             
 
@@ -119,9 +141,6 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
                 employee_map = await employee_crud.get_all_employees(db_session=session)
 
                 # Обрабатываем операции по чанкам
-                total_chunks = (len(operations) + chunk_size - 1) // chunk_size
-                processed_chunks = 0
-
                 tasks = [process_chunk(chunk, office_map, employee_map) for chunk in chunks(operations, chunk_size)]
                 all_operation_data = await asyncio.gather(*tasks)
                 flat_operation_data = [item for sublist in all_operation_data for item in sublist] # "выпрямить" вложенные списки
@@ -129,12 +148,6 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
                 # Преобразуем данные в объекты для сохранения
                 operation_objects = [IOperationCreate(**operation) for operation in flat_operation_data]
                 await save_chunked_operations(operation_objects, chunk_size=chunk_size, db_session=session)
-
-                for _ in chunks(flat_operation_data, chunk_size):
-                    processed_chunks += 1
-                    progress = int((processed_chunks / total_chunks) * 100)
-                    self.update_state(state='PROGRESS', meta={'progress': progress, 'status': f'Обработано {processed_chunks}/{total_chunks} чанков'})
-
 
             self.update_state(state='SUCCESS', meta={'progress': 100, 'status': 'Операции успешно сохранены'})
             return {"status": "success", "message": f"Successfully processed {total_operations} operations"}

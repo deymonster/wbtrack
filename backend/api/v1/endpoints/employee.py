@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel
-from fastapi import APIRouter, Request, Depends
-from fastapi_pagination import LimitOffsetParams
+from fastapi import APIRouter, Request, Depends, Query
+from fastapi_pagination import LimitOffsetParams, add_pagination
 from api.dependencies.employee import get_currrent_employee
 from api.dependencies.user import current_active_user
 from core.exceptions import NotFound, ValidationError
@@ -21,6 +21,9 @@ from sqlmodel import col, select, func, String
 
 from schemas.user import RegisterResponse
 import httpx
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     generate_unique_id_function=lambda route: f"employee_{route.name}",
@@ -101,25 +104,34 @@ async def get_info_employee(employee: Employee = Depends(get_currrent_employee))
 @router.get(path="",
             response_model=IResponsePaginated[IEmployeeRead])
 async def get_list(
-        order_by: str = "id",
-        order: ListOrderEnum = ListOrderEnum.descendent,
         params: LimitOffsetParams = Depends(),
-        user: User = Depends(current_active_user),
+        current_user: User = Depends(current_active_user),
+        order_by: str = Query(None, description="Поле для сортировки"),
+        order: ListOrderEnum = Query(ListOrderEnum.descendent, description="Направление сортировки")
+        
+        
 ):
-    """Get list of all employees
+    """Получения списка сотрудников связанных с текущим пользователем
 
-    :param order_by: Order by field
-    :param order: Order direction (asc or desc) Default: desc
-    :param params: Pagination parameters
-    :param user: Current active user
-    :return: List of employees paginated
+    - **limit**: количество элементов на странице
+    - **offset**: смещение от начала списка
+    - **order_by**: поле для сортировки (доступные поля create_date, name, last_name, is_deleted, phone, tg_id)
+    - **order**: направление сортировки (asc/desc)
     """
-    query = select(Employee)
-    page = await employee_crud.get_multi_paginated_ordered(
-        query=query,
-        order_by=order_by,
-        order=order,
+    user_id = current_user.id
+    logger.info(f"User id of current user - {user_id}")
+    sortable_columns = Employee.__table__.columns.keys()
+
+    if order_by and order_by not in sortable_columns:
+        raise ValidationError(f"Некорректное поле для сортировки: {order_by}. Доступные поля: {', '.join(sortable_columns)}")
+    order_by = order_by or "id"
+
+    
+    page = await employee_crud.get_employees_by_user_id(
+        user_id=user_id,
         params=params,
+        order_by=order_by,
+        order=order
     )
     return page
 
@@ -164,6 +176,7 @@ async def search_employees(
     )
     return page
 
+add_pagination(router)
 
 
 

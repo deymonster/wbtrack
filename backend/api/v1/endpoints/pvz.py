@@ -217,25 +217,41 @@ async def get_operations_status(task_id: str):
         
         if task.state == 'PENDING':
             response = {
-                'status': 'pending',
-                'current': 0,
-                'total': 1,
-                'message': 'Task is pending'
+                "status": "pending",
+                "progress": 0,
+                "message": "Task is pending"
+            }
+        elif task.state == 'PROGRESS':
+            response = {
+                "status": task.state,
+                "progress": task.info.get('progress', 0),
+                "message": task.info.get('status', 'Task in progress')
+            }
+        elif task.state == 'SUCCESS':
+            response = {
+                "status": task.state,
+                "progress": 100,
+                "result": task.result,
+                "message": "Task completed successfully"
             }
         elif task.state == 'FAILURE':
             response = {
-                'status': 'error',
-                'error': str(task.info),
+                "status": "error",
+                "progress": 0,
+                "message": str(task.info),
             }
         else:
             response = {
-                'status': task.state,
-                'result': task.result,
+                "status": task.state,
+                "progress": 0,
+                "message": "Unknown task state"
             }
         
         return response
     except Exception as e:
+        logger.error(f"Error checking task status: {e}")
         raise HTTPException(status_code=404, detail="Task not found")
+
 
 @router.post("/static-data/fetch", description="Запуск задачи получения и сохранения статичных данных",
              responses={
