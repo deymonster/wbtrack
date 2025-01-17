@@ -8,7 +8,7 @@ stop-dev: ## start docker-compose.dev.yml
 
 .PHONY: logs
 log: ## view logs of docker-compose containers
-	docker compose -f docker-compose.dev.yml logs --tail=150 -f postgres
+	docker compose -f docker-compose.dev.yml logs --tail=150 -f celery-worker
 
 .PHONY: migrate
 migrate: ## create and apply new alembic migration

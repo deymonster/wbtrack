@@ -13,6 +13,8 @@ from schemas.office import IOfficeCreate
 from schemas.employee import IEmployeeCreate
 from schemas.employee_office_link import IEmployeeOfficeLinkCreate
 from schemas.operation import IOperationCreate
+from schemas.categories_operation import ICategoryOperationCreate
+from schemas.operation_name import IOperationNameCreate
 from crud.base import CRUDBase
 from pydantic import BaseModel
 from core.db import get_db_session_instance
@@ -22,6 +24,8 @@ from crud.employee import employee_crud
 from crud.employee_office_link import employee_office_link_crud
 from crud.operation import operation_crud
 from crud.office import office_crud
+from crud.categories_operation import categories_operation_crud
+from crud.operation_name import operation_name_crud
 from models.user import User
 import sqlalchemy.exc
 
@@ -198,10 +202,12 @@ def fetch_static_data(self, phone: str) -> Dict[str, Any]:
             # Асинхронное получение данных
             pickpoint_list_with_employees = await service.get_pickpoint_list()
             owner_info = await service.get_owner_info()
+            categories = await service.get_operation_category()
 
             # Преобразуем в сериализуемый формат
             pickpoint_list_serializable = [p.dict() for p in pickpoint_list_with_employees]
             owner_info_serializable = owner_info.dict()
+            categories_serializable = categories.dict()
 
             logger.info(
                 f"Successfully fetched static data: "
@@ -211,6 +217,7 @@ def fetch_static_data(self, phone: str) -> Dict[str, Any]:
                 "status": "success",
                 "pickpoint_list": pickpoint_list_serializable,
                 "owner_info": owner_info_serializable,
+                "categories": categories_serializable,
                 "completed_at": datetime.now().isoformat()
             }
         except Exception as exc:
@@ -271,11 +278,113 @@ def save_static_data(self, static_data: Dict[str, Any], user_id: int) -> None:
     logger.info(f"Saving static data to DB: {static_data}")
 
     async def run_task():
-        try:
-            async with get_db_session_instance() as session:
+        async with get_db_session_instance() as session:
+            try:
+                logger.info("Received static_data:")
+                logger.info(f"Keys in static_data: {static_data.keys()}")
+                logger.info(f"Categories data keys: {static_data.get('categories', {}).keys()}")
+                
                 #Извлечение данных из словаря
                 company_data = static_data.get("owner_info", {})
                 offices_data = static_data.get("pickpoint_list", [])
+                categories_data = static_data.get("categories", {})
+                operations_data = categories_data.get("operations", [])
+
+                logger.info(f"Static data keys: {static_data.keys()}")
+                logger.info(f"Categories data keys: {categories_data.keys()}")
+                logger.info(f"Raw data: categories={len(categories_data.get('categories', []))}, operations={len(operations_data)}")
+
+                # Создаем словарь операций для быстрого доступа
+                operations_dict = {str(op["id"]): op for op in operations_data}
+                logger.info(f"Created operations dictionary with {len(operations_dict)} items")
+                logger.info(f"Available operation IDs: {list(operations_dict.keys())}")
+                logger.info(f"Operations data sample: {operations_data[:2] if operations_data else 'No operations'}")
+
+                # Сохранение категорий и названий операций
+                if categories_data:
+                    # Сохраняем категории
+                    categories_list = categories_data.get("categories", [])
+                    logger.info(f"Processing {len(categories_list)} categories")
+                    
+                    for category in categories_list:
+                        try:
+                            logger.info(f"Processing category {category['id']}: {category['name']}")
+                            logger.info(f"Category operations: {category.get('operations', [])}")
+                            logger.info(f"Category raw data: {category}")
+                            
+                            # Сохраняем категорию
+                            db_category = await categories_operation_crud.get_by_external_id(
+                                external_id=category["id"],
+                                db_session=session
+                            )
+                            if not db_category:
+                                logger.info(f"Creating new category {category['id']}")
+                                await save_data(
+                                    data_list=[{
+                                        "external_id": category["id"],
+                                        "name": category["name"],
+                                        "description": category["description"]
+                                    }],
+                                    crud_instance=categories_operation_crud,
+                                    schema=ICategoryOperationCreate,
+                                    index_elements=["external_id"],
+                                    on_conflict_set={"name", "description"},
+                                    session=session
+                                )
+                                # Получаем созданную категорию
+                                db_category = await categories_operation_crud.get_by_external_id(
+                                    external_id=category["id"],
+                                    db_session=session
+                                )
+
+                            # Если категория существует, сохраняем её операции
+                            if db_category:
+                                # Сохраняем операции для этой категории
+                                category_operations = []
+                                for op_id in category.get("operations", []):
+                                    op_id_str = str(op_id)
+                                    if op_id_str in operations_dict:
+                                        category_operations.append(operations_dict[op_id_str])
+                                    else:
+                                        logger.warning(f"Operation {op_id} not found in operations dictionary")
+                                
+                                logger.info(f"Found {len(category_operations)} operations for category {category['id']}")
+                                
+                                for operation in category_operations:
+                                    try:
+                                        logger.info(f"Saving operation {operation['id']}: {operation['name']} for category {db_category.id}")
+                                        await save_data(
+                                            data_list=[{
+                                                "external_id": operation["id"],
+                                                "base_name": operation["base_name"],
+                                                "name": operation["name"],
+                                                "description": operation.get("description", ""),
+                                                "minus_name": operation.get("minus_name", ""),
+                                                "minus_description": operation.get("minus_description", ""),
+                                                "category_id": db_category.id
+                                            }],
+                                            crud_instance=operation_name_crud,
+                                            schema=IOperationNameCreate,
+                                            index_elements=["external_id"],
+                                            on_conflict_set={
+                                                "base_name",
+                                                "name",
+                                                "description",
+                                                "minus_name",
+                                                "minus_description",
+                                                "category_id"
+                                            },
+                                            session=session
+                                        )
+                                    except Exception as e:
+                                        logger.error(f"Error saving operation {operation['id']}: {str(e)}")
+                                        logger.error(f"Operation data: {operation}")
+                                        # Пропускаем ошибку и продолжаем с следующей операцией
+                                        continue
+                        except Exception as e:
+                            logger.error(f"Error processing category {category['id']}: {str(e)}")
+                            # Пропускаем ошибку и продолжаем с следующей категорией
+                            continue
 
                 # Сохранение данных компании
                 if company_data:
@@ -416,9 +525,9 @@ def save_static_data(self, static_data: Dict[str, Any], user_id: int) -> None:
 
                 logger.info("Static data saved successfully")
 
-        except Exception as exc:
-            logger.error(f"Error saving static data: {str(exc)}")
-            self.retry(exc=exc)
+            except Exception as exc:
+                logger.error(f"Error saving static data: {str(exc)}")
+                self.retry(exc=exc)
 
     try:
         loop = asyncio.get_event_loop()
@@ -430,4 +539,3 @@ def save_static_data(self, static_data: Dict[str, Any], user_id: int) -> None:
     except Exception as exc:
         logger.error(f"Task failed: {exc.__class__.__name__}: {str(exc)}")
         raise
-    

@@ -89,7 +89,7 @@ class PVZService:
         client = await self._get_api_client()
         return await client.get_pickpoint_rating(pickpoint_id)
 
-    async def get_operation_category(Self) -> CategoriesOperationsResponse:
+    async def get_operation_category(self) -> CategoriesOperationsResponse:
         """Получение категорий и названий операций - вознаграждений"""
 
         client = await self._get_api_client()

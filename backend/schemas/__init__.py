@@ -6,5 +6,7 @@ from . import (
     office,
     operation,
     response,
-    user
+    user,
+    categories_operation,
+    operation_name
 )

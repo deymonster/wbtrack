@@ -8,7 +8,7 @@ class IOperationNameRead(OperationNameBase):
 
 
 class IOperationNameCreate(OperationNameBase):
-    pass
+    category_id: int
 
 
 class IOperationNameUpdate(OperationNameBase):
