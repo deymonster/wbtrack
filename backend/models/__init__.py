@@ -7,5 +7,8 @@ from . import (
     employee,
     operation,
     categories_operations,
-    operation_name
+    operation_name,
+    payments_weekly,
+    payments_pickpoint,
+    transaction
 )
