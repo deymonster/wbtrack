@@ -30,8 +30,19 @@ class OperationNameCRUD(CRUDBase[OperationName, IOperationNameCreate, IOperation
             result = await session.execute(query)
             return result.scalars().all()
 
-           
-
+    async def get_operation_name_by_external_id(self, external_id: int, db_session: AsyncSession | None = None) -> OperationName | None:
+            """Получение операции по external_id
+            
+            :param external_id: External_id операции
+            :param session: Сессия
+            :return: Операция если существует иначе None
+            """
+            session: AsyncSession = db_session or self.db.session
+            query = select(OperationName).where(OperationName.external_id == external_id)
+            result = await session.execute(query)
+            return result.scalar_one_or_none()
+            
+          
 
 operation_name_crud = OperationNameCRUD(OperationName)  # type: ignore
 

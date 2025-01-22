@@ -190,3 +190,30 @@ class PVZService:
                 else:
                     logger.error(f"All retries failed for offset {offset}: {str(e)}")
                 raise last_exception
+
+    async def get_all_weekly_payments(self) -> List[WeeklyTransaction]:
+        """Получение всех недельных платежей"""
+        client = await self._get_api_client()
+        logger.info(f"Getting weekly paymnets with pickpoint payments")
+        limit = 10
+        offset = 0
+        result = []
+
+        try:
+            while True:
+                response: WeeklyPaymentsResponse = await client.get_partner_payments(
+                    limit=limit,
+                    offset=offset
+                )
+                result.extend(response.payments)
+                logger.info(f"Fetched {len(response.payments)} payments (offset={offset}).")
+                if len(result) >= response.total_weeks:
+                    break
+                offset += limit
+            logger.info(f"Successfully fetched all weekly transactions: {len(result)} weeks.")
+            return result
+        
+        except Exception as e:
+            logger.error(f"Error in get_all_weekly_payments: {str(e)}")
+            raise
+

@@ -6,10 +6,12 @@ from typing import List, Optional
 
 class IPickpointPaymentsRead(PickpointPaymentsBase):
     total_transactions: Optional[List[ITransactionRead]]
+    office_id: int
 
 
 class IPickpointPaymentsCreate(PickpointPaymentsBase):
     total_transactions: Optional[List[ITransactionRead]]
+    office_id: int
 
 
 class IPickpointPaymentsUpdate(PickpointPaymentsBase):

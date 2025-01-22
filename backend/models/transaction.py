@@ -7,6 +7,7 @@ if TYPE_CHECKING:
     from models.operation_name import OperationName
     from models.payments_weekly import WeeklyPayments
     from models.payments_pickpoint import PickpointPayments
+    from models.office import Office
 
 
 class TransactionBase(SQLModel):
@@ -46,4 +47,8 @@ class Transaction(TransactionBase, BaseTableID, table=True):
     pickpoint_payments: Optional["PickpointPayments"] = Relationship(
         back_populates="total_transactions"
     )
+
+
+
+
     

@@ -26,6 +26,7 @@ async def get_phone_number(
 async def get_pvz_service(
     phone: Annotated[str, Depends(get_phone_number)]
 ) -> PVZService:
+    """Get PVZ service instance."""
     return PVZService(redis_client=redis_client, phone=phone)
 
 

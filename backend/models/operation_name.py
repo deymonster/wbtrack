@@ -26,6 +26,8 @@ class OperationName(OperationNameBase, BaseTableID, table=True):
     )
     category: "Category" = Relationship(back_populates="operations")
 
+    transactions: List["Transaction"] = Relationship(back_populates="operation_name")
+
     __table_args__ = (
         UniqueConstraint('external_id', name='operation_name_external_id_key'),
     )

@@ -5,6 +5,7 @@ from datetime import datetime, date
 
 if TYPE_CHECKING:
     from models.transaction import Transaction
+    from models.office import Office
 
 
 class PickpointPaymentsBase(SQLModel):
@@ -18,3 +19,20 @@ class PickpointPayments(PickpointPaymentsBase, BaseTableID, table=True):
         back_populates="pickpoint_payments",
         sa_relationship_kwargs={"cascade": "all, delete"}
     )
+    office_id: int = Field(
+    sa_column=Column(
+        Integer,
+        ForeignKey("office.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    )
+    office: "Office" = Relationship(back_populates="pickpoint_payments")
+
+    weekly_payments_id: int = Field(
+        sa_column=Column(
+            Integer,
+            ForeignKey("weekly_payments.id", ondelete="CASCADE"),
+            nullable=False,
+        )
+    )
+    weekly_payments: "WeeklyPayments" = Relationship(back_populates="pickpoint_payments")

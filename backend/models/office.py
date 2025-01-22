@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from models.company import Company
     from models.employee import Employee
     from models.operation import Operation
+    from models.payments_pickpoint import PickpointPayments
 
 
 class OfficeBase(SQLModel):
@@ -41,6 +42,11 @@ class Office(OfficeBase, BaseTableID, table=True):
     )
     
     operations: List["Operation"] = Relationship(
+        back_populates="office",
+        sa_relationship_kwargs={"cascade": "all, delete"}
+    )
+
+    pickpoint_payments: List["PickpointPayments"] = Relationship(
         back_populates="office",
         sa_relationship_kwargs={"cascade": "all, delete"}
     )
