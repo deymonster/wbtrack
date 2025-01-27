@@ -12,6 +12,8 @@ class ITransactionBaseRead(TransactionBase):
 
 class ITransactionBaseCreate(TransactionBase):
     operation_name_id: int
+    weekly_payments_id: int
+    pickpoint_payments_id: int
 
     
 

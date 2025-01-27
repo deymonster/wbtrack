@@ -10,7 +10,7 @@ class IPickpointPaymentsRead(PickpointPaymentsBase):
 
 
 class IPickpointPaymentsCreate(PickpointPaymentsBase):
-    total_transactions: Optional[List[ITransactionRead]]
+    
     office_id: int
 
 

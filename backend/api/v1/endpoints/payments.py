@@ -40,7 +40,7 @@ async def get_weekly_payments(
     Требуется заголовок `X-Phone-Number` с номером телефона.
     """
     try:
-        return await pvz_service.get_weekly_payments()
+        return await pvz_service.get_all_weekly_payments()
     except ValueError as e:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
     except Exception as e:

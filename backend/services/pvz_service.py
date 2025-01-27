@@ -40,7 +40,7 @@ class PVZService:
 
         return code_response
 
-    async def validate_code(self, code: str) -> TokenResponse:
+    async def validate_code(self, code: str, pickpoint_id: str, external_id: str) -> SwitchTokenResponse:
         """Второй запрос для получения токена"""
         # Получаем временный токен из Redis
         temp_token = await self.redis.get(f"pvz:{self.phone}:temp_token")
@@ -50,17 +50,24 @@ class PVZService:
         # Валидируем код и получаем постоянные токены
         token_response = await self.auth.validate(code=code, token=temp_token)
 
+        # Обновляем токен через switch_token
+        switch_response = await self.auth.switch_token(
+            token=token_response.access.token,
+            pickpoint_id=pickpoint_id,
+            external_id=external_id,
+        )
+
         # Сохраняем access токен в Redis с TTL из ответа
         await self.redis.set(
             f"pvz:{self.phone}:access_token",
-            token_response.access.token,
-            ex=token_response.access.ttl
+            switch_response.access.token,
+            ex=switch_response.access.ttl
         )
 
         # Удаляем временный токен
         await self.redis.delete(f"pvz:{self.phone}:temp_token")
 
-        return token_response
+        return switch_response
 
     async def get_token(self) -> str:
         """Получаем access токен из Redis"""
@@ -202,9 +209,11 @@ class PVZService:
         try:
             while True:
                 response: WeeklyPaymentsResponse = await client.get_partner_payments(
+                    pickpoint_id=141685,
                     limit=limit,
                     offset=offset
                 )
+                
                 result.extend(response.payments)
                 logger.info(f"Fetched {len(response.payments)} payments (offset={offset}).")
                 if len(result) >= response.total_weeks:
@@ -216,4 +225,3 @@ class PVZService:
         except Exception as e:
             logger.error(f"Error in get_all_weekly_payments: {str(e)}")
             raise
-

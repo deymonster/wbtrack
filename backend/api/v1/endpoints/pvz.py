@@ -91,7 +91,9 @@ async def validate_pvz_code(
     - Код подтверждения передается в параметре запроса
     """
     try:
-        token_response = await pvz_service.validate_code(code)
+        pickpoint_id = "65717"
+        external_id = "141685"
+        token_response = await pvz_service.validate_code(code, pickpoint_id, external_id)
         return {"access_token": token_response.access.token}
     except ValueError as e:
         raise HTTPException(status_code=401, detail="Invalid or expired token")

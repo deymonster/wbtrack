@@ -11,8 +11,7 @@ class IWeeklyPaymentsBaseRead(WeeklyPaymentsBase):
 
 
 class IWeeklyPaymentsBaseCreate(WeeklyPaymentsBase):
-    total_transactions: Optional[List[ITransactionRead]]
-    pickpoint_payments: Optional[List[IPickpointPaymentsRead]]
+    pass
 
 
 class IWeeklyPaymentsBaseUpdate(WeeklyPaymentsBase):
