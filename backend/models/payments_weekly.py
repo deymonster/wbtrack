@@ -17,6 +17,9 @@ class WeeklyPaymentsBase(SQLModel):
     total: float
 
 class WeeklyPayments(WeeklyPaymentsBase, BaseTableID, table=True):
+    __table_args__ = (
+        UniqueConstraint("date_from", "date_to", name="unique_date_from_date_to"),
+    )
     total_transactions: List["Transaction"] = Relationship(
         back_populates="weekly_payments",
         sa_relationship_kwargs={"cascade": "all, delete"}

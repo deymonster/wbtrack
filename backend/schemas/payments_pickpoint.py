@@ -1,16 +1,16 @@
 from models.payments_pickpoint import PickpointPaymentsBase
-from models.transaction import ITransactionRead
+from schemas.transaction import ITransactionBaseRead
 from pydantic import BaseModel
 from typing import List, Optional
 
 
 class IPickpointPaymentsRead(PickpointPaymentsBase):
-    total_transactions: Optional[List[ITransactionRead]]
+    total_transactions: Optional[List[ITransactionBaseRead]]
     office_id: int
 
 
 class IPickpointPaymentsCreate(PickpointPaymentsBase):
-    
+    weekly_payments_id: int
     office_id: int
 
 

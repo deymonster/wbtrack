@@ -25,7 +25,7 @@ class PVZService:
     async def login(self) -> RequestCodeResponse:
         """Первый запрос для получения кода"""
         code_response = await self.auth.login(self.phone)
-        print(f"Got code response: {code_response}")
+        
 
         # Сохраняем временный токен в Redis
         redis_key = f"pvz:{self.phone}:temp_token"

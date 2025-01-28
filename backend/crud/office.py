@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class OfficeCRUD(CRUDBase[Office, IOfficeCreate, IOfficeUpdate]):
-    async def get_by_external_office_id(self, office_id: int, db_session: AsyncSession | None = None) -> Office | None:
+    async def get_by_office_id(self, office_id: int, db_session: AsyncSession | None = None) -> Office | None:
         """Получить офис по office_id."""
 
         session: AsyncSession = db_session or self.db.session
@@ -26,6 +26,17 @@ class OfficeCRUD(CRUDBase[Office, IOfficeCreate, IOfficeUpdate]):
         office = result.scalar_one_or_none()
         
         return office
+
+    async def get_by_external_id(self, external_id: int, db_session: AsyncSession | None = None) -> Office | None:
+        """Получение офиса по external_id"""
+        session: AsyncSession = db_session or self.db.session
+
+        query = select(Office).where(Office.external_id == external_id)
+        result = await session.execute(query)
+        office = result.scalar_one_or_none()
+
+        return office
+
 
     async def get_all_offices(self, db_session: AsyncSession | None = None) -> list[Office]:
         """Загрузка всех офисов в виде словаря {external_id: Office}"""
@@ -39,7 +50,7 @@ class OfficeCRUD(CRUDBase[Office, IOfficeCreate, IOfficeUpdate]):
     async def get_employee_by_office_id(self, office_id: int, db_session: AsyncSession | None = None) -> list[Employee]:
         """Получаем всех сотрудников по office_id."""
         session: AsyncSession = db_session or self.db.session
-        db_office = await self.get_by_external_office_id(office_id=office_id, db_session=session)
+        db_office = await self.get_by_office_id(office_id=office_id, db_session=session)
         if not db_office:
             raise ValueError(f"Office with office_id={office_id} not found in the database.")
         query = (

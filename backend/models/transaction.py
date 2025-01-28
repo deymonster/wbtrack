@@ -17,6 +17,9 @@ class TransactionBase(SQLModel):
 
 
 class Transaction(TransactionBase, BaseTableID, table=True):
+    __table_args__ = (
+        UniqueConstraint("weekly_payments_id", "pickpoint_payments_id", "operation_name_id", name="unique_transaction"),
+    )
     operation_name_id: int = Field (
         sa_column=Column(
             Integer,

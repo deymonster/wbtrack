@@ -467,7 +467,7 @@ def save_static_data(self, static_data: Dict[str, Any], user_id: int) -> None:
                             existing_employee = await employee_crud.get_by_phone(phone=str(user["phone"]), db_session=session)
 
                             # Найти реальный id офиса в БД
-                            db_office = await office_crud.get_by_external_office_id(office_id=office["id"], db_session=session)
+                            db_office = await office_crud.get_by_office_id(office_id=office["id"], db_session=session)
 
                             if not db_office:
                                 logger.error(f"Office with office_id={office['id']} not found in the database.")

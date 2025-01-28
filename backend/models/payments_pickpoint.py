@@ -15,6 +15,9 @@ class PickpointPaymentsBase(SQLModel):
     total: float
 
 class PickpointPayments(PickpointPaymentsBase, BaseTableID, table=True):
+    __table_args__ = (
+        UniqueConstraint("office_id", "weekly_payments_id", name="unique_office_weekly"),
+    )
     total_transactions: List["Transaction"] = Relationship(
         back_populates="pickpoint_payments",
         sa_relationship_kwargs={"cascade": "all, delete"}
