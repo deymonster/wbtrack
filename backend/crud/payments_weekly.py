@@ -87,7 +87,8 @@ class WeeklyPaymentsCRUD(CRUDBase[WeeklyPayments, IWeeklyPaymentsBaseCreate, IWe
 
                     pickpoint_payments.append(pp)
 
-                    # create transaction 
+                    # create transaction
+                    transaction_data_list = []
                     if pp_data.categories:
                         for category in pp_data.categories:
                             
@@ -110,15 +111,25 @@ class WeeklyPaymentsCRUD(CRUDBase[WeeklyPayments, IWeeklyPaymentsBaseCreate, IWe
                                     weekly_payments_id=weekly_payment.id,
                                     pickpoint_payments_id=pp.id
                                 )
+                                transaction_data_list.append(transaction_data)
 
-                                logger.info(f"Processing Transaction with data: {transaction_data.dict()}")
-                                await transaction_crud.create_or_update(
-                                    obj_in=transaction_data,
-                                    index_elements=["weekly_payments_id", "pickpoint_payments_id", "operation_name_id"],
-                                    create_exclude={"id"},
-                                    update_exclude={"id"},
-                                    db_session=session
-                                )
+                                # logger.info(f"Processing Transaction with data: {transaction_data.dict()}")
+                                # await transaction_crud.create_or_update(
+                                #     obj_in=transaction_data,
+                                #     index_elements=["weekly_payments_id", "pickpoint_payments_id", "operation_name_id"],
+                                #     create_exclude={"id"},
+                                #     update_exclude={"id"},
+                                #     db_session=session
+                                # )
+                    if transaction_data_list:
+                        logger.info(f"Creating or updating {len(transaction_data_list)} transactions in bulk for PickpointPayment ID: {pp.id}")
+                        await transaction_crud.create_or_update_multi(
+                            list_in=transaction_data_list,
+                            index_elements=["weekly_payments_id", "pickpoint_payments_id", "operation_name_id"],
+                            exclude={"id"},
+                            on_conflict_set={"sum", "count"},
+                            db_session=session,
+                        )
             
             
             await session.refresh(weekly_payment)
