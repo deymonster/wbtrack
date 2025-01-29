@@ -12,6 +12,7 @@ from schemas.payments_weekly import IWeeklyPaymentsBaseRead, IWeeklyPaymentsBase
 from schemas.payments_pickpoint import IPickpointPaymentsCreate
 from schemas.transaction import ITransactionBaseCreate
 from pvz_client.models import WeeklyTransaction
+from typing import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -22,12 +23,14 @@ class WeeklyPaymentsCRUD(CRUDBase[WeeklyPayments, IWeeklyPaymentsBaseCreate, IWe
         *,
         weekly_data: WeeklyTransaction,
         db_session: AsyncSession | None = None,
+        progress_callback: Callable[[int, int, str], None] | None = None
 
     ) -> WeeklyPayments:
         """Create weekly payments with relations
         
         :param weekly_data: Weekly transaction data
         :param db_session: Database session
+        :param progress_callback: Callback function for progress updates (current, total, status)
         :return: weekly payments
         """
         session: AsyncSession = db_session or self.db.session
@@ -35,6 +38,13 @@ class WeeklyPaymentsCRUD(CRUDBase[WeeklyPayments, IWeeklyPaymentsBaseCreate, IWe
         
         try:
             # create WeeklyPayments using schemas
+            total_transactions = 0
+            processed_transactions = 0
+            for pp_data in weekly_data.pickpoint_payments or []:
+                for category in pp_data.categories or []:
+                    total_transactions += len(category.operations or [])
+            if progress_callback:
+                progress_callback(0, total_transactions, "Begin processing weekly payments")
             
             weekly_payment_data = IWeeklyPaymentsBaseCreate(
                 date_from=weekly_data.date_from,
@@ -54,10 +64,18 @@ class WeeklyPaymentsCRUD(CRUDBase[WeeklyPayments, IWeeklyPaymentsBaseCreate, IWe
             )
             logger.info(f"Created or updated WeeklyPayments: {weekly_payment}")
 
+            if progress_callback:
+                progress_callback(0, total_transactions, f"Weekly payments created or updated (ID: {weekly_payment.id})")
             # create PickpointPayments
-            pickpoint_payments = []
+            
             if weekly_data.pickpoint_payments:
-                for pp_data in weekly_data.pickpoint_payments:
+                for pp_idx, pp_data in enumerate(weekly_data.pickpoint_payments,1):
+                    if progress_callback:
+                        progress_callback(
+                            processed_transactions,
+                            total_transactions,
+                            f"Processing PickpointPayments {pp_idx}/{len(weekly_data.pickpoint_payments)}"
+                        )
                     logger.info(f"Fetching office with external_id={pp_data.pickpoint_id}")
 
                     office = await office_crud.get_by_external_id(external_id=pp_data.pickpoint_id, db_session=session)
@@ -85,16 +103,20 @@ class WeeklyPaymentsCRUD(CRUDBase[WeeklyPayments, IWeeklyPaymentsBaseCreate, IWe
                     )
 
 
-                    pickpoint_payments.append(pp)
-
-                    # create transaction
+                    # create transaction for this pickpoint
                     transaction_data_list = []
                     if pp_data.categories:
-                        for category in pp_data.categories:
+                        for cat_idx, category in enumerate(pp_data.categories, 1):
                             
                             # for every operations create Transaction
-                            for operation in category.operations:
+                            for op_idx, operation in enumerate(category.operations, 1):
                                 # get OperationName by external_id
+                                if progress_callback:
+                                    progress_callback(
+                                        processed_transactions,
+                                        total_transactions,
+                                        f"PVZ {pp_idx}/{len(weekly_data.pickpoint_payments)} - " f"Category {cat_idx}/{len(pp_data.categories)} - " f"Transaction {op_idx}/{len(category.operations)}"
+                                    )
                                 operation_name = await operation_name_crud.get_operation_name_by_external_id(
                                     external_id=operation.id,
                                     db_session=session
@@ -112,6 +134,7 @@ class WeeklyPaymentsCRUD(CRUDBase[WeeklyPayments, IWeeklyPaymentsBaseCreate, IWe
                                     pickpoint_payments_id=pp.id
                                 )
                                 transaction_data_list.append(transaction_data)
+                                processed_transactions += 1
 
                                 # logger.info(f"Processing Transaction with data: {transaction_data.dict()}")
                                 # await transaction_crud.create_or_update(
@@ -131,12 +154,22 @@ class WeeklyPaymentsCRUD(CRUDBase[WeeklyPayments, IWeeklyPaymentsBaseCreate, IWe
                             db_session=session,
                         )
             
-            
+            if progress_callback:
+                progress_callback(
+                    total_transactions, 
+                    total_transactions, 
+                    "Weekly payments processing completed")
             await session.refresh(weekly_payment)
             return weekly_payment
 
         except Exception as e:
             logger.error(f"Error creating weekly payment: {e}", exc_info=True)
+            if progress_callback:
+                progress_callback(
+                    processed_transactions,
+                    total_transactions,
+                    f"Error creating weekly payment: {str(e)}"
+                )
             raise     
 
 

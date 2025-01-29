@@ -1,4 +1,4 @@
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Optional, TypeVar, Any, List
 from fastapi import Query
 from fastapi_pagination import (
     LimitOffsetPage,
@@ -31,3 +31,16 @@ class PVZRequestCodeResponse(BaseModel):
 
 class PVZValidateCodeResponse(BaseModel):
     access_token: str
+
+
+class TaskResponse(BaseModel):
+    status: str
+    message: str
+    task_ids: List[str]
+
+class TaskStatusResponse(BaseModel):
+    status: str
+    progress: int | None
+    current_status: str | None
+    result: Any | None
+    error: str | None
