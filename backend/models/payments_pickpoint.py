@@ -23,11 +23,11 @@ class PickpointPayments(PickpointPaymentsBase, BaseTableID, table=True):
         sa_relationship_kwargs={"cascade": "all, delete"}
     )
     office_id: int = Field(
-    sa_column=Column(
-        Integer,
-        ForeignKey("office.id", ondelete="CASCADE"),
-        nullable=False,
-    )
+        sa_column=Column(
+            Integer,
+            ForeignKey("office.id", ondelete="CASCADE"),
+            nullable=False,
+        )
     )
     office: "Office" = Relationship(back_populates="pickpoint_payments")
 

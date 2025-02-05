@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from models.employee import Employee
     from models.operation import Operation
     from models.payments_pickpoint import PickpointPayments
+    from models.pickpoint_handle import PickPointHandle
 
 
 class OfficeBase(SQLModel):
@@ -26,7 +27,6 @@ class OfficeBase(SQLModel):
     rate: float | None = Field(default=0.0)
 
 
-
 class Office(OfficeBase, BaseTableID, table=True):
     company_id: int | None = Field(
         sa_column=Column(
@@ -36,6 +36,7 @@ class Office(OfficeBase, BaseTableID, table=True):
         default=None,
     )
     company: "Company" = Relationship(back_populates="offices")
+    pickpoint_handle: "PickPointHandle" = Relationship(back_populates="office")
     employees: list["Employee"] = Relationship(
         back_populates="offices",
         link_model=EmployeeOfficeLink
@@ -50,5 +51,7 @@ class Office(OfficeBase, BaseTableID, table=True):
         back_populates="office",
         sa_relationship_kwargs={"cascade": "all, delete"}
     )
+
+
 
 

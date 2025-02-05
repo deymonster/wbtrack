@@ -10,5 +10,7 @@ from . import (
     operation_name,
     payments_weekly,
     payments_pickpoint,
-    transaction
+    transaction,
+    pickpoint_handle,
+    total_handle
 )
