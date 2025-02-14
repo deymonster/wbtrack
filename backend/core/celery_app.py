@@ -2,7 +2,7 @@ from celery import Celery
 from config import settings
 
 
-print(f"Celery broker URL: {settings.REDIS_URL}")  # 
+
 celery_app = Celery(
     "celery_worker_wb_track",
     broker=settings.REDIS_URL,

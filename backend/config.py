@@ -51,7 +51,6 @@ class Settings(BaseSettings):
         
         if self.REDIS_PASSWORD:
             url = f"redis://default:{self.REDIS_PASSWORD}@{host}:{self.REDIS_PORT}/0"
-            print(f"Generated REDIS_URL: {url}")
             return url
         return f"redis://{host}:{self.REDIS_PORT}/0"
         # return str(
