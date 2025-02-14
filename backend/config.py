@@ -52,7 +52,7 @@ class Settings(BaseSettings):
             RedisDsn.build(  # type: ignore
                 scheme="redis",
                 username="default",
-                password=self.REDIS_PASSWORD
+                password=self.REDIS_PASSWORD,
                 host=host,
                 port=int(self.REDIS_PORT),
             )
