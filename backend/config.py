@@ -42,11 +42,12 @@ class Settings(BaseSettings):
 
     REDIS_HOST: str = "localhost"
     REDIS_PORT: str = "6379"
+    REDIS_PASSWORD: str | None = None
 
     @computed_field
     @property
     def REDIS_URL(self) -> str:
-        host = "redis" if self.ENVIRONMENT == "docker" else self.REDIS_HOST
+        host = self.REDIS_HOST if self.ENVIRONMENT == "production" else "localhost"
         return str(
             RedisDsn.build(  # type: ignore
                 scheme="redis",
@@ -75,7 +76,7 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def DB_ASYNC_CONNECTION_STR(self) -> str:
-        host = "postgres" if self.ENVIRONMENT == "docker" else self.POSTGRES_HOST
+        host = self.POSTGRES_HOST if self.ENVIRONMENT == "production" else "localhost"
         return str(
             PostgresDsn.build(  # type: ignore
                 scheme="postgresql+asyncpg",
