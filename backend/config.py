@@ -48,15 +48,18 @@ class Settings(BaseSettings):
     @property
     def REDIS_URL(self) -> str:
         host = self.REDIS_HOST if self.ENVIRONMENT == "production" else "localhost"
-        return str(
-            RedisDsn.build(  # type: ignore
-                scheme="redis",
-                username="default",
-                password=self.REDIS_PASSWORD,
-                host=host,
-                port=int(self.REDIS_PORT),
-            )
-        )
+        if self.REDIS_PASSWORD:
+            return f"redis://default:{self.REDIS_PASSWORD}@{host}:{self.REDIS_PORT}/0"
+        return f"redis://{host}:{self.REDIS_PORT}/0"
+        # return str(
+        #     RedisDsn.build(  # type: ignore
+        #         scheme="redis",
+        #         username="default",
+        #         password=self.REDIS_PASSWORD,
+        #         host=host,
+        #         port=int(self.REDIS_PORT),
+        #     )
+        # )
 
     # Postgres
 
