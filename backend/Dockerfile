@@ -19,7 +19,8 @@ FROM python-base as builder
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     curl \
-    build-essential
+    build-essential \
+    libpq-dev
 
 # Установка poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
@@ -27,13 +28,16 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 # Копируем только файлы для установки зависимостей
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
+COPY sqlmodel_dist/sqlmodel-0.0.22-py3-none-any.whl ./sqlmodel_dist/
 
 # Установка зависимостей
-RUN poetry install --without dev --no-root
+RUN poetry install --no-root
 
 # Этап 3: Финальный образ
 FROM python-base as production
 ENV FASTAPI_ENV=production
+ENV PYTHONPATH=/app
+
 COPY --from=builder $PYSETUP_PATH $PYSETUP_PATH
 
 # Копируем код приложения
