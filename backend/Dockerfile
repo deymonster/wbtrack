@@ -50,4 +50,4 @@ RUN chown -R app:app /app
 USER app
 
 # Запуск приложения
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+CMD ["uvicorn", "asgi:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4", "--proxy-headers"]
