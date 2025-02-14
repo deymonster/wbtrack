@@ -29,7 +29,7 @@ WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
 # Установка зависимостей
-RUN poetry install --only main --no-root
+RUN poetry install --without dev --no-root
 
 # Этап 3: Финальный образ
 FROM python-base as production
