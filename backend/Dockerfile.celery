@@ -29,4 +29,4 @@ COPY            . ${PROJECTPATH}
 
 ENV             PYTHONPATH=/app
 
-
+CMD             ["celery", "-A", "core.celery_app", "worker", "--loglevel=info"]
