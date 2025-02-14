@@ -51,6 +51,8 @@ class Settings(BaseSettings):
         return str(
             RedisDsn.build(  # type: ignore
                 scheme="redis",
+                username="default",
+                password=self.REDIS_PASSWORD
                 host=host,
                 port=int(self.REDIS_PORT),
             )
