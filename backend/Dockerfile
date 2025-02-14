@@ -46,8 +46,15 @@ WORKDIR /app
 
 # Создаем пользователя без root прав
 RUN addgroup --system app && adduser --system --group app
+
+# Add and configure entrypoint script
+COPY scripts/init_db.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh && \
+    chown app:app /entrypoint.sh
+
 RUN chown -R app:app /app
 USER app
 
 # Запуск приложения
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["uvicorn", "asgi:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4", "--proxy-headers"]

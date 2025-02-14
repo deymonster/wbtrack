@@ -25,8 +25,11 @@ COPY            sqlmodel_dist/sqlmodel-0.0.22-py3-none-any.whl ${PROJECTPATH}/sq
 RUN             poetry install --no-root
 COPY            . ${PROJECTPATH}
 
-
+# Add and configure entrypoint script
+COPY            scripts/init_db.sh /entrypoint.sh
+RUN             chmod +x /entrypoint.sh
 
 ENV             PYTHONPATH=/app
 
+ENTRYPOINT      ["/entrypoint.sh"]
 CMD             ["celery", "-A", "core.celery_app", "worker", "--loglevel=info"]
