@@ -42,7 +42,9 @@ services:
     command: celery -A core.celery_app worker --loglevel=info
     environment:
       ENVIRONMENT: docker
+      REDIS_HOST: redis
       REDIS_URL: redis://redis:6379/0
+      POSTGRES_HOST: postgres
       PYTHONPATH: /app
     volumes:
       - .:/app

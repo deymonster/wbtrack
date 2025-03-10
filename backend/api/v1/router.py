@@ -8,6 +8,8 @@ from .endpoints import (
     pvz,
     checkpoint,
     payments,
+    subscription,
+    user_management,
 )
 
 api_router = APIRouter()
@@ -53,6 +55,18 @@ api_router.include_router(
     payments.router,
     prefix="/payments",
     tags=["payments"],
+)
+
+api_router.include_router(
+    subscription.router,
+    prefix="/subscription",
+    tags=["subscription"],
+)
+
+api_router.include_router(
+    user_management.router,
+    prefix="/user-management",
+    tags=["user-management"],
 )
 
 

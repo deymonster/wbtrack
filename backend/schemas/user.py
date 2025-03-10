@@ -1,4 +1,5 @@
 from typing import Optional
+from datetime import datetime
 
 from fastapi_users.schemas import BaseUser, BaseUserCreate, BaseUserUpdate
 from pydantic import BaseModel, EmailStr
@@ -12,6 +13,12 @@ class IUserRead(BaseUser):
     middle_name: str | None
     phone: str | None
     role: UserRoleEnum
+    is_subscription_active: bool
+    subscription_start_date: datetime | None
+    subscription_end_date: datetime | None
+    created_at: datetime
+    created_by_id: str | None
+    parent_admin_id: str | None
 
 
 class IUserCreate(BaseUserCreate):
@@ -22,8 +29,11 @@ class IUserCreate(BaseUserCreate):
     tg_id: str | None = None
 
 
-
 class IUserUpdate(BaseUserUpdate):
+    pass
+
+
+class UserResponse(IUserRead):
     pass
 
 

@@ -12,14 +12,14 @@ from schemas.response import LoginResponse
 from schemas.user import IUserCreate, IUserRead, RefreshTokenRequest
 from services.user import UserService
 from pydantic import BaseModel
+from models.user import User
+from enums.user import UserRoleEnum
+from fastapi_async_sqlalchemy import db
 
 router = APIRouter()
 
 
-@router.post("/login", 
-            response_model=LoginResponse, 
-            
-    )
+@router.post("/login", response_model=LoginResponse)
 async def login(
         credentials: OAuth2PasswordRequestForm = Depends(),
         user_manager: UserService = Depends(fastapi_users.get_user_manager),
@@ -48,13 +48,38 @@ async def login(
         "token_type": "bearer",
     }
 
-# router.include_router(
-#     fastapi_users.get_auth_router(access_backend),
-# )
 
-router.include_router(
-    fastapi_users.get_register_router(IUserRead, IUserCreate),
-)
+@router.post("/register/admin", response_model=IUserRead)
+async def register_admin(
+    user_data: IUserCreate,
+    user_manager: UserService = Depends(fastapi_users.get_user_manager),
+):
+    """Register a new admin user (requires approval from super admin)"""
+    user = await user_manager.create(
+        user_data,
+        safe=True,
+        request=None
+    )
+    user.role = UserRoleEnum.ADMIN
+    await db.session.commit()
+    return user
+
+
+@router.post("/register", response_model=IUserRead)
+async def register_user(
+    user_data: IUserCreate,
+    user_manager: UserService = Depends(fastapi_users.get_user_manager),
+):
+    """Register a new regular user (MANAGER role)"""
+    user = await user_manager.create(
+        user_data,
+        safe=True,
+        request=None
+    )
+    user.role = UserRoleEnum.MANAGER
+    await db.session.commit()
+    return user
+
 
 router.include_router(
     fastapi_users.get_reset_password_router(),
@@ -66,7 +91,7 @@ router.include_router(
 
 
 @router.post("/refresh-token", openapi_extra={
-        "security": [{"BearerAuth": []}]  # Указываем отдельную схему для обновления токена
+        "security": [{"BearerAuth": []}]
     })
 async def refresh_token(
         request: RefreshTokenRequest,
@@ -75,9 +100,7 @@ async def refresh_token(
         refresh_strategy: JWTStrategy = Depends(refresh_backend.get_strategy)
 ):
     """Endpoint to refresh the token"""
-
     if request.is_employer:
-
         try:
             print("Begin employee token decode")
             payload = decode_jwt(
@@ -105,11 +128,10 @@ async def refresh_token(
             raise HTTPException(status_code=401, detail=f"Invalid refresh token - {e}")
     else:
         try:
-            user = await refresh_strategy.read_token(request.refresh_token,  user_manager)
+            user = await refresh_strategy.read_token(request.refresh_token, user_manager)
             if not user:
                 raise ValidationError(detail="Invalid refresh token - None user")
 
-            # user_id = await user_manager.get(user.id)
             if not user.is_active:
                 raise HTTPException(status_code=401, detail="Inactive user")
             access_token = await access_strategy.write_token(user)
