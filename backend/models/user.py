@@ -31,7 +31,7 @@ class UserBase(SQLModel):
     
     # User management fields
     created_by_id: str | None = Field(default=None, description="ID of admin who created this user")
-    created_at: datetime = Field(default_factory=datetime.utcnow, description="When user was created")
+    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=True, description="When user was created")
     parent_admin_id: str | None = Field(default=None, description="ID of admin who manages this user (for MANAGER and CHECKER roles)")
 
 
