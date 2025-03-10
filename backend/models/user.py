@@ -23,7 +23,7 @@ class UserBase(SQLModel):
     role: UserRoleEnum = Field(UserRoleEnum.MANAGER, description="Role of the user")
     
     # Subscription fields (for ADMIN role)
-    is_subscription_active: bool = Field(default=False, description="Whether user's subscription is active")
+    is_subscription_active: bool = Field(default=False, nullable=True, description="Whether user's subscription is active")
     subscription_start_date: datetime | None = Field(default=None, description="When subscription started")
     subscription_end_date: datetime | None = Field(default=None, description="When subscription ends")
     subscription_approved_by: str | None = Field(default=None, description="ID of super admin who approved subscription")
