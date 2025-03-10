@@ -56,6 +56,7 @@ async def request_pvz_code(
     """
     try:
         code_response = await pvz_service.login()
+        print(code_response)
         return {
             "message": "Code sent successfully",
             "code_length": code_response.code_length
