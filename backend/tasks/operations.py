@@ -53,10 +53,17 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
     async def process_chunk(chunk, office_map, employee_map):
         """Асинхронная обработка чанка операций"""
         operation_data = []
+        missing_offices = set()  # Для отслеживания отсутствующих офисов
+        
         for operation in chunk:
             db_office = office_map.get(operation.pickpoint_id)
             db_employee = employee_map.get(operation.employee_id)
-
+            
+            if db_office is None:
+                missing_offices.add(operation.pickpoint_id)
+                logger.warning(f"Office not found for pickpoint_id: {operation.pickpoint_id}")
+                continue  # Пропускаем операции с отсутствующими офисами
+            
             operation_data.append({
                 "operation_id": operation.operation_id,
                 "operation_type": operation.operation_type,
@@ -69,6 +76,10 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
                 "office_id": db_office.id,
                 "employee_id": db_employee.id if db_employee else None,
             })
+        
+        if missing_offices:
+            logger.error(f"Missing offices with pickpoint_ids: {sorted(list(missing_offices))}")
+        
         return operation_data
     
     async def save_chunked_operations(operation_objects, chunk_size, db_session):
