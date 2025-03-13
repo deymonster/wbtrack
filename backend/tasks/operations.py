@@ -54,6 +54,7 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
         """Асинхронная обработка чанка операций"""
         operation_data = []
         missing_offices = set()  # Для отслеживания отсутствующих офисов
+        operations_without_office = 0  # Счетчик операций без офиса
         
         for operation in chunk:
             db_office = office_map.get(operation.pickpoint_id)
@@ -61,8 +62,24 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
             
             if db_office is None:
                 missing_offices.add(operation.pickpoint_id)
+                operations_without_office += 1
                 logger.warning(f"Office not found for pickpoint_id: {operation.pickpoint_id}")
-                continue  # Пропускаем операции с отсутствующими офисами
+                # Вместо пропуска операций с отсутствующим офисом, сохраняем их с office_id = None
+                # Это позволяет не терять данные об операциях, даже если офис не найден
+                # В дальнейшем эти операции можно будет связать с офисом, когда он будет создан
+                operation_data.append({
+                    "operation_id": operation.operation_id,
+                    "operation_type": operation.operation_type,
+                    "summ": operation.summ,
+                    "rids": operation.rids,
+                    "created": datetime.fromisoformat(operation.created),
+                    "currency": operation.currency,
+                    "description": operation.description,
+                    "summ_pickpoint": operation.summ_pickpoint,
+                    "office_id": None,  # Устанавливаем office_id в None
+                    "employee_id": db_employee.id if db_employee else None,
+                })
+                continue
             
             operation_data.append({
                 "operation_id": operation.operation_id,
@@ -79,6 +96,7 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
         
         if missing_offices:
             logger.error(f"Missing offices with pickpoint_ids: {sorted(list(missing_offices))}")
+            logger.info(f"Saved {operations_without_office} operations without office")
         
         return operation_data
     
@@ -149,6 +167,7 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
                 return {"status": "success", "message": "No operations to save"}
 
             processed_operations = 0
+            total_operations_without_office = 0  # Общее количество операций без офиса
 
             # Загружаем все офисы и сотрудников
             async with get_db_session_instance() as session:
@@ -160,12 +179,21 @@ def fetch_operations(self, phone: str, date_from: str, date_to: str, chunk_size:
                 all_operation_data = await asyncio.gather(*tasks)
                 flat_operation_data = [item for sublist in all_operation_data for item in sublist] # "выпрямить" вложенные списки
 
+                # Подсчитываем количество операций без офиса
+                operations_without_office = sum(1 for op in flat_operation_data if op["office_id"] is None)
+                total_operations_without_office = operations_without_office
+                logger.info(f"Total operations without office: {total_operations_without_office}")
+
                 # Преобразуем данные в объекты для сохранения
                 operation_objects = [IOperationCreate(**operation) for operation in flat_operation_data]
                 await save_chunked_operations(operation_objects, chunk_size=chunk_size, db_session=session)
 
             self.update_state(state='SUCCESS', meta={'progress': 100, 'status': 'Операции успешно сохранены'})
-            return {"status": "success", "message": f"Successfully processed {total_operations} operations"}
+            return {
+                "status": "success", 
+                "message": f"Successfully processed {total_operations} operations",
+                "operations_without_office": total_operations_without_office
+            }
         except Exception as exc:
             logger.error(f"Error fetching and saving operations: {str(exc)}")
             self.update_state(state='FAILURE', meta={
