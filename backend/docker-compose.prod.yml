@@ -30,7 +30,8 @@ services:
       - backend
     # Порт доступен только на localhost сервера для SSH-туннелирования
     ports:
-      - '127.0.0.1:${POSTGRES_PORT}:5432'
+      # - '127.0.0.1:${POSTGRES_PORT}:5432'
+      - "5432:5432"
 
   redis:
     image: redis:7.0.11
