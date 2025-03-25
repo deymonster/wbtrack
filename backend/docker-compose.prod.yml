@@ -60,8 +60,8 @@ services:
     env_file:
       - .env
     environment:
-      - POSTGRES_HOST=postgres
-      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres-wbtrack
+      - REDIS_HOST=redis-wbtrack
       - ENVIRONMENT=production
     depends_on:
       - postgres
@@ -84,9 +84,9 @@ services:
       - .env
     environment:
       - ENVIRONMENT=production
-      - REDIS_HOST=redis
-      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
-      - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis-wbtrack  
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis-wbtrack:6379/0
+      - POSTGRES_HOST=postgres-wbtrack 
       - PYTHONPATH=/app
     volumes:
       - .:/app
