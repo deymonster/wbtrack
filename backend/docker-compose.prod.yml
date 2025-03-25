@@ -48,8 +48,8 @@ services:
     networks:
       - backend
     # Порт доступен только на localhost сервера для SSH-туннелирования
-    ports:
-      - '127.0.0.1:6379:6379'
+    #ports:
+    #  - '127.0.0.1:6379:6379'
   
   app:
     build:
