@@ -1,12 +1,10 @@
 version: '3.8'
 
 networks:
-  frontend:
-    driver: bridge
   backend:
-    driver: bridge
+    external: true
   proxy:
-    driver: bridge
+    external: true
 
 services:
   postgres:
@@ -72,8 +70,8 @@ services:
       - backend
       - proxy
     # Порт доступен только на localhost сервера для SSH-туннелирования
-    ports:
-      - '127.0.0.1:${APP_PORT}:8000'
+    #ports:
+    #  - '127.0.0.1:${APP_PORT}:8000'
   
   celery-worker:
     build:
@@ -98,35 +96,6 @@ services:
     networks:
       - backend
 
-  nginx-proxy:
-    image: nginx:alpine
-    container_name: nginx-proxy-wbtrack
-    restart: unless-stopped
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/ssl:/etc/nginx/ssl
-      - ./nginx/auth:/etc/nginx/auth
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - app
-    networks:
-      - proxy
-
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - .docker/portainer-data:/data
-    networks:
-      - proxy
-    # Порт доступен только на localhost сервера для SSH-туннелирования
-    ports:
-      - "127.0.0.1:9000:9000" 
+volumes:
+  postgres_data:
+  redis_data:
