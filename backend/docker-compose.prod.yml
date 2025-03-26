@@ -52,7 +52,7 @@ services:
 
   app:
     build:
-      context: .
+      context: /opt/wbtrack/backend
       dockerfile: Dockerfile
     container_name: app-wbtrack
     restart: unless-stopped
@@ -90,7 +90,7 @@ services:
 
   celery-worker:
     build:
-      context: .
+      context: /opt/wbtrack/backend
       dockerfile: Dockerfile.celery
     container_name: celery-wbtrack
     command: celery -A core.celery_app worker --loglevel=info
@@ -118,7 +118,7 @@ services:
       - POINT_RATING_URL=${POINT_RATING_URL}
       - POINT_BALANCE_URL=${POINT_BALANCE_URL}
     volumes:
-      - .:/app
+      - /opt/wbtrack/backend:/app
     depends_on:
       - redis
       - postgres
