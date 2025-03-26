@@ -54,10 +54,12 @@ services:
       - POSTGRES_HOST=postgres-wbtrack
       - REDIS_HOST=redis-wbtrack
       - ENVIRONMENT=production
-      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis-wbtrack:6379/0
+      - REDIS_URL=redis://default:${REDIS_PASSWORD}@redis-wbtrack:6379/0
     depends_on:
       - postgres
       - redis
+    ports:
+      - "8000:8000"
     networks:
       - backend
       - proxy
@@ -74,11 +76,11 @@ services:
     environment:
       - POSTGRES_HOST=postgres-wbtrack
       - REDIS_HOST=redis-wbtrack
-      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis-wbtrack:6379/0
+      - REDIS_URL=redis://default:${REDIS_PASSWORD}@redis-wbtrack:6379/0
       - ENVIRONMENT=production
       - PYTHONPATH=/app
     volumes:
-      - /opt/wbtrack/backend:/app
+      - redis_data:/app
     depends_on:
       - redis
       - postgres
