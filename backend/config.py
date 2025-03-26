@@ -92,16 +92,13 @@ class Settings(BaseSettings):
             host = self.POSTGRES_HOST
         else:
             host = "localhost"
-        return str(
-            PostgresDsn.build(  # type: ignore
-                scheme="postgresql+asyncpg",
-                username=self.POSTGRES_USER,
-                password=self.POSTGRES_PASSWORD,
-                host=host,
-                port=int(self.POSTGRES_PORT),
-                path=self.POSTGRES_DB,
-            )
-        )
+            
+        # URL-кодируем параметры для безопасного использования в URL
+        username = quote_plus(self.POSTGRES_USER)
+        password = quote_plus(self.POSTGRES_PASSWORD)
+        database = quote_plus(self.POSTGRES_DB)
+        
+        return f"postgresql+asyncpg://{username}:{password}@{host}:{self.POSTGRES_PORT}/{database}"
 
 
 settings = Settings()  # type: ignore
