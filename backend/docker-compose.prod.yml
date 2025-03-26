@@ -1,11 +1,12 @@
 version: '3.8'
 
+env_file:
+  - .env
+
 networks:
   backend:
-    name: backend
     external: true
   proxy:
-    name: proxy
     external: true
 
 services:
@@ -13,13 +14,6 @@ services:
     image: postgres:16.3-alpine
     container_name: postgres-wbtrack
     restart: unless-stopped
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_POOL_SIZE=${POSTGRES_POOL_SIZE}
-      - POSTGRES_MAX_OVERFLOW=${POSTGRES_MAX_OVERFLOW}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -37,9 +31,6 @@ services:
     container_name: redis-wbtrack
     restart: unless-stopped
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
-    environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDIS_PORT=${REDIS_PORT}
     volumes:
       - redis_data:/data
     healthcheck:
@@ -57,30 +48,10 @@ services:
     container_name: app-wbtrack
     restart: unless-stopped
     environment:
-      - DEBUG=${DEBUG}
-      - APP_SECRET_KEY=${APP_SECRET_KEY}
-      - APP_PORT=${APP_PORT}
-      - ALLOW_ORIGINS=${ALLOW_ORIGINS}
-      - ALLOW_ORIGIN_REGEX=${ALLOW_ORIGIN_REGEX}
-      - ACCESS_TOKEN_LIFETIME=${ACCESS_TOKEN_LIFETIME}
-      - REFRESH_TOKEN_LIFETIME=${REFRESH_TOKEN_LIFETIME}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - WILDBERRIES_BASE_PATH=${WILDBERRIES_BASE_PATH}
-      - AUTH_BASE_PATH=${AUTH_BASE_PATH}
-      - WB_BASIC_TOKEN=${WB_BASIC_TOKEN}
       - POSTGRES_HOST=postgres-wbtrack
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - REDIS_HOST=redis-wbtrack
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - ENVIRONMENT=production
-      - DISCOVERY_URL=${DISCOVERY_URL}
-      - S_POINT_URL=${S_POINT_URL}
-      - POINT_RATING_URL=${POINT_RATING_URL}
-      - POINT_BALANCE_URL=${POINT_BALANCE_URL}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis-wbtrack:6379/0
     depends_on:
       - postgres
       - redis
@@ -96,27 +67,11 @@ services:
     command: celery -A core.celery_app worker --loglevel=info
     restart: unless-stopped
     environment:
-      - DEBUG=${DEBUG}
-      - APP_SECRET_KEY=${APP_SECRET_KEY}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - WILDBERRIES_BASE_PATH=${WILDBERRIES_BASE_PATH}
-      - AUTH_BASE_PATH=${AUTH_BASE_PATH}
-      - WB_BASIC_TOKEN=${WB_BASIC_TOKEN}
       - POSTGRES_HOST=postgres-wbtrack
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - REDIS_HOST=redis-wbtrack
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_URL=redis://:${REDIS_PASSWORD}@redis-wbtrack:6379/0
       - ENVIRONMENT=production
       - PYTHONPATH=/app
-      - DISCOVERY_URL=${DISCOVERY_URL}
-      - S_POINT_URL=${S_POINT_URL}
-      - POINT_RATING_URL=${POINT_RATING_URL}
-      - POINT_BALANCE_URL=${POINT_BALANCE_URL}
     volumes:
       - /opt/wbtrack/backend:/app
     depends_on:
