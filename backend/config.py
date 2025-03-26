@@ -1,5 +1,6 @@
 from pydantic import computed_field, PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from urllib.parse import quote_plus
 
 
 class Settings(BaseSettings):
@@ -48,13 +49,14 @@ class Settings(BaseSettings):
     @property
     def REDIS_URL(self) -> str:
         if self.ENVIRONMENT in ["production", "docker"]:
-            host = self.REDIS_HOST  # Из .env (redis)
+            host = self.REDIS_HOST
         else:
             host = "localhost"
         
         if self.REDIS_PASSWORD:
-            url = f"redis://default:{self.REDIS_PASSWORD}@{host}:{self.REDIS_PORT}/0"
-            return url
+            # URL-кодируем пароль для безопасного использования в URL
+            encoded_password = quote_plus(self.REDIS_PASSWORD)
+            return f"redis://:{encoded_password}@{host}:{self.REDIS_PORT}/0"
         return f"redis://{host}:{self.REDIS_PORT}/0"
         # return str(
         #     RedisDsn.build(  # type: ignore
