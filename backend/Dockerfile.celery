@@ -6,7 +6,7 @@ ENV             PROJECTPATH=/app
 
 RUN             set -x \
                 && apt update -qq \
-                && apt install -y --no-install-recommends libpq-dev binutils curl \
+                && apt install -y --no-install-recommends libpq-dev binutils curl postgresql-client \
                 && apt purge -y --auto-remove \
                 && rm -rf /var/lib/apt/lists/*
 
@@ -26,7 +26,7 @@ RUN             poetry install --no-root
 COPY            . ${PROJECTPATH}
 
 # Add and configure entrypoint script
-COPY            scripts/init_db.sh /entrypoint.sh
+COPY            scripts/entrypoint.sh /entrypoint.sh
 RUN             chmod +x /entrypoint.sh
 
 ENV             PYTHONPATH=/app

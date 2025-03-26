@@ -40,6 +40,9 @@ ENV PYTHONPATH=/app
 
 COPY --from=builder $PYSETUP_PATH $PYSETUP_PATH
 
+# Install PostgreSQL client
+RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
 # Копируем код приложения
 COPY . /app/
 WORKDIR /app
@@ -48,7 +51,7 @@ WORKDIR /app
 RUN addgroup --system app && adduser --system --group app
 
 # Add and configure entrypoint script
-COPY scripts/init_db.sh /entrypoint.sh
+COPY scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh && \
     chown app:app /entrypoint.sh
 
