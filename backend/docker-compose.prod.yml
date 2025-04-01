@@ -63,27 +63,6 @@ services:
       - backend
       - proxy
 
-  celery-worker:
-    build:
-      context: /opt/wbtrack/backend
-      dockerfile: Dockerfile.celery
-    container_name: celery-wbtrack
-    env_file:
-      - .env
-    command: celery -A core.celery_app worker --loglevel=info
-    restart: unless-stopped
-    environment:
-      - POSTGRES_HOST=postgres-wbtrack
-      - REDIS_HOST=redis-wbtrack
-      - ENVIRONMENT=production
-      - PYTHONPATH=/app
-    volumes:
-      - .:/app
-    depends_on:
-      - redis
-      - postgres
-    networks:
-      - backend
 
 volumes:
   postgres_data:

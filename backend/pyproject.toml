@@ -28,7 +28,6 @@ prefect = "3.0.0rc14"
 pillow = "^10.4.0"
 itsdangerous = "^2.2.0"
 httpx = "^0.27.2"
-celery = "^5.4.0"
 pvz-client = {git = "https://github.com/deymonster/pvz_client.git", rev = "main"}
 
 

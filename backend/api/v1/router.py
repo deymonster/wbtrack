@@ -7,7 +7,6 @@ from .endpoints import (
     employee,
     pvz,
     checkpoint,
-    payments,
     subscription,
     user_management,
 )
@@ -51,11 +50,6 @@ api_router.include_router(
     tags=["checkpoint"],
 )
 
-api_router.include_router(
-    payments.router,
-    prefix="/payments",
-    tags=["payments"],
-)
 
 api_router.include_router(
     subscription.router,

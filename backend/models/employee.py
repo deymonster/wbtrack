@@ -39,10 +39,6 @@ class Employee(EmployeeBase, BaseTableID, table=True):
         link_model=EmployeeOfficeLink
     )
 
-    operations: List["Operation"] = Relationship(
-        back_populates="employee",
-        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
-    )
 
 
 
