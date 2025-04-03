@@ -1,3 +1,23 @@
+.PHONY: run
+run: ## Run ASGI application
+	python asgi.py
+
+.PHONY: lint
+lint: ## Run Ruff linter
+	ruff check .
+
+.PHONY: lint-fix
+lint-fix: ## Run Ruff linter with auto-fix
+	ruff check --fix .
+
+.PHONY: format
+format: ## Format code with Ruff
+	ruff format .
+
+.PHONY:  quality
+quality:  lint format ## Run all quality checks
+
+
 .PHONY: start-dev
 start-dev: ## start docker-compose.dev.yml
 	docker compose -f docker-compose.dev.yml up -d
@@ -33,3 +53,5 @@ docker-migrate-create: ## create new alembic migration
 .PHONY: docker-build
 docker-build: ## create new alembic migration
 	docker-compose -f docker-compose.dev.yml build --quiet
+
+
