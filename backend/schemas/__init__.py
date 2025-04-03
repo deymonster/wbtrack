@@ -4,9 +4,6 @@ from . import (
     employee,
     user,
     office,
-    operation,
     response,
-    user,
-    categories_operation,
-    operation_name
+    user
 )

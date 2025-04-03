@@ -6,7 +6,6 @@ from schemas.response import (
     PVZValidateCodeResponse,
 )
 from typing import Annotated
-from core.celery_app import celery_app
 from api.dependencies.user import current_active_user
 from models.user import User
 

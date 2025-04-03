@@ -3,7 +3,5 @@ from . import (
     company,
     employee,
     office,
-    employee_office_link,
-    categories_operation,
-    operation_name
+    employee_office_link
 )
