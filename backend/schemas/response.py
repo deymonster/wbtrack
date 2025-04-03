@@ -1,8 +1,7 @@
-from typing import Generic, Optional, TypeVar, Any, List
-from fastapi import Query
+from typing import Any, Generic, List, Optional, TypeVar
+
 from fastapi_pagination import (
     LimitOffsetPage,
-    LimitOffsetParams as LimitOffsetParamsBase,
 )
 from pydantic import BaseModel
 

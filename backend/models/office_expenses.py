@@ -1,8 +1,8 @@
-from sqlmodel import Field, Relationship, SQLModel, Column, ForeignKey, Integer, Float, Numeric
-from models.base import BaseTableID
 from typing import TYPE_CHECKING, Optional
-from decimal import Decimal
 
+from sqlmodel import Column, Field, ForeignKey, Integer, Relationship, SQLModel
+
+from models.base import BaseTableID
 
 if TYPE_CHECKING:
     from models.office import Office

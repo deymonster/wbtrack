@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from fastapi_users.jwt import decode_jwt
 
@@ -6,7 +6,6 @@ from config import settings
 from core.exceptions import NotAuthenticated, NotFound
 from crud.employee import employee_crud
 from models.employee import Employee
-from fastapi import HTTPException
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/employee/login")
 
@@ -24,6 +23,9 @@ async def get_currrent_employee(token: str = Depends(oauth2_scheme)) -> Employee
             raise NotFound(detail="Employee is deleted or not found")
         return employee
     except Exception as e:
-        raise HTTPException(status_code=401, detail=f"Invalid refresh token - {e}")
+        raise HTTPException(
+            status_code=401,
+            detail=f"Invalid refresh token - {e}"
+        ) from e
 
 

@@ -1,13 +1,12 @@
 from typing import Any, Optional
 
-from sqlalchemy import CompoundSelect, Subquery, func, select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql import Select
-
 from fastapi_pagination.api import apply_items_transformer, create_page
 from fastapi_pagination.bases import AbstractParams
 from fastapi_pagination.types import AdditionalData, AsyncItemsTransformer
 from fastapi_pagination.utils import verify_params
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql import Select
 
 
 async def paginate(

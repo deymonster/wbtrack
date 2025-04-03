@@ -6,7 +6,7 @@ from core.utils.sqlmodel import relations
 from crud.base import CRUDBase
 from models.company import Company
 from models.user import User
-from schemas.company import ICompanyRead, ICompanyCreate, ICompanyUpdate
+from schemas.company import ICompanyCreate, ICompanyUpdate
 
 
 class CRUDCompany(CRUDBase[Company, ICompanyCreate, ICompanyUpdate]):

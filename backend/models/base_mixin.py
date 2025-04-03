@@ -1,4 +1,5 @@
-from datetime import datetime, UTC
+from datetime import datetime
+
 from pydantic import field_validator
 from sqlalchemy import text
 from sqlmodel import Field, SQLModel
@@ -22,6 +23,7 @@ class TimestampMixin(SQLModel):
     )
 
     @field_validator("updated_at")
+    @classmethod
     def validate_updated_at(cls, v):
         if v is None:
             return v

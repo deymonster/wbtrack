@@ -1,9 +1,2 @@
 # import all models there
-from . import (
-    company_user,
-    company,
-    user,
-    office,
-    employee,
-    office_expenses
-)
+from . import company, company_user, employee, office, office_expenses, user

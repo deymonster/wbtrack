@@ -1,4 +1,5 @@
 from uuid import UUID
+
 from fastapi import Request
 from fastapi_users import BaseUserManager, UUIDIDMixin
 

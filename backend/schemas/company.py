@@ -1,6 +1,6 @@
-from models.company import CompanyBase
-from pydantic import BaseModel
 from typing import List, Optional
+
+from models.company import CompanyBase
 
 
 class ICompanyRead(CompanyBase):

@@ -1,21 +1,19 @@
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
+
 from fastapi import FastAPI
 from fastapi.middleware import Middleware
 from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
 from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
 from fastapi_pagination import add_pagination
+from redis import asyncio as aioredis
+from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
+
 from api.router import api_router
 from config import settings
 from core.db import pydantic_serializer
-import asyncio
-from starlette.middleware.cors import CORSMiddleware
-from starlette.middleware.sessions import SessionMiddleware
-from redis import asyncio as aioredis
-from fastapi_cache.backends.redis import RedisBackend
-from services.bot.run import start_bot, stop_bot
-
-import signal
 
 
 @asynccontextmanager
@@ -55,7 +53,7 @@ def create_app():
         debug=settings.DEBUG,
         lifespan=lifespan,
         swagger_ui_parameters={"persistAuthorization": True},
-        
+
         openapi_extra={
             "components": {
                 "securitySchemes": {

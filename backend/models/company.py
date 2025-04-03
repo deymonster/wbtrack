@@ -1,15 +1,14 @@
 from typing import TYPE_CHECKING
+
 from sqlalchemy import Column
-from sqlalchemy.dialects.postgresql import ENUM, ARRAY
-from sqlmodel import Field, Relationship, SQLModel, String, Integer
+from sqlmodel import Field, Integer, Relationship, SQLModel, String
 
 from models.base import BaseTableID
 from models.company_user import CompanyUser
 
 if TYPE_CHECKING:
-    from models.user import User
     from models.office import Office
-    from models.employee import Employee
+    from models.user import User
 
 
 class CompanyBase(SQLModel):
@@ -30,7 +29,7 @@ class Company(CompanyBase, BaseTableID, table=True):
     offices: list["Office"] = Relationship(
         back_populates="company",
     )
- 
+
 
 
 

@@ -1,27 +1,25 @@
-from typing import Optional
-from pydantic import BaseModel
-from fastapi import APIRouter, Request, Depends, Query
+import base64
+import logging
+import secrets
+
+import httpx
+from fastapi import APIRouter, Depends, Query
 from fastapi_pagination import LimitOffsetParams, add_pagination
+from sqlmodel import func, select
+
 from api.dependencies.employee import get_currrent_employee
 from api.dependencies.user import current_active_user
+from config import settings
 from core.exceptions import NotFound, ValidationError
+from core.redis import redis_client
 from core.user_management import create_employee_jwt_access, create_employee_jwt_refresh
 from crud.employee import employee_crud
 from enums.common import ListOrderEnum
 from models.employee import Employee
 from models.user import User
-from schemas.employee import IEmployeeRead, RegistrationRequest, AuthRequest, SearchParams
-from core.redis import redis_client
-import base64
-import string
-import secrets
-from config import settings
+from schemas.employee import AuthRequest, IEmployeeRead, SearchParams
 from schemas.response import IResponsePaginated
-from sqlmodel import col, select, func, String
-
 from schemas.user import RegisterResponse
-import httpx
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -108,8 +106,8 @@ async def get_list(
         current_user: User = Depends(current_active_user),
         order_by: str = Query(None, description="Поле для сортировки"),
         order: ListOrderEnum = Query(ListOrderEnum.descendent, description="Направление сортировки")
-        
-        
+
+
 ):
     """Получения списка сотрудников связанных с текущим пользователем
 
@@ -126,7 +124,7 @@ async def get_list(
         raise ValidationError(f"Некорректное поле для сортировки: {order_by}. Доступные поля: {', '.join(sortable_columns)}")
     order_by = order_by or "id"
 
-    
+
     page = await employee_crud.get_employees_by_user_id(
         user_id=user_id,
         params=params,

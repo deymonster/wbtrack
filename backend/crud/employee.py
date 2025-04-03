@@ -1,20 +1,18 @@
-from models.employee import Employee, EmployeeOfficeLink
-from models.office import Office
+import logging
+
+from fastapi_pagination import LimitOffsetParams
+from pydantic import UUID4
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import col, select
+
+from crud.base import CRUDBase
+from enums.common import ListOrderEnum
 from models.company import Company
 from models.company_user import CompanyUser
-from crud.base import CRUDBase
-from schemas.employee import IEmployeeRead, IEmployeeCreate, IEmployeeUpdate
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import col, select, text
-from pydantic import UUID4
-import logging
-from typing import List
-from fastapi_pagination import LimitOffsetParams, Page
-from enums.common import ListOrderEnum
+from models.employee import Employee, EmployeeOfficeLink
+from models.office import Office
+from schemas.employee import IEmployeeCreate, IEmployeeUpdate
 from schemas.response import IResponsePaginated
-
-from sqlalchemy.engine import Engine
-from sqlalchemy.sql import Select
 
 logger = logging.getLogger(__name__)
 
@@ -37,11 +35,11 @@ class EmployeeCRUD(CRUDBase[Employee, IEmployeeCreate, IEmployeeUpdate]):
     async def get_by_employee_id(self, employee_id: int, db_session: AsyncSession | None = None) -> Employee | None:
         """Получение сотрудника по employee_id."""
         session: AsyncSession = db_session or self.db.session
-        
+
         query = select(Employee).where(Employee.user_id == employee_id)
         result = await session.execute(query)
         employee = result.scalar_one_or_none()
-        
+
         return employee
 
     async def get_all_employees(self, db_session: AsyncSession | None = None) -> list[Employee]:
@@ -67,13 +65,13 @@ class EmployeeCRUD(CRUDBase[Employee, IEmployeeCreate, IEmployeeUpdate]):
         response = await session.execute(query)
         return response.scalars().all()
 
-    async def get_employees_by_user_id(self, user_id: UUID4, 
+    async def get_employees_by_user_id(self, user_id: UUID4,
                                        params: LimitOffsetParams | None = LimitOffsetParams(),
                                        order_by: str = "id",
                                        order: ListOrderEnum = ListOrderEnum.descendent,
                                        db_session: AsyncSession | None = None) -> IResponsePaginated[Employee]:
         """Получение связанных сотрудников пользователя
-        
+
         :param user_id: ID пользователя
         :param params: Параметры пагинации
         :param order_by: Поле сортировки
@@ -81,7 +79,6 @@ class EmployeeCRUD(CRUDBase[Employee, IEmployeeCreate, IEmployeeUpdate]):
         :param db_session: Сессия базы данных
         :return: Страница сотрудников
         """
-        session: AsyncSession = db_session or self.db.session
 
         # Условие соединения: связываем Employee через Office и Company с User
         # Формируем запрос с цепочкой join

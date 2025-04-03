@@ -1,9 +1,11 @@
 import re
 from uuid import UUID
-from sqlalchemy import Column, BigInteger, text
-from sqlmodel import Field, SQLModel
-from models.base_mixin import TimestampMixin
+
+from sqlalchemy import BigInteger, text
 from sqlalchemy.dialects.postgresql import UUID as SAUUID
+from sqlmodel import Field, SQLModel
+
+from models.base_mixin import TimestampMixin
 
 
 class BaseTable(SQLModel):
@@ -16,7 +18,7 @@ class BaseTable(SQLModel):
 
     def model_update(self, **update_data):
         for field in update_data:
-            if not field in self.model_fields:
+            if field not in self.model_fields:
                 continue
             setattr(self, field, update_data[field])
         return self

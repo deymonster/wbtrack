@@ -1,6 +1,6 @@
+import redis.asyncio as aioredis
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
-import redis.asyncio as aioredis
 from wb_franchise_api_client import ApiAuth
 
 

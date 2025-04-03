@@ -1,5 +1,6 @@
 import inspect
-from typing import Callable, Any
+from typing import Any, Callable
+
 from wb_franchise_api_client.api_auth import ApiAuth
 from wb_franchise_api_client.api_client import ApiClient
 
@@ -15,7 +16,7 @@ class ApiClientWrapper:
         if method and inspect.iscoroutinefunction(method):
             return self._create_method_wrapper(method)
         raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
-    
+
     def _create_method_wrapper(self, method: Callable) -> Callable:
         async def wrapper(*args, **kwargs) -> Any:
             try:

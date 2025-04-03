@@ -17,6 +17,12 @@ format: ## Format code with Ruff
 .PHONY:  quality
 quality:  lint format ## Run all quality checks
 
+.PHONY: lint-fix-unsafe
+lint-fix-unsafe: ## Run Ruff linter with unsafe auto-fix
+	ruff check --fix --unsafe-fixes .
+
+	
+
 
 .PHONY: start-dev
 start-dev: ## start docker-compose.dev.yml

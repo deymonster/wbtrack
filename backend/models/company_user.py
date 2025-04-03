@@ -1,8 +1,11 @@
 from uuid import UUID
+
 from sqlalchemy import Column, ForeignKey, Integer
-from sqlmodel import Field
-from models.base import BaseTable
 from sqlalchemy.dialects.postgresql import UUID as SAUUID
+from sqlmodel import Field
+
+from models.base import BaseTable
+
 
 class CompanyUser(BaseTable, table=True):
     company_id: int = Field(

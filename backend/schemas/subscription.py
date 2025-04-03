@@ -7,4 +7,4 @@ class SubscriptionApproval(BaseModel):
         description="Duration of subscription in days",
         ge=1,
         le=365
-    ) 
+    )

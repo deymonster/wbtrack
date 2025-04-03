@@ -1,41 +1,59 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi_users.exceptions import InvalidPasswordException, FastAPIUsersException, UserNotExists
+from fastapi_async_sqlalchemy import db
 from fastapi_users.authentication import JWTStrategy
+from fastapi_users.exceptions import (
+    FastAPIUsersException,
+    InvalidPasswordException,
+    UserNotExists,
+)
 from fastapi_users.jwt import decode_jwt
 
 from config import settings
 from core.exceptions import NotAuthenticated, NotFound, ValidationError
-from core.user_management import access_backend, refresh_backend, fastapi_users, create_employee_jwt_access
+from core.user_management import (
+    access_backend,
+    create_employee_jwt_access,
+    fastapi_users,
+    refresh_backend,
+)
 from crud.employee import employee_crud
+from enums.user import UserRoleEnum
 from schemas.response import LoginResponse
 from schemas.user import IUserCreate, IUserRead, RefreshTokenRequest
 from services.user import UserService
-from pydantic import BaseModel
-from models.user import User
-from enums.user import UserRoleEnum
-from fastapi_async_sqlalchemy import db
 
 router = APIRouter()
+
+credentials_dependency = Depends()
+user_manager_dependency = Depends(fastapi_users.get_user_manager)
+access_strategy_dependency = Depends(access_backend.get_strategy)
+refresh_strategy_dependency = Depends(refresh_backend.get_strategy)
 
 
 @router.post("/login", response_model=LoginResponse)
 async def login(
-        credentials: OAuth2PasswordRequestForm = Depends(),
-        user_manager: UserService = Depends(fastapi_users.get_user_manager),
-        access_strategy: JWTStrategy = Depends(access_backend.get_strategy),
-        refresh_strategy: JWTStrategy = Depends(refresh_backend.get_strategy),
+        credentials: OAuth2PasswordRequestForm = credentials_dependency,
+        user_manager: UserService = user_manager_dependency,
+        access_strategy: JWTStrategy = access_strategy_dependency,
+        refresh_strategy: JWTStrategy = refresh_strategy_dependency,
 ):
     """Endpoint to login"""
     try:
         user = await user_manager.get_by_email(credentials.username)
-    except UserNotExists:
-        raise HTTPException(status_code=400, detail="Invalid credentials")
+    except UserNotExists as err:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid credentials"
+        ) from err
 
     try:
         await user_manager.validate_password(credentials.password, user)
-    except InvalidPasswordException:
-        raise HTTPException(status_code=400, detail="Invalid credentials")
+    except InvalidPasswordException as err:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid credentials"
+        ) from err
 
     if not user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
@@ -52,7 +70,7 @@ async def login(
 @router.post("/register/admin", response_model=IUserRead)
 async def register_admin(
     user_data: IUserCreate,
-    user_manager: UserService = Depends(fastapi_users.get_user_manager),
+    user_manager: UserService = user_manager_dependency,
 ):
     """Register a new admin user (requires approval from super admin)"""
     user = await user_manager.create(
@@ -68,7 +86,7 @@ async def register_admin(
 @router.post("/register", response_model=IUserRead)
 async def register_user(
     user_data: IUserCreate,
-    user_manager: UserService = Depends(fastapi_users.get_user_manager),
+    user_manager: UserService = user_manager_dependency,
 ):
     """Register a new regular user (MANAGER role)"""
     user = await user_manager.create(
@@ -95,9 +113,9 @@ router.include_router(
     })
 async def refresh_token(
         request: RefreshTokenRequest,
-        user_manager: UserService = Depends(fastapi_users.get_user_manager),
-        access_strategy: JWTStrategy = Depends(access_backend.get_strategy),
-        refresh_strategy: JWTStrategy = Depends(refresh_backend.get_strategy)
+        user_manager: UserService = user_manager_dependency,
+        access_strategy: JWTStrategy = access_strategy_dependency,
+        refresh_strategy: JWTStrategy = refresh_strategy_dependency
 ):
     """Endpoint to refresh the token"""
     if request.is_employer:
@@ -124,11 +142,17 @@ async def refresh_token(
                 "access_token": access_token,
                 "token_type": "bearer"
             }
-        except Exception as e:
-            raise HTTPException(status_code=401, detail=f"Invalid refresh token - {e}")
+        except Exception as err:
+            raise HTTPException(
+                status_code=401,
+                detail=f"Invalid refresh token - {err}"
+            ) from err
     else:
         try:
-            user = await refresh_strategy.read_token(request.refresh_token, user_manager)
+            user = await refresh_strategy.read_token(
+                    request.refresh_token,
+                    user_manager
+            )
             if not user:
                 raise ValidationError(detail="Invalid refresh token - None user")
 
@@ -139,5 +163,8 @@ async def refresh_token(
                 "access_token": access_token,
                 "token_type": "bearer"
             }
-        except FastAPIUsersException:
-            raise HTTPException(status_code=401, detail="Invalid refresh token")
+        except FastAPIUsersException as err:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid refresh token"
+            ) from err

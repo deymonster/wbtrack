@@ -1,10 +1,12 @@
-from pvz_client.api_auth import ApiAuth
-from redis.asyncio import Redis
-from pvz_client.api_client import ApiClient
-from config import settings
-from pvz_client.models import *
-import logging
 import asyncio
+import logging
+
+from pvz_client.api_auth import ApiAuth
+from pvz_client.api_client import ApiClient
+from pvz_client.models import *
+from redis.asyncio import Redis
+
+from config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +27,7 @@ class PVZService:
     async def login(self) -> RequestCodeResponse:
         """Первый запрос для получения кода"""
         code_response = await self.auth.login(self.phone)
-        
+
 
         # Сохраняем временный токен в Redis
         redis_key = f"pvz:{self.phone}:temp_token"
@@ -46,7 +48,7 @@ class PVZService:
         temp_token = await self.redis.get(f"pvz:{self.phone}:temp_token")
         if not temp_token:
             raise ValueError("Temporary token not found. Please request a new code.")
-        
+
         # Валидируем код и получаем постоянные токены
         token_response = await self.auth.validate(code=code, token=temp_token)
 
@@ -75,7 +77,7 @@ class PVZService:
         if not access_token:
             raise ValueError("Access token not found for this phone number")
         return access_token
-       
+
     async def validate_token(self) -> bool:
         """Проверяем валидность и существование access токена"""
         return await self.redis.exists(f"pvz:{self.phone}:access_token")
@@ -115,7 +117,7 @@ class PVZService:
         """
         client = await self._get_api_client()
         logger.info(f"Getting operations from {date_from} to {date_to}")
-        
+
         try:
             # Первый запрос для получения общего количества
             initial_response = await client.get_operations(date_from=date_from, date_to=date_to, offset=0, limit=1)
@@ -133,7 +135,7 @@ class PVZService:
             for i in range(0, len(offsets), chunk_size):
                 chunk_offsets = offsets[i:i + chunk_size]
                 tasks = []
-            
+
                 for offset in chunk_offsets:
                     task = asyncio.create_task(
                         self._fetch_operations_with_retry(
@@ -152,7 +154,7 @@ class PVZService:
                     # Обрабатываем результаты, включая возможные исключения
                     for response in chunk_responses:
                         if isinstance(response, Exception):
-                            logger.error(f"Error in batch: {str(response)}")
+                            logger.error(f"Error in batch: {response!s}")
                             continue
                         all_operations.extend(response.data)
                         if progress_callback:
@@ -161,7 +163,7 @@ class PVZService:
 
                     await asyncio.sleep(0.5)
                 except Exception as e:
-                    logger.error(f"Error in parallel operations fetch: {str(e)}")
+                    logger.error(f"Error in parallel operations fetch: {e!s}")
                     continue
 
             logger.info(f"Successfully fetched {len(all_operations)} operations out of {total_rows}")
@@ -170,15 +172,15 @@ class PVZService:
 
             return all_operations
         except Exception as e:
-            logger.error(f"Error in get_operations: {str(e)}")
+            logger.error(f"Error in get_operations: {e!s}")
             raise
 
-    
+
     async def _fetch_operations_with_retry(self, client, date_from: str, date_to: str, offset: int, limit: int, max_retries: int = 3, initial_delay: float = 1.0):
 
         """Получение операций с механизмом повторных попыток"""
         delay = initial_delay
-        last_exception = None   
+        last_exception = None
 
         for attempt in range(max_retries):
             try:
@@ -191,17 +193,17 @@ class PVZService:
             except Exception as e:
                 last_exception = e
                 if attempt < max_retries - 1:
-                    logger.warning(f"Attempt {attempt + 1} failed for offset {offset}: {str(e)}")
+                    logger.warning(f"Attempt {attempt + 1} failed for offset {offset}: {e!s}")
                     await asyncio.sleep(delay)
                     delay *= 2  # Экспоненциальная задержка
                 else:
-                    logger.error(f"All retries failed for offset {offset}: {str(e)}")
+                    logger.error(f"All retries failed for offset {offset}: {e!s}")
                 raise last_exception
 
     async def get_all_weekly_payments(self) -> List[WeeklyTransaction]:
         """Получение всех недельных платежей"""
         client = await self._get_api_client()
-        logger.info(f"Getting weekly paymnets with pickpoint payments")
+        logger.info("Getting weekly paymnets with pickpoint payments")
         limit = 10
         offset = 0
         result = []
@@ -213,7 +215,7 @@ class PVZService:
                     limit=limit,
                     offset=offset
                 )
-                
+
                 result.extend(response.payments)
                 logger.info(f"Fetched {len(response.payments)} payments (offset={offset}).")
                 if len(result) >= response.total_weeks:
@@ -221,7 +223,8 @@ class PVZService:
                 offset += limit
             logger.info(f"Successfully fetched all weekly transactions: {len(result)} weeks.")
             return result
-        
+
         except Exception as e:
-            logger.error(f"Error in get_all_weekly_payments: {str(e)}")
+            logger.error(f"Error in get_all_weekly_payments: {e!s}")
             raise
+

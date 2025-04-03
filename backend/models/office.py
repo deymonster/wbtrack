@@ -1,12 +1,8 @@
-from sqlmodel import (
-    Field,
-    Relationship,
-    SQLModel,
-    Column,
-    ForeignKey,
-    Integer)
+from typing import TYPE_CHECKING
+
+from sqlmodel import Column, Field, ForeignKey, Integer, Relationship, SQLModel
+
 from models.base import BaseTableID
-from typing import TYPE_CHECKING, Any, List, Optional
 from models.employee import EmployeeOfficeLink
 
 if TYPE_CHECKING:
@@ -39,9 +35,9 @@ class Office(OfficeBase, BaseTableID, table=True):
         link_model=EmployeeOfficeLink
     )
     expenses: "OfficeExpenses" = Relationship(back_populates="office")
-    
-   
-  
+
+
+
 
 
 

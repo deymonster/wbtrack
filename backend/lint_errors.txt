@@ -1,0 +1,2869 @@
+api/v1/endpoints/company.py:27:89: E501 Line too long (92 > 88)
+   |
+26 | # import wb_franchise_api_client as wb
+27 | # from wb_franchise_api_client.models import RequestCodeResponse, TokenResponse, AccountData
+   |                                                                                         ^^^^ E501
+28 | # from wb_franchise_api_client.api_client import ApiAuth
+   |
+
+api/v1/endpoints/company.py:183:89: E501 Line too long (105 > 88)
+    |
+181 | #     #)
+182 |
+183 | #     #await CompanyService.sync_cards( TODO : here will be request to get company info from external api
+    |                                                                                         ^^^^^^^^^^^^^^^^^ E501
+184 | #     #    company=company,
+185 | #     #)
+    |
+
+api/v1/endpoints/employee.py:98:50: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+97 | @router.get("/me")
+98 | async def get_info_employee(employee: Employee = Depends(get_currrent_employee)):
+   |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+99 |     return employee
+   |
+
+api/v1/endpoints/employee.py:105:37: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+    |
+103 |             response_model=IResponsePaginated[IEmployeeRead])
+104 | async def get_list(
+105 |         params: LimitOffsetParams = Depends(),
+    |                                     ^^^^^^^^^ B008
+106 |         current_user: User = Depends(current_active_user),
+107 |         order_by: str = Query(None, description="Поле для сортировки"),
+    |
+
+api/v1/endpoints/employee.py:106:30: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+    |
+104 | async def get_list(
+105 |         params: LimitOffsetParams = Depends(),
+106 |         current_user: User = Depends(current_active_user),
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+107 |         order_by: str = Query(None, description="Поле для сортировки"),
+108 |         order: ListOrderEnum = Query(ListOrderEnum.descendent, description="Направление сортировки")
+    |
+
+api/v1/endpoints/employee.py:108:32: B008 Do not perform function call `Query` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+    |
+106 |         current_user: User = Depends(current_active_user),
+107 |         order_by: str = Query(None, description="Поле для сортировки"),
+108 |         order: ListOrderEnum = Query(ListOrderEnum.descendent, description="Направление сортировки")
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+    |
+
+api/v1/endpoints/employee.py:108:89: E501 Line too long (100 > 88)
+    |
+106 |         current_user: User = Depends(current_active_user),
+107 |         order_by: str = Query(None, description="Поле для сортировки"),
+108 |         order: ListOrderEnum = Query(ListOrderEnum.descendent, description="Направление сортировки")
+    |                                                                                         ^^^^^^^^^^^^ E501
+    |
+
+api/v1/endpoints/employee.py:112:47: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+    |
+111 | ):
+112 |     """Получения списка сотрудников связанных с текущим пользователем
+    |                                               ^ RUF002
+113 |
+114 |     - **limit**: количество элементов на странице
+    |
+
+api/v1/endpoints/employee.py:116:89: E501 Line too long (111 > 88)
+    |
+114 |     - **limit**: количество элементов на странице
+115 |     - **offset**: смещение от начала списка
+116 |     - **order_by**: поле для сортировки (доступные поля create_date, name, last_name, is_deleted, phone, tg_id)
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^ E501
+117 |     - **order**: направление сортировки (asc/desc)
+118 |     """
+    |
+
+api/v1/endpoints/employee.py:124:89: E501 Line too long (125 > 88)
+    |
+123 | …e_columns:
+124 | …е поле для сортировки: {order_by}. Доступные поля: {', '.join(sortable_columns)}")
+    |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+125 | …
+    |
+
+api/v1/endpoints/employee.py:143:37: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+    |
+141 |         order: ListOrderEnum = ListOrderEnum.descendent,
+142 |         search_params: SearchParams,
+143 |         params: LimitOffsetParams = Depends(),
+    |                                     ^^^^^^^^^ B008
+144 |         user: User = Depends(current_active_user),
+145 | ):
+    |
+
+api/v1/endpoints/employee.py:144:22: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+    |
+142 |         search_params: SearchParams,
+143 |         params: LimitOffsetParams = Depends(),
+144 |         user: User = Depends(current_active_user),
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+145 | ):
+146 |     """Search employees by last name or phone
+    |
+
+api/v1/endpoints/office_expenses.py:18:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+16 | async def create_office_expenses(
+17 |     expenses:  IOfficeExpensesCreate,
+18 |     current_user: User = Depends(current_active_user)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+19 | ):
+20 |     """Создание новых финансовых параметров для ПВЗ.
+   |
+
+api/v1/endpoints/office_expenses.py:29:39: RUF002 Docstring contains ambiguous `У` (CYRILLIC CAPITAL LETTER U). Did you mean `Y` (LATIN CAPITAL LETTER Y)?
+   |
+27 |         - cameras: Оплата видеонаблюдения
+28 |         - vat_rate: Ставка НДС
+29 |         - simplified_tax_rate: Ставка УСН
+   |                                       ^ RUF002
+30 |         - rf_payment: ЗП руководителя филиала
+31 |         - revision_payment: Оплата сотрудника по ревизии
+   |
+
+api/v1/endpoints/office_expenses.py:29:40: RUF002 Docstring contains ambiguous `С` (CYRILLIC CAPITAL LETTER ES). Did you mean `C` (LATIN CAPITAL LETTER C)?
+   |
+27 |         - cameras: Оплата видеонаблюдения
+28 |         - vat_rate: Ставка НДС
+29 |         - simplified_tax_rate: Ставка УСН
+   |                                        ^ RUF002
+30 |         - rf_payment: ЗП руководителя филиала
+31 |         - revision_payment: Оплата сотрудника по ревизии
+   |
+
+api/v1/endpoints/office_expenses.py:29:41: RUF002 Docstring contains ambiguous `Н` (CYRILLIC CAPITAL LETTER EN). Did you mean `H` (LATIN CAPITAL LETTER H)?
+   |
+27 |         - cameras: Оплата видеонаблюдения
+28 |         - vat_rate: Ставка НДС
+29 |         - simplified_tax_rate: Ставка УСН
+   |                                         ^ RUF002
+30 |         - rf_payment: ЗП руководителя филиала
+31 |         - revision_payment: Оплата сотрудника по ревизии
+   |
+
+api/v1/endpoints/office_expenses.py:37:39: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+35 |     Returns:
+36 |     - **200**: Успешное создание
+37 |         - Возвращает созданный объект с ID
+   |                                       ^ RUF002
+38 |     - **404**: Офис не найден или нет доступа
+39 |     - **422**: Ошибка валидации данных
+   |
+
+api/v1/endpoints/office_expenses.py:42:11: F821 Undefined name `office_expenses`
+   |
+40 |     """
+41 |
+42 |     await office_expenses.verify_office_access(office_id=expenses.office_id, user_id=current_user.id)
+   |           ^^^^^^^^^^^^^^^ F821
+43 |     return await office_expenses_crud.create(obj_in=expenses)
+   |
+
+api/v1/endpoints/office_expenses.py:42:89: E501 Line too long (101 > 88)
+   |
+40 |     """
+41 |
+42 |     await office_expenses.verify_office_access(office_id=expenses.office_id, user_id=current_user.id)
+   |                                                                                         ^^^^^^^^^^^^^ E501
+43 |     return await office_expenses_crud.create(obj_in=expenses)
+   |
+
+api/v1/endpoints/office_expenses.py:48:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+46 | async def get_office_expenses(
+47 |     office_id: int,
+48 |     current_user: User = Depends(current_active_user)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+49 | ):
+50 |     """Получение финансовых паарметров ПВЗ по office_id
+   |
+
+api/v1/endpoints/office_expenses.py:57:29: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+55 |     Returns:
+56 |     - **200**: Успешное получение данных
+57 |         - Возвращает объект с финансовыми параметрами
+   |                             ^ RUF002
+58 |     - **404**: Офис не найден или нет доступа
+59 |     """
+   |
+
+api/v1/endpoints/office_expenses.py:60:89: E501 Line too long (97 > 88)
+   |
+58 |     - **404**: Офис не найден или нет доступа
+59 |     """
+60 |     await office_expenses_crud.verify_office_access(office_id=office_id, user_id=current_user.id)
+   |                                                                                         ^^^^^^^^^ E501
+61 |     return await office_expenses_crud.get_expenses_or_404(office_id=office_id)
+   |
+
+api/v1/endpoints/office_expenses.py:67:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+65 |     office_id: int,
+66 |     expenses_update: IOfficeExpensesUpdate,
+67 |     current_user: User = Depends(current_active_user)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+68 | ):
+69 |     """Обновление финансовых параметров ПВЗ
+   |
+
+api/v1/endpoints/office_expenses.py:74:11: RUF002 Docstring contains ambiguous `В` (CYRILLIC CAPITAL LETTER VE). Did you mean `B` (LATIN CAPITAL LETTER B)?
+   |
+72 |     - **office_id**: ID офиса
+73 |     - **expenses_update**: Обновляемые параметры
+74 |         - Все поля опциональны
+   |           ^ RUF002
+75 |         - Обновляются только переданные поля
+   |
+
+api/v1/endpoints/office_expenses.py:74:12: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+72 |     - **office_id**: ID офиса
+73 |     - **expenses_update**: Обновляемые параметры
+74 |         - Все поля опциональны
+   |            ^ RUF002
+75 |         - Обновляются только переданные поля
+   |
+
+api/v1/endpoints/office_expenses.py:74:13: RUF002 Docstring contains ambiguous `е` (CYRILLIC SMALL LETTER IE). Did you mean `e` (LATIN SMALL LETTER E)?
+   |
+72 |     - **office_id**: ID офиса
+73 |     - **expenses_update**: Обновляемые параметры
+74 |         - Все поля опциональны
+   |             ^ RUF002
+75 |         - Обновляются только переданные поля
+   |
+
+api/v1/endpoints/office_expenses.py:83:89: E501 Line too long (97 > 88)
+   |
+81 |     - **422**: Ошибка валидации данных
+82 |     """
+83 |     await office_expenses_crud.verify_office_access(office_id=office_id, user_id=current_user.id)
+   |                                                                                         ^^^^^^^^^ E501
+84 |     existing_expenses = await office_expenses_crud.get_expenses_or_404(office_id=office_id)
+85 |     return await office_expenses_crud.update(db_obj=existing_expenses, obj_in=expenses_update)
+   |
+
+api/v1/endpoints/office_expenses.py:84:89: E501 Line too long (91 > 88)
+   |
+82 |     """
+83 |     await office_expenses_crud.verify_office_access(office_id=office_id, user_id=current_user.id)
+84 |     existing_expenses = await office_expenses_crud.get_expenses_or_404(office_id=office_id)
+   |                                                                                         ^^^ E501
+85 |     return await office_expenses_crud.update(db_obj=existing_expenses, obj_in=expenses_update)
+   |
+
+api/v1/endpoints/office_expenses.py:85:89: E501 Line too long (94 > 88)
+   |
+83 |     await office_expenses_crud.verify_office_access(office_id=office_id, user_id=current_user.id)
+84 |     existing_expenses = await office_expenses_crud.get_expenses_or_404(office_id=office_id)
+85 |     return await office_expenses_crud.update(db_obj=existing_expenses, obj_in=expenses_update)
+   |                                                                                         ^^^^^^ E501
+   |
+
+api/v1/endpoints/office_expenses.py:91:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+89 | async def delete_office_expenses(
+90 |     office_id: int,
+91 |     current_user: User = Depends(current_active_user)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+92 | ):
+93 |     """
+   |
+
+api/v1/endpoints/pvz.py:53:40: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+51 |     Запрашивает код подтверждения для авторизации.
+52 |
+53 |     Требуется заголовок X-Phone-Number с номером телефона в формате 79XXXXXXXXX
+   |                                        ^ RUF002
+54 |     """
+55 |     try:
+   |
+
+api/v1/endpoints/pvz.py:63:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   |
+61 |         }
+62 |     except Exception as e:
+63 |         raise HTTPException(status_code=400, detail=str(e))
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+   |
+
+api/v1/endpoints/pvz.py:89:42: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+87 |     Подтверждает код и возвращает токен доступа.
+88 |
+89 |     - Требуется заголовок X-Phone-Number с номером телефона
+   |                                          ^ RUF002
+90 |     - Код подтверждения передается в параметре запроса
+91 |     """
+   |
+
+api/v1/endpoints/pvz.py:95:89: E501 Line too long (89 > 88)
+   |
+93 |         pickpoint_id = "65717"
+94 |         external_id = "141685"
+95 |         token_response = await pvz_service.validate_code(code, pickpoint_id, external_id)
+   |                                                                                         ^ E501
+96 |         return {"access_token": token_response.access.token}
+97 |     except ValueError:
+   |
+
+api/v1/endpoints/pvz.py:98:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+ 96 |         return {"access_token": token_response.access.token}
+ 97 |     except ValueError:
+ 98 |         raise HTTPException(status_code=401, detail="Invalid or expired token")
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+ 99 |     except Exception as e:
+100 |         raise HTTPException(status_code=400, detail=str(e))
+    |
+
+api/v1/endpoints/pvz.py:100:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+ 98 |         raise HTTPException(status_code=401, detail="Invalid or expired token")
+ 99 |     except Exception as e:
+100 |         raise HTTPException(status_code=400, detail=str(e))
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+    |
+
+api/v1/endpoints/pvz.py:122:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+120 |         return await pvz_service.get_pickpoint_list()
+121 |     except ValueError:
+122 |         raise HTTPException(status_code=401, detail="Invalid or expired token")
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+123 |     except Exception as e:
+124 |         raise HTTPException(status_code=400, detail=str(e))
+    |
+
+api/v1/endpoints/pvz.py:124:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+122 |         raise HTTPException(status_code=401, detail="Invalid or expired token")
+123 |     except Exception as e:
+124 |         raise HTTPException(status_code=400, detail=str(e))
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+    |
+
+api/v1/endpoints/pvz.py:129:39: RUF001 String contains ambiguous `о` (CYRILLIC SMALL LETTER O). Did you mean `o` (LATIN SMALL LETTER O)?
+    |
+127 | @router.get(
+128 |     "/owner-info",
+129 |     description="Получение информации о владельце",
+    |                                       ^ RUF001
+130 |     responses={
+131 |         200: {"description": "Информация успешно получена"},
+    |
+
+api/v1/endpoints/pvz.py:139:27: RUF002 Docstring contains ambiguous `о` (CYRILLIC SMALL LETTER O). Did you mean `o` (LATIN SMALL LETTER O)?
+    |
+137 | ):
+138 |     """
+139 |     Возвращает информацию о владельце аккаунта.
+    |                           ^ RUF002
+140 |
+141 |     Требуется заголовок X-Phone-Number и действующий токен авторизации
+    |
+
+api/v1/endpoints/pvz.py:146:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+144 |         return await pvz_service.get_owner_info()
+145 |     except ValueError:
+146 |         raise HTTPException(status_code=401, detail="Invalid or expired token")
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+147 |     except Exception as e:
+148 |         raise HTTPException(status_code=400, detail=str(e))
+    |
+
+api/v1/endpoints/pvz.py:148:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+146 |         raise HTTPException(status_code=401, detail="Invalid or expired token")
+147 |     except Exception as e:
+148 |         raise HTTPException(status_code=400, detail=str(e))
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+149 |
+150 | @router.get(
+    |
+
+api/v1/endpoints/pvz.py:152:39: RUF001 String contains ambiguous `о` (CYRILLIC SMALL LETTER O). Did you mean `o` (LATIN SMALL LETTER O)?
+    |
+150 | @router.get(
+151 |     "/pickpoint-rating/{pickpoint_id}",
+152 |     description="Получение информации о рейтинге пункта выдачи",
+    |                                       ^ RUF001
+153 |     responses={
+154 |         200: {"description": "Информация успешно получена"},
+    |
+
+api/v1/endpoints/pvz.py:170:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+168 |         return await pvz_service.get_pickpoint_rating(pickpoint_id)
+169 |     except ValueError:
+170 |         raise HTTPException(status_code=401, detail="Invalid or expired token")
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+171 |     except Exception as e:
+172 |         raise HTTPException(status_code=400, detail=str(e))
+    |
+
+api/v1/endpoints/pvz.py:172:9: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+170 |         raise HTTPException(status_code=401, detail="Invalid or expired token")
+171 |     except Exception as e:
+172 |         raise HTTPException(status_code=400, detail=str(e))
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+    |
+
+api/v1/endpoints/subscription.py:18:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+16 | @router.get("/pending", response_model=List[User])
+17 | async def get_pending_subscriptions(
+18 |     current_user: User = Depends(current_superuser)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+19 | ):
+20 |     """Get all users with pending subscription approval (role=ADMIN but not approved)"""
+   |
+
+api/v1/endpoints/subscription.py:33:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+31 |     user_id: str,
+32 |     approval: SubscriptionApproval,
+33 |     current_user: User = Depends(current_superuser)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+34 | ):
+35 |     """Approve subscription for a user"""
+   |
+
+api/v1/endpoints/subscription.py:52:89: E501 Line too long (91 > 88)
+   |
+50 |     user.is_subscription_active = True
+51 |     user.subscription_start_date = datetime.utcnow()
+52 |     user.subscription_end_date = datetime.utcnow() + timedelta(days=approval.duration_days)
+   |                                                                                         ^^^ E501
+53 |     user.subscription_approved_by = str(current_user.id)
+54 |     user.subscription_approved_at = datetime.utcnow()
+   |
+
+api/v1/endpoints/subscription.py:62:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+60 | @router.get("/status")
+61 | async def get_subscription_status(
+62 |     current_user: User = Depends(current_active_user)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+63 | ):
+64 |     """Get current user's subscription status"""
+   |
+
+api/v1/endpoints/user_management.py:27:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+25 | async def create_manager(
+26 |     user_data: IUserCreate,
+27 |     current_user: User = Depends(current_admin_user),
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+28 |     user_service=Depends(get_user_service),
+29 | ):
+   |
+
+api/v1/endpoints/user_management.py:28:18: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+26 |     user_data: IUserCreate,
+27 |     current_user: User = Depends(current_admin_user),
+28 |     user_service=Depends(get_user_service),
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+29 | ):
+30 |     """Create a new manager user (only for admins with active subscription)"""
+   |
+
+api/v1/endpoints/user_management.py:52:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+50 | async def create_checker(
+51 |     user_data: IUserCreate,
+52 |     current_user: User = Depends(current_admin_user),
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+53 |     user_service=Depends(get_user_service),
+54 | ):
+   |
+
+api/v1/endpoints/user_management.py:53:18: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+51 |     user_data: IUserCreate,
+52 |     current_user: User = Depends(current_admin_user),
+53 |     user_service=Depends(get_user_service),
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+54 | ):
+55 |     """Create a new checker user (only for admins with active subscription)"""
+   |
+
+api/v1/endpoints/user_management.py:76:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+74 | @router.get("/my-users", response_model=List[UserResponse])
+75 | async def get_my_users(
+76 |     current_user: User = Depends(current_active_user)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+77 | ):
+78 |     """Get all users created by current admin"""
+   |
+
+api/v1/endpoints/user_management.py:96:26: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+94 | async def delete_user(
+95 |     user_id: str,
+96 |     current_user: User = Depends(current_admin_user)
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+97 | ):
+98 |     """Delete a user (only their creator admin can do this)"""
+   |
+
+api/v1/endpoints/user_management.py:109:89: E501 Line too long (92 > 88)
+    |
+108 |     if user.created_by_id != str(current_user.id):
+109 |         raise HTTPException(status_code=403, detail="You can only delete users you created")
+    |                                                                                         ^^^^ E501
+110 |
+111 |     if user.role not in [UserRoleEnum.MANAGER, UserRoleEnum.CHECKER]:
+    |
+
+api/v1/endpoints/user_management.py:112:89: E501 Line too long (99 > 88)
+    |
+111 |     if user.role not in [UserRoleEnum.MANAGER, UserRoleEnum.CHECKER]:
+112 |         raise HTTPException(status_code=403, detail="You can only delete manager or checker users")
+    |                                                                                         ^^^^^^^^^^^ E501
+113 |
+114 |     await db.session.delete(user)
+    |
+
+config.py:51:9: N802 Function name `REDIS_URL` should be lowercase
+   |
+49 |     @computed_field
+50 |     @property
+51 |     def REDIS_URL(self) -> str:
+   |         ^^^^^^^^^ N802
+52 |         if self.ENVIRONMENT in ["production", "docker"]:
+53 |             host = self.REDIS_HOST
+   |
+
+config.py:84:9: N802 Function name `POSTGRES_POOL_SIZE_BY_SERVER` should be lowercase
+   |
+82 |     @computed_field
+83 |     @property
+84 |     def POSTGRES_POOL_SIZE_BY_SERVER(self) -> int:
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ N802
+85 |         return self.POSTGRES_POOL_SIZE // self.WEB_CONCURRENCY
+   |
+
+config.py:91:9: N802 Function name `DB_ASYNC_CONNECTION_STR` should be lowercase
+   |
+89 |     @computed_field
+90 |     @property
+91 |     def DB_ASYNC_CONNECTION_STR(self) -> str:
+   |         ^^^^^^^^^^^^^^^^^^^^^^^ N802
+92 |         if self.ENVIRONMENT in ["production", "docker"]:
+93 |             host = self.POSTGRES_HOST
+   |
+
+core/config.py:5:89: E501 Line too long (96 > 88)
+  |
+4 | class Settings(BaseSettings):
+5 |     REDIS_URL: str = "redis://localhost:6379/0"  # для локальной разработки используем localhost
+  |                                                                                         ^^^^^^^^ E501
+6 |
+7 |     class Config:
+  |
+
+core/user_management.py:31:89: E501 Line too long (97 > 88)
+   |
+29 | #     """Custom JWT Strategy for refresh token"""
+30 | #     def __init__(self,  secret: str, lifetime_seconds: int, algorithm: str = "HS256"):
+31 | #         super().__init__(secret=secret, lifetime_seconds=lifetime_seconds, algorithm=algorithm)
+   |                                                                                         ^^^^^^^^^ E501
+32 | #         self.secret = secret
+33 | #         self.lifetime_seconds = lifetime_seconds
+   |
+
+core/user_management.py:117:44: B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+    |
+116 | async def get_user_service(
+117 |     user_session: SQLAlchemyUserDatabase = Depends(get_user_session),
+    |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^ B008
+118 | ):
+119 |     yield UserService(user_session)
+    |
+
+crud/__init__.py:2:15: F401 `.company` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all cruds there
+2 | from . import company, employee, employee_office_link, office, office_expenses
+  |               ^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `company as company`
+
+crud/__init__.py:2:24: F401 `.employee` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all cruds there
+2 | from . import company, employee, employee_office_link, office, office_expenses
+  |                        ^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `employee as employee`
+
+crud/__init__.py:2:34: F401 `.employee_office_link` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all cruds there
+2 | from . import company, employee, employee_office_link, office, office_expenses
+  |                                  ^^^^^^^^^^^^^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `employee_office_link as employee_office_link`
+
+crud/__init__.py:2:56: F401 `.office` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all cruds there
+2 | from . import company, employee, employee_office_link, office, office_expenses
+  |                                                        ^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `office as office`
+
+crud/__init__.py:2:64: F401 `.office_expenses` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all cruds there
+2 | from . import company, employee, employee_office_link, office, office_expenses
+  |                                                                ^^^^^^^^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `office_expenses as office_expenses`
+
+crud/base.py:171:44: B008 Do not perform function call `LimitOffsetParams` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+    |
+169 |         self,
+170 |         *,
+171 |         params: LimitOffsetParams | None = LimitOffsetParams(),
+    |                                            ^^^^^^^^^^^^^^^^^^^ B008
+172 |         query: SelectOfScalar[ModelType] | None = None,
+173 |         db_session: AsyncSession | None = None,
+    |
+
+crud/base.py:186:44: B008 Do not perform function call `LimitOffsetParams` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+    |
+184 |         self,
+185 |         *,
+186 |         params: LimitOffsetParams | None = LimitOffsetParams(),
+    |                                            ^^^^^^^^^^^^^^^^^^^ B008
+187 |         order_by: str | None = "id",
+188 |         order: ListOrderEnum | None = ListOrderEnum.descendent,
+    |
+
+crud/base.py:208:89: E501 Line too long (100 > 88)
+    |
+207 |         # Добавляем подсчет уникальных записей
+208 |         count_query = select(func.count(func.distinct(self.model.id))).select_from(query.subquery())
+    |                                                                                         ^^^^^^^^^^^^ E501
+209 |
+210 |         total = (await session.execute(count_query)).scalar_one()
+    |
+
+crud/base.py:278:13: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+276 |               await session.rollback()
+277 |               print(e)
+278 | /             raise HTTPException(
+279 | |                 status_code=409,
+280 | |                 detail="Integrity error, create",
+281 | |             )
+    | |_____________^ B904
+282 |           await session.refresh(db_obj)
+283 |           return db_obj
+    |
+
+crud/base.py:324:13: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+322 |               await session.rollback()
+323 |               print(e)
+324 | /             raise HTTPException(
+325 | |                 status_code=409,
+326 | |                 detail="Integrity error, create or update",
+327 | |             )
+    | |_____________^ B904
+328 |
+329 |           db_obj = response.scalar_one()
+    |
+
+crud/base.py:375:13: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+373 |               await session.rollback()
+374 |               print(e)
+375 | /             raise HTTPException(
+376 | |                 status_code=409,
+377 | |                 detail="Integrity error, create or update",
+378 | |             )
+    | |_____________^ B904
+379 |
+380 |       async def update(
+    |
+
+crud/base.py:395:89: E501 Line too long (97 > 88)
+    |
+393 |             update_data = obj_new.model_dump(
+394 |                 exclude_unset=True
+395 |             )  # This tells Pydantic to not include the values that were not sent (default value)
+    |                                                                                         ^^^^^^^^^ E501
+396 |
+397 |         obj_current.model_update(**update_data)
+    |
+
+crud/company.py:43:45: RUF003 Comment contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+41 |         session = db_session or self.db.session
+42 |
+43 |         # Проверяем, связан ли пользователь с компанией
+   |                                             ^ RUF003
+44 |         query = select(Company).where(
+45 |             Company.id == company.id,
+   |
+
+crud/company.py:61:89: E501 Line too long (114 > 88)
+   |
+59 |         return company
+60 |
+61 |     async def get_company_by_wb_user_id(self, wb_user_id: int, db_session: AsyncSession | None = None) -> Company:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+62 |         """Получение компании по wb_user_id"""
+63 |         session = db_session or self.db.session
+   |
+
+crud/employee.py:35:89: E501 Line too long (116 > 88)
+   |
+33 |         return response.scalar_one_or_none()
+34 |
+35 |     async def get_by_employee_id(self, employee_id: int, db_session: AsyncSession | None = None) -> Employee | None:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+36 |         """Получение сотрудника по employee_id."""
+37 |         session: AsyncSession = db_session or self.db.session
+   |
+
+crud/employee.py:45:89: E501 Line too long (96 > 88)
+   |
+43 |         return employee
+44 |
+45 |     async def get_all_employees(self, db_session: AsyncSession | None = None) -> list[Employee]:
+   |                                                                                         ^^^^^^^^ E501
+46 |         """Получение всех сотрудников в виде словаря {user_id: Employee}"""
+47 |         session: AsyncSession = db_session or self.db.session
+   |
+
+crud/employee.py:53:89: E501 Line too long (121 > 88)
+   |
+51 |         return {employee.user_id: employee for employee in employees}
+52 |
+53 |     async def get_offices_by_employee_id(self, employee_id: int, db_session: AsyncSession | None = None) -> list[Office]:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+54 |         """Получить офисы по employee_id."""
+55 |         session: AsyncSession = db_session or self.db.session
+   |
+
+crud/employee.py:57:89: E501 Line too long (96 > 88)
+   |
+55 |         session: AsyncSession = db_session or self.db.session
+56 |
+57 |         db_employee = await self.get_by_employee_id(employee_id=employee_id, db_session=session)
+   |                                                                                         ^^^^^^^^ E501
+58 |         if not db_employee:
+59 |             raise ValueError(f"Employee with employee_id={employee_id} not found in the database.")
+   |
+
+crud/employee.py:59:89: E501 Line too long (99 > 88)
+   |
+57 |         db_employee = await self.get_by_employee_id(employee_id=employee_id, db_session=session)
+58 |         if not db_employee:
+59 |             raise ValueError(f"Employee with employee_id={employee_id} not found in the database.")
+   |                                                                                         ^^^^^^^^^^^ E501
+60 |         query = (
+61 |             select(Office)
+   |
+
+crud/employee.py:69:75: B008 Do not perform function call `LimitOffsetParams` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   |
+68 |     async def get_employees_by_user_id(self, user_id: UUID4,
+69 |                                        params: LimitOffsetParams | None = LimitOffsetParams(),
+   |                                                                           ^^^^^^^^^^^^^^^^^^^ B008
+70 |                                        order_by: str = "id",
+71 |                                        order: ListOrderEnum = ListOrderEnum.descendent,
+   |
+
+crud/employee.py:69:89: E501 Line too long (94 > 88)
+   |
+68 |     async def get_employees_by_user_id(self, user_id: UUID4,
+69 |                                        params: LimitOffsetParams | None = LimitOffsetParams(),
+   |                                                                                         ^^^^^^ E501
+70 |                                        order_by: str = "id",
+71 |                                        order: ListOrderEnum = ListOrderEnum.descendent,
+   |
+
+crud/employee.py:72:89: E501 Line too long (111 > 88)
+   |
+70 |                                        order_by: str = "id",
+71 |                                        order: ListOrderEnum = ListOrderEnum.descendent,
+72 |                                        db_session: AsyncSession | None = None) -> IResponsePaginated[Employee]:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^ E501
+73 |         """Получение связанных сотрудников пользователя
+   |
+
+crud/employee.py:83:73: RUF003 Comment contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+81 |         """
+82 |
+83 |         # Условие соединения: связываем Employee через Office и Company с User
+   |                                                                         ^ RUF003
+84 |         # Формируем запрос с цепочкой join
+85 |         join_conditions = [
+   |
+
+crud/employee.py:84:28: RUF003 Comment contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+83 |         # Условие соединения: связываем Employee через Office и Company с User
+84 |         # Формируем запрос с цепочкой join
+   |                            ^ RUF003
+85 |         join_conditions = [
+86 |             (EmployeeOfficeLink, Employee.id == EmployeeOfficeLink.employee_id),
+   |
+
+crud/employee_office_link.py:12:89: E501 Line too long (111 > 88)
+   |
+12 | class CRUDEmployeeOfficeLink(CRUDBase[EmployeeOfficeLink, IEmployeeOfficeLinkCreate, IEmployeeOfficeLinkRead]):
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^ E501
+13 |     async def create_link(
+14 |         self,
+   |
+
+crud/office.py:22:89: E501 Line too long (110 > 88)
+   |
+21 | class OfficeCRUD(CRUDBase[Office, IOfficeCreate, IOfficeUpdate]):
+22 |     async def get_by_office_id(self, office_id: int, db_session: AsyncSession | None = None) -> Office | None:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^ E501
+23 |         """Получить офис по office_id."""
+   |
+
+crud/office.py:33:89: E501 Line too long (114 > 88)
+   |
+31 |         return office
+32 |
+33 |     async def get_by_external_id(self, external_id: int, db_session: AsyncSession | None = None) -> Office | None:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+34 |         """Получение офиса по external_id"""
+35 |         session: AsyncSession = db_session or self.db.session
+   |
+
+crud/office.py:44:89: E501 Line too long (92 > 88)
+   |
+44 |     async def get_all_offices(self, db_session: AsyncSession | None = None) -> list[Office]:
+   |                                                                                         ^^^^ E501
+45 |         """Загрузка всех офисов в виде словаря {external_id: Office}"""
+46 |         session: AsyncSession = db_session or self.db.session
+   |
+
+crud/office.py:53:89: E501 Line too long (120 > 88)
+   |
+53 |     async def get_employee_by_office_id(self, office_id: int, db_session: AsyncSession | None = None) -> list[Employee]:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+54 |         """Получаем всех сотрудников по office_id."""
+55 |         session: AsyncSession = db_session or self.db.session
+   |
+
+crud/office.py:58:89: E501 Line too long (93 > 88)
+   |
+56 |         db_office = await self.get_by_office_id(office_id=office_id, db_session=session)
+57 |         if not db_office:
+58 |             raise ValueError(f"Office with office_id={office_id} not found in the database.")
+   |                                                                                         ^^^^^ E501
+59 |         query = (
+60 |             select(Employee)
+   |
+
+crud/office.py:106:89: E501 Line too long (127 > 88)
+    |
+104 |         )
+105 |
+106 |     async def get_office_by_user_id(self, *, office_id: int, user_id: UUID4, db_session: AsyncSession | None = None) -> Office:
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+107 |         """Получаем офис по user_id
+    |
+
+crud/office.py:125:10: SyntaxError: Compound statements are not allowed on the same line as simple statements
+    |
+123 |         return result.scalar_one_or_none()
+124 |
+125 |     asnc def delete_office_by_user(self, *, office_id: int, user_id: UUID4, db_session: AsyncSession | None = None) -> bool:
+    |          ^
+126 |         """Удаление офиса с проверкой принадлежности пользователю.
+    |
+
+crud/office.py:125:89: E501 Line too long (124 > 88)
+    |
+123 |         return result.scalar_one_or_none()
+124 |
+125 |     asnc def delete_office_by_user(self, *, office_id: int, user_id: UUID4, db_session: AsyncSession | None = None) -> bool:
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+126 |         """Удаление офиса с проверкой принадлежности пользователю.
+    |
+
+crud/office.py:127:1: W293 Blank line contains whitespace
+    |
+125 |     asnc def delete_office_by_user(self, *, office_id: int, user_id: UUID4, db_session: AsyncSession | None = None) -> bool:
+126 |         """Удаление офиса с проверкой принадлежности пользователю.
+127 |         
+    | ^^^^^^^^ W293
+128 |         Args:
+129 |             office_id: ID офиса
+    |
+    = help: Remove whitespace from blank line
+
+crud/office.py:158:1: W293 Blank line contains whitespace
+    |
+156 |                 detail="У вас нет прав на удаление этого офиса"
+157 |             )
+158 |         
+    | ^^^^^^^^ W293
+159 |         await self.delete(id=office.id, db_session=session)
+160 |         return True
+    |
+    = help: Remove whitespace from blank line
+
+crud/office_expenses.py:14:89: E501 Line too long (97 > 88)
+   |
+14 | class OfficeExpensesCRUD(CRUDBase[OfficeExpenses, IOfficeExpensesCreate, IOfficeExpensesUpdate]):
+   |                                                                                         ^^^^^^^^^ E501
+15 |     async def verify_office_access(self, office_id: int, user_id: int, db_session: AsyncSession | None = None) -> None:
+16 |         """Проверка доступа пользователя к офису"""
+   |
+
+crud/office_expenses.py:15:89: E501 Line too long (119 > 88)
+   |
+14 | class OfficeExpensesCRUD(CRUDBase[OfficeExpenses, IOfficeExpensesCreate, IOfficeExpensesUpdate]):
+15 |     async def verify_office_access(self, office_id: int, user_id: int, db_session: AsyncSession | None = None) -> None:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+16 |         """Проверка доступа пользователя к офису"""
+17 |         office = await office_crud.get_office_by_user_id(office_id=office_id, user_id=user_id)
+   |
+
+crud/office_expenses.py:17:89: E501 Line too long (94 > 88)
+   |
+15 |     async def verify_office_access(self, office_id: int, user_id: int, db_session: AsyncSession | None = None) -> None:
+16 |         """Проверка доступа пользователя к офису"""
+17 |         office = await office_crud.get_office_by_user_id(office_id=office_id, user_id=user_id)
+   |                                                                                         ^^^^^^ E501
+18 |         if not office:
+19 |             raise HTTPException(
+   |
+
+crud/office_expenses.py:25:89: E501 Line too long (114 > 88)
+   |
+25 |     async def get_expenses_or_404(self, office_id: int, db_session: AsyncSession | None = None) -> OfficeExpenses:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+26 |         """Получение office expenses по office_id или 404"""
+27 |         expenses = await self.get_by_office_id(office_id=office_id)
+   |
+
+crud/office_expenses.py:29:89: E501 Line too long (122 > 88)
+   |
+27 |         expenses = await self.get_by_office_id(office_id=office_id)
+28 |         if not expenses:
+29 |             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Office expenses not found for this office")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+30 |         return expenses
+   |
+
+crud/office_expenses.py:33:89: E501 Line too long (118 > 88)
+   |
+33 |     async def get_by_office_id(self, office_id: int, db_session: AsyncSession | None = None) -> OfficeExpenses | None:
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+34 |         """Получаем office expenses by office id
+   |
+
+middleware/token_refresh_middleware.py:21:89: E501 Line too long (106 > 88)
+   |
+20 |             if refresh_token:
+21 |                 new_tokens = await self.api_auth.connect_code(username=phone, refresh_token=refresh_token)
+   |                                                                                         ^^^^^^^^^^^^^^^^^^ E501
+22 |
+23 |                 await self.redis_client.set(f"{phone}:access_token", new_tokens.access_token)
+   |
+
+middleware/token_refresh_middleware.py:23:89: E501 Line too long (93 > 88)
+   |
+21 |                 new_tokens = await self.api_auth.connect_code(username=phone, refresh_token=refresh_token)
+22 |
+23 |                 await self.redis_client.set(f"{phone}:access_token", new_tokens.access_token)
+   |                                                                                         ^^^^^ E501
+24 |                 await self.redis_client.set(f"{phone}:refresh_token", new_tokens.refresh_token)
+   |
+
+middleware/token_refresh_middleware.py:24:89: E501 Line too long (95 > 88)
+   |
+23 |                 await self.redis_client.set(f"{phone}:access_token", new_tokens.access_token)
+24 |                 await self.redis_client.set(f"{phone}:refresh_token", new_tokens.refresh_token)
+   |                                                                                         ^^^^^^^ E501
+25 |
+26 |                 request.headers["Authorization"] = f"Bearer {new_tokens.access_token}"
+   |
+
+migrations/versions/2024_08_31_1348-253ef4333727_.py:22:89: E501 Line too long (107 > 88)
+   |
+20 |     # ### commands auto generated by Alembic - please adjust! ###
+21 |     op.create_table('company',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+24 |     sa.Column('id', sa.Integer(), nullable=False),
+   |
+
+migrations/versions/2024_08_31_1348-253ef4333727_.py:23:89: E501 Line too long (107 > 88)
+   |
+21 |     op.create_table('company',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+24 |     sa.Column('id', sa.Integer(), nullable=False),
+25 |     sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+   |
+
+migrations/versions/2024_08_31_1348-253ef4333727_.py:37:89: E501 Line too long (114 > 88)
+   |
+35 |     sa.Column('is_verified', sa.Boolean(), nullable=False),
+36 |     sa.Column('phone', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+37 |     sa.Column('role', sa.Enum('MANAGER', 'ADMIN', 'CHECKER', 'SUPER_ADMIN', name='userroleenum'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+38 |     sa.PrimaryKeyConstraint('id')
+39 |     )
+   |
+
+migrations/versions/2024_08_31_1722-8b5e1121e34c_.py:22:89: E501 Line too long (107 > 88)
+   |
+20 |     # ### commands auto generated by Alembic - please adjust! ###
+21 |     op.create_table('office',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+24 |     sa.Column('id', sa.Integer(), nullable=False),
+   |
+
+migrations/versions/2024_08_31_1722-8b5e1121e34c_.py:23:89: E501 Line too long (107 > 88)
+   |
+21 |     op.create_table('office',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+24 |     sa.Column('id', sa.Integer(), nullable=False),
+25 |     sa.Column('office_id', sa.Integer(), nullable=True),
+   |
+
+migrations/versions/2024_09_02_2233-e76e8b3f0ec4_.py:22:89: E501 Line too long (107 > 88)
+   |
+20 |     # ### commands auto generated by Alembic - please adjust! ###
+21 |     op.create_table('employee',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+24 |     sa.Column('id', sa.Integer(), nullable=False),
+   |
+
+migrations/versions/2024_09_02_2233-e76e8b3f0ec4_.py:23:89: E501 Line too long (107 > 88)
+   |
+21 |     op.create_table('employee',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+24 |     sa.Column('id', sa.Integer(), nullable=False),
+25 |     sa.Column('create_date', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+   |
+
+migrations/versions/2024_09_08_1418-f2e63aef3a44_.py:20:89: E501 Line too long (94 > 88)
+   |
+18 |     # ### commands auto generated by Alembic - please adjust! ###
+19 |     op.create_index(op.f('ix_company_phone'), 'company', ['phone'], unique=True)
+20 |     op.create_index(op.f('ix_employee_employee_id'), 'employee', ['employee_id'], unique=True)
+   |                                                                                         ^^^^^^ E501
+21 |     op.create_index(op.f('ix_office_office_id'), 'office', ['office_id'], unique=True)
+22 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2024_09_19_2221-1027dda0dcf7_.py:21:89: E501 Line too long (101 > 88)
+   |
+19 | def upgrade() -> None:
+20 |     # ### commands auto generated by Alembic - please adjust! ###
+21 |     op.add_column('user', sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^ E501
+22 |     op.add_column('user', sa.Column('last_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+23 |     op.add_column('user', sa.Column('middle_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |
+
+migrations/versions/2024_09_19_2221-1027dda0dcf7_.py:22:89: E501 Line too long (100 > 88)
+   |
+20 |     # ### commands auto generated by Alembic - please adjust! ###
+21 |     op.add_column('user', sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+22 |     op.add_column('user', sa.Column('last_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |                                                                                         ^^^^^^^^^^^^ E501
+23 |     op.add_column('user', sa.Column('middle_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+24 |     op.add_column('user', sa.Column('tg_id', sa.Integer(), nullable=True))
+   |
+
+migrations/versions/2024_09_19_2221-1027dda0dcf7_.py:23:89: E501 Line too long (102 > 88)
+   |
+21 |     op.add_column('user', sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+22 |     op.add_column('user', sa.Column('last_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+23 |     op.add_column('user', sa.Column('middle_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^ E501
+24 |     op.add_column('user', sa.Column('tg_id', sa.Integer(), nullable=True))
+25 |     op.add_column('user', sa.Column('employee_id', sa.Integer(), nullable=True))
+   |
+
+migrations/versions/2024_09_22_1050-11e4ade5e547_.py:33:89: E501 Line too long (101 > 88)
+   |
+31 | def downgrade() -> None:
+32 |     # ### commands auto generated by Alembic - please adjust! ###
+33 |     op.add_column('user', sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^ E501
+34 |     op.create_foreign_key('user_employee_id_fkey', 'user', 'employee', ['employee_id'], ['id'])
+35 |     op.alter_column('user', 'tg_id',
+   |
+
+migrations/versions/2024_09_22_1050-11e4ade5e547_.py:34:89: E501 Line too long (95 > 88)
+   |
+32 |     # ### commands auto generated by Alembic - please adjust! ###
+33 |     op.add_column('user', sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=True))
+34 |     op.create_foreign_key('user_employee_id_fkey', 'user', 'employee', ['employee_id'], ['id'])
+   |                                                                                         ^^^^^^^ E501
+35 |     op.alter_column('user', 'tg_id',
+36 |                existing_type=sqlmodel.sql.sqltypes.AutoString(),
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:23:89: E501 Line too long (107 > 88)
+   |
+21 |     # ### commands auto generated by Alembic - please adjust! ###
+22 |     op.create_table('operation',
+23 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+24 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+25 |     sa.Column('id', sa.Integer(), nullable=False),
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:24:89: E501 Line too long (107 > 88)
+   |
+22 |     op.create_table('operation',
+23 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+24 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+25 |     sa.Column('id', sa.Integer(), nullable=False),
+26 |     sa.Column('operation_id', sa.Integer(), nullable=False),
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:41:89: E501 Line too long (100 > 88)
+   |
+39 |     )
+40 |     op.add_column('employee', sa.Column('user_id', sa.Integer(), nullable=False))
+41 |     op.add_column('employee', sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False))
+   |                                                                                         ^^^^^^^^^^^^ E501
+42 |     op.add_column('employee', sa.Column('phone', sa.Integer(), nullable=False))
+43 |     op.add_column('employee', sa.Column('office_id', sa.Integer(), nullable=True))
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:47:89: E501 Line too long (96 > 88)
+   |
+45 |     op.create_index(op.f('ix_employee_user_id'), 'employee', ['user_id'], unique=True)
+46 |     op.drop_constraint('employee_company_id_fkey', 'employee', type_='foreignkey')
+47 |     op.create_foreign_key(None, 'employee', 'office', ['office_id'], ['id'], ondelete='CASCADE')
+   |                                                                                         ^^^^^^^^ E501
+48 |     op.drop_column('employee', 'company_id')
+49 |     op.drop_column('employee', 'shortages_sum')
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:55:89: E501 Line too long (102 > 88)
+   |
+53 |     op.drop_column('employee', 'phones')
+54 |     op.drop_column('employee', 'middle_name')
+55 |     op.add_column('office', sa.Column('latitude', sqlmodel.sql.sqltypes.AutoString(), nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^ E501
+56 |     op.add_column('office', sa.Column('longitude', sqlmodel.sql.sqltypes.AutoString(), nullable=False))
+57 |     op.add_column('office', sa.Column('is_active', sa.Boolean(), nullable=False))
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:56:89: E501 Line too long (103 > 88)
+   |
+54 |     op.drop_column('employee', 'middle_name')
+55 |     op.add_column('office', sa.Column('latitude', sqlmodel.sql.sqltypes.AutoString(), nullable=False))
+56 |     op.add_column('office', sa.Column('longitude', sqlmodel.sql.sqltypes.AutoString(), nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^^ E501
+57 |     op.add_column('office', sa.Column('is_active', sa.Boolean(), nullable=False))
+58 |     op.add_column('office', sa.Column('external_id', sa.Integer(), nullable=True))
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:67:89: E501 Line too long (107 > 88)
+   |
+65 | def downgrade() -> None:
+66 |     # ### commands auto generated by Alembic - please adjust! ###
+67 |     op.add_column('office', sa.Column('is_site_active', sa.BOOLEAN(), autoincrement=False, nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+68 |     op.add_column('office', sa.Column('office_shk', sa.VARCHAR(), autoincrement=False, nullable=False))
+69 |     op.drop_column('office', 'rate')
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:68:89: E501 Line too long (103 > 88)
+   |
+66 |     # ### commands auto generated by Alembic - please adjust! ###
+67 |     op.add_column('office', sa.Column('is_site_active', sa.BOOLEAN(), autoincrement=False, nullable=False))
+68 |     op.add_column('office', sa.Column('office_shk', sa.VARCHAR(), autoincrement=False, nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^^ E501
+69 |     op.drop_column('office', 'rate')
+70 |     op.drop_column('office', 'external_id')
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:74:89: E501 Line too long (106 > 88)
+   |
+72 |     op.drop_column('office', 'longitude')
+73 |     op.drop_column('office', 'latitude')
+74 |     op.add_column('employee', sa.Column('middle_name', sa.VARCHAR(), autoincrement=False, nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^ E501
+75 |     op.add_column('employee', sa.Column('phones', postgresql.ARRAY(sa.VARCHAR()), autoincrement=False, nullable=True))
+76 |     op.add_column('employee', sa.Column('rating', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:75:89: E501 Line too long (118 > 88)
+   |
+73 |     op.drop_column('office', 'latitude')
+74 |     op.add_column('employee', sa.Column('middle_name', sa.VARCHAR(), autoincrement=False, nullable=False))
+75 |     op.add_column('employee', sa.Column('phones', postgresql.ARRAY(sa.VARCHAR()), autoincrement=False, nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+76 |     op.add_column('employee', sa.Column('rating', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+77 |     op.add_column('employee', sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=False))
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:76:89: E501 Line too long (121 > 88)
+   |
+74 |     op.add_column('employee', sa.Column('middle_name', sa.VARCHAR(), autoincrement=False, nullable=False))
+75 |     op.add_column('employee', sa.Column('phones', postgresql.ARRAY(sa.VARCHAR()), autoincrement=False, nullable=True))
+76 |     op.add_column('employee', sa.Column('rating', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+77 |     op.add_column('employee', sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=False))
+78 |     op.add_column('employee', sa.Column('first_name', sa.VARCHAR(), autoincrement=False, nullable=False))
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:77:89: E501 Line too long (106 > 88)
+   |
+75 |     op.add_column('employee', sa.Column('phones', postgresql.ARRAY(sa.VARCHAR()), autoincrement=False, nullable=True))
+76 |     op.add_column('employee', sa.Column('rating', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+77 |     op.add_column('employee', sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^ E501
+78 |     op.add_column('employee', sa.Column('first_name', sa.VARCHAR(), autoincrement=False, nullable=False))
+79 |     op.add_column('employee', sa.Column('shortages_sum', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:78:89: E501 Line too long (105 > 88)
+   |
+76 |     op.add_column('employee', sa.Column('rating', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+77 |     op.add_column('employee', sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=False))
+78 |     op.add_column('employee', sa.Column('first_name', sa.VARCHAR(), autoincrement=False, nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^^^^ E501
+79 |     op.add_column('employee', sa.Column('shortages_sum', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+80 |     op.add_column('employee', sa.Column('company_id', sa.INTEGER(), autoincrement=False, nullable=True))
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:79:89: E501 Line too long (128 > 88)
+   |
+77 |     op.add_column('employee', sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=False))
+78 |     op.add_column('employee', sa.Column('first_name', sa.VARCHAR(), autoincrement=False, nullable=False))
+79 |     op.add_column('employee', sa.Column('shortages_sum', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+80 |     op.add_column('employee', sa.Column('company_id', sa.INTEGER(), autoincrement=False, nullable=True))
+81 |     op.drop_constraint(None, 'employee', type_='foreignkey')
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:80:89: E501 Line too long (104 > 88)
+   |
+78 |     op.add_column('employee', sa.Column('first_name', sa.VARCHAR(), autoincrement=False, nullable=False))
+79 |     op.add_column('employee', sa.Column('shortages_sum', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True))
+80 |     op.add_column('employee', sa.Column('company_id', sa.INTEGER(), autoincrement=False, nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^ E501
+81 |     op.drop_constraint(None, 'employee', type_='foreignkey')
+82 |     op.create_foreign_key('employee_company_id_fkey', 'employee', 'company', ['company_id'], ['id'], ondelete='CASCADE')
+   |
+
+migrations/versions/2024_12_18_1636-cb4b25df98fc_update_office_employee_add_operation.py:82:89: E501 Line too long (120 > 88)
+   |
+80 |     op.add_column('employee', sa.Column('company_id', sa.INTEGER(), autoincrement=False, nullable=True))
+81 |     op.drop_constraint(None, 'employee', type_='foreignkey')
+82 |     op.create_foreign_key('employee_company_id_fkey', 'employee', 'company', ['company_id'], ['id'], ondelete='CASCADE')
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+83 |     op.drop_index(op.f('ix_employee_user_id'), table_name='employee')
+84 |     op.create_index('ix_employee_employee_id', 'employee', ['employee_id'], unique=True)
+   |
+
+migrations/versions/2024_12_18_1704-c22a5831bf65_update_company_model.py:22:89: E501 Line too long (102 > 88)
+   |
+20 |     # ### commands auto generated by Alembic - please adjust! ###
+21 |     op.add_column('company', sa.Column('wb_user_id', sa.Integer(), nullable=True))
+22 |     op.add_column('company', sa.Column('org_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^ E501
+23 |     op.alter_column('company', 'phone',
+24 |                existing_type=sa.VARCHAR(),
+   |
+
+migrations/versions/2024_12_18_1704-c22a5831bf65_update_company_model.py:34:89: E501 Line too long (104 > 88)
+   |
+32 | def downgrade() -> None:
+33 |     # ### commands auto generated by Alembic - please adjust! ###
+34 |     op.add_column('company', sa.Column('supplier_id', sa.INTEGER(), autoincrement=False, nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^ E501
+35 |     op.alter_column('company', 'phone',
+36 |                existing_type=sa.Integer(),
+   |
+
+migrations/versions/2024_12_19_1034-d1e6904cdfe2_add_unique_constraint_to_wb_user_id.py:19:89: E501 Line too long (90 > 88)
+   |
+17 | def upgrade() -> None:
+18 |     # ### commands auto generated by Alembic - please adjust! ###
+19 |     op.create_index(op.f('ix_company_wb_user_id'), 'company', ['wb_user_id'], unique=True)
+   |                                                                                         ^^ E501
+20 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2024_12_19_1130-d97d51e3f9b5_add_employeeofficelink_table.py:34:89: E501 Line too long (103 > 88)
+   |
+32 | def downgrade() -> None:
+33 |     # ### commands auto generated by Alembic - please adjust! ###
+34 |     op.add_column('employee', sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^ E501
+35 |     op.create_foreign_key('employee_office_id_fkey', 'employee', 'office', ['office_id'], ['id'], ondelete='CASCADE')
+36 |     op.drop_table('employeeofficelink')
+   |
+
+migrations/versions/2024_12_19_1130-d97d51e3f9b5_add_employeeofficelink_table.py:35:89: E501 Line too long (117 > 88)
+   |
+33 |     # ### commands auto generated by Alembic - please adjust! ###
+34 |     op.add_column('employee', sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=True))
+35 |     op.create_foreign_key('employee_office_id_fkey', 'employee', 'office', ['office_id'], ['id'], ondelete='CASCADE')
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+36 |     op.drop_table('employeeofficelink')
+37 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2024_12_24_1327-fbd0e6ca3484_add_unique_index_to_operation_id.py:19:89: E501 Line too long (98 > 88)
+   |
+17 | def upgrade() -> None:
+18 |     # ### commands auto generated by Alembic - please adjust! ###
+19 |     op.create_index(op.f('ix_operation_operation_id'), 'operation', ['operation_id'], unique=True)
+   |                                                                                         ^^^^^^^^^^ E501
+20 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_16_1020-5fdf004dce2d_add_categories_of_operstions.py:22:89: E501 Line too long (107 > 88)
+   |
+20 |     # ### commands auto generated by Alembic - please adjust! ###
+21 |     op.create_table('category',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+24 |     sa.Column('id', sa.BigInteger(), nullable=False),
+   |
+
+migrations/versions/2025_01_16_1020-5fdf004dce2d_add_categories_of_operstions.py:23:89: E501 Line too long (107 > 88)
+   |
+21 |     op.create_table('category',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+24 |     sa.Column('id', sa.BigInteger(), nullable=False),
+25 |     sa.Column('external_id', sa.Integer(), nullable=True),
+   |
+
+migrations/versions/2025_01_16_1020-5fdf004dce2d_add_categories_of_operstions.py:30:89: E501 Line too long (94 > 88)
+   |
+28 |     sa.PrimaryKeyConstraint('id')
+29 |     )
+30 |     op.create_index(op.f('ix_category_external_id'), 'category', ['external_id'], unique=True)
+   |                                                                                         ^^^^^^ E501
+31 |     op.create_index(op.f('ix_category_name'), 'category', ['name'], unique=False)
+32 |     op.create_table('operation_name',
+   |
+
+migrations/versions/2025_01_16_1020-5fdf004dce2d_add_categories_of_operstions.py:33:89: E501 Line too long (107 > 88)
+   |
+31 |     op.create_index(op.f('ix_category_name'), 'category', ['name'], unique=False)
+32 |     op.create_table('operation_name',
+33 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+34 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+35 |     sa.Column('id', sa.BigInteger(), nullable=False),
+   |
+
+migrations/versions/2025_01_16_1020-5fdf004dce2d_add_categories_of_operstions.py:34:89: E501 Line too long (107 > 88)
+   |
+32 |     op.create_table('operation_name',
+33 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+34 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+35 |     sa.Column('id', sa.BigInteger(), nullable=False),
+36 |     sa.Column('base_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+   |
+
+migrations/versions/2025_01_17_1057-1ea7a418c8e2_add_unique_constraint_to_operation_name_.py:19:89: E501 Line too long (100 > 88)
+   |
+17 | def upgrade() -> None:
+18 |     # ### commands auto generated by Alembic - please adjust! ###
+19 |     op.create_unique_constraint('operation_name_external_id_key', 'operation_name', ['external_id'])
+   |                                                                                         ^^^^^^^^^^^^ E501
+20 |     op.create_unique_constraint(None, 'operation_name', ['external_id'])
+21 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_17_1057-1ea7a418c8e2_add_unique_constraint_to_operation_name_.py:27:89: E501 Line too long (90 > 88)
+   |
+25 |     # ### commands auto generated by Alembic - please adjust! ###
+26 |     op.drop_constraint(None, 'operation_name', type_='unique')
+27 |     op.drop_constraint('operation_name_external_id_key', 'operation_name', type_='unique')
+   |                                                                                         ^^ E501
+28 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:21:89: E501 Line too long (107 > 88)
+   |
+19 |     # ### commands auto generated by Alembic - please adjust! ###
+20 |     op.create_table('pickpoint_payments',
+21 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+22 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+23 |     sa.Column('id', sa.BigInteger(), nullable=False),
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:22:89: E501 Line too long (107 > 88)
+   |
+20 |     op.create_table('pickpoint_payments',
+21 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+22 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+23 |     sa.Column('id', sa.BigInteger(), nullable=False),
+24 |     sa.Column('base_accrued', sa.Float(), nullable=False),
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:31:89: E501 Line too long (107 > 88)
+   |
+29 |     )
+30 |     op.create_table('weekly_payments',
+31 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+32 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+33 |     sa.Column('id', sa.BigInteger(), nullable=False),
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:32:89: E501 Line too long (107 > 88)
+   |
+30 |     op.create_table('weekly_payments',
+31 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+32 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+33 |     sa.Column('id', sa.BigInteger(), nullable=False),
+34 |     sa.Column('base_accrued', sa.Float(), nullable=False),
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:42:89: E501 Line too long (105 > 88)
+   |
+40 |     sa.PrimaryKeyConstraint('id')
+41 |     )
+42 |     op.create_index(op.f('ix_weekly_payments_date_from'), 'weekly_payments', ['date_from'], unique=False)
+   |                                                                                         ^^^^^^^^^^^^^^^^^ E501
+43 |     op.create_index(op.f('ix_weekly_payments_date_to'), 'weekly_payments', ['date_to'], unique=False)
+44 |     op.create_table('transaction',
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:43:89: E501 Line too long (101 > 88)
+   |
+41 |     )
+42 |     op.create_index(op.f('ix_weekly_payments_date_from'), 'weekly_payments', ['date_from'], unique=False)
+43 |     op.create_index(op.f('ix_weekly_payments_date_to'), 'weekly_payments', ['date_to'], unique=False)
+   |                                                                                         ^^^^^^^^^^^^^ E501
+44 |     op.create_table('transaction',
+45 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:45:89: E501 Line too long (107 > 88)
+   |
+43 |     op.create_index(op.f('ix_weekly_payments_date_to'), 'weekly_payments', ['date_to'], unique=False)
+44 |     op.create_table('transaction',
+45 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+46 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+47 |     sa.Column('id', sa.BigInteger(), nullable=False),
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:46:89: E501 Line too long (107 > 88)
+   |
+44 |     op.create_table('transaction',
+45 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+46 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+47 |     sa.Column('id', sa.BigInteger(), nullable=False),
+48 |     sa.Column('sum', sa.Float(), nullable=False),
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:53:89: E501 Line too long (94 > 88)
+   |
+51 |     sa.Column('weekly_payments_id', sa.Integer(), nullable=False),
+52 |     sa.Column('pickpoint_payments_id', sa.Integer(), nullable=False),
+53 |     sa.ForeignKeyConstraint(['operation_name_id'], ['operation_name.id'], ondelete='CASCADE'),
+   |                                                                                         ^^^^^^ E501
+54 |     sa.ForeignKeyConstraint(['pickpoint_payments_id'], ['pickpoint_payments.id'], ondelete='CASCADE'),
+55 |     sa.ForeignKeyConstraint(['weekly_payments_id'], ['weekly_payments.id'], ondelete='CASCADE'),
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:54:89: E501 Line too long (102 > 88)
+   |
+52 |     sa.Column('pickpoint_payments_id', sa.Integer(), nullable=False),
+53 |     sa.ForeignKeyConstraint(['operation_name_id'], ['operation_name.id'], ondelete='CASCADE'),
+54 |     sa.ForeignKeyConstraint(['pickpoint_payments_id'], ['pickpoint_payments.id'], ondelete='CASCADE'),
+   |                                                                                         ^^^^^^^^^^^^^^ E501
+55 |     sa.ForeignKeyConstraint(['weekly_payments_id'], ['weekly_payments.id'], ondelete='CASCADE'),
+56 |     sa.PrimaryKeyConstraint('id')
+   |
+
+migrations/versions/2025_01_19_2021-7c26f1f2ba09_add_weekly_and_pickpoint_payments_model_.py:55:89: E501 Line too long (96 > 88)
+   |
+53 |     sa.ForeignKeyConstraint(['operation_name_id'], ['operation_name.id'], ondelete='CASCADE'),
+54 |     sa.ForeignKeyConstraint(['pickpoint_payments_id'], ['pickpoint_payments.id'], ondelete='CASCADE'),
+55 |     sa.ForeignKeyConstraint(['weekly_payments_id'], ['weekly_payments.id'], ondelete='CASCADE'),
+   |                                                                                         ^^^^^^^^ E501
+56 |     sa.PrimaryKeyConstraint('id')
+57 |     )
+   |
+
+migrations/versions/2025_01_21_2124-7fd2e6766848_add_relationship_between_office_and_.py:21:89: E501 Line too long (99 > 88)
+   |
+19 |     # ### commands auto generated by Alembic - please adjust! ###
+20 |     op.add_column('transaction', sa.Column('office_id', sa.Integer(), nullable=False))
+21 |     op.create_foreign_key(None, 'transaction', 'office', ['office_id'], ['id'], ondelete='CASCADE')
+   |                                                                                         ^^^^^^^^^^^ E501
+22 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_21_2135-f2bd5818bae0_move_office_relsation_from_transaction_.py:27:89: E501 Line too long (107 > 88)
+   |
+25 | def downgrade() -> None:
+26 |     # ### commands auto generated by Alembic - please adjust! ###
+27 |     op.add_column('transaction', sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+28 |     op.create_foreign_key('transaction_office_id_fkey', 'transaction', 'office', ['office_id'], ['id'], ondelete='CASCADE')
+29 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_21_2135-f2bd5818bae0_move_office_relsation_from_transaction_.py:28:89: E501 Line too long (123 > 88)
+   |
+26 |     # ### commands auto generated by Alembic - please adjust! ###
+27 |     op.add_column('transaction', sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=False))
+28 |     op.create_foreign_key('transaction_office_id_fkey', 'transaction', 'office', ['office_id'], ['id'], ondelete='CASCADE')
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+29 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_21_2136-4fa67ede1007_move_office_relsation_from_transaction_.py:20:89: E501 Line too long (93 > 88)
+   |
+18 | def upgrade() -> None:
+19 |     # ### commands auto generated by Alembic - please adjust! ###
+20 |     op.add_column('pickpoint_payments', sa.Column('office_id', sa.Integer(), nullable=False))
+   |                                                                                         ^^^^^ E501
+21 |     op.create_foreign_key(None, 'pickpoint_payments', 'office', ['office_id'], ['id'], ondelete='CASCADE')
+22 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_21_2136-4fa67ede1007_move_office_relsation_from_transaction_.py:21:89: E501 Line too long (106 > 88)
+   |
+19 |     # ### commands auto generated by Alembic - please adjust! ###
+20 |     op.add_column('pickpoint_payments', sa.Column('office_id', sa.Integer(), nullable=False))
+21 |     op.create_foreign_key(None, 'pickpoint_payments', 'office', ['office_id'], ['id'], ondelete='CASCADE')
+   |                                                                                         ^^^^^^^^^^^^^^^^^^ E501
+22 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_22_1032-1dfba2935714_add_foreign_key_weekly_payments_id_to_.py:20:89: E501 Line too long (102 > 88)
+   |
+18 | def upgrade() -> None:
+19 |     # ### commands auto generated by Alembic - please adjust! ###
+20 |     op.add_column('pickpoint_payments', sa.Column('weekly_payments_id', sa.Integer(), nullable=False))
+   |                                                                                         ^^^^^^^^^^^^^^ E501
+21 |     op.create_foreign_key(None, 'pickpoint_payments', 'weekly_payments', ['weekly_payments_id'], ['id'], ondelete='CASCADE')
+22 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_22_1032-1dfba2935714_add_foreign_key_weekly_payments_id_to_.py:21:89: E501 Line too long (124 > 88)
+   |
+19 |     # ### commands auto generated by Alembic - please adjust! ###
+20 |     op.add_column('pickpoint_payments', sa.Column('weekly_payments_id', sa.Integer(), nullable=False))
+21 |     op.create_foreign_key(None, 'pickpoint_payments', 'weekly_payments', ['weekly_payments_id'], ['id'], ondelete='CASCADE')
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+22 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_28_1043-867eded418cc_add_unique_constraint_on_date_from_and_.py:19:89: E501 Line too long (104 > 88)
+   |
+17 | def upgrade() -> None:
+18 |     # ### commands auto generated by Alembic - please adjust! ###
+19 |     op.create_unique_constraint('unique_date_from_date_to', 'weekly_payments', ['date_from', 'date_to'])
+   |                                                                                         ^^^^^^^^^^^^^^^^ E501
+20 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_28_1314-a10f399f3a34_add_unique_constraint_to_pickpoint_.py:19:89: E501 Line too long (114 > 88)
+   |
+17 | def upgrade() -> None:
+18 |     # ### commands auto generated by Alembic - please adjust! ###
+19 |     op.create_unique_constraint('unique_office_weekly', 'pickpoint_payments', ['office_id', 'weekly_payments_id'])
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+20 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_01_28_1319-16a716fed417_add_unique_constraint_to_transaction.py:19:89: E501 Line too long (138 > 88)
+   |
+17 | …
+18 | …ease adjust! ###
+19 | …on', 'transaction', ['weekly_payments_id', 'pickpoint_payments_id', 'operation_name_id'])
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+20 | …
+   |
+
+migrations/versions/2025_02_04_2254-d80def2ed00e_add_total_handle_and_pickpoint_handle_.py:22:89: E501 Line too long (107 > 88)
+   |
+20 |     # ### commands auto generated by Alembic - please adjust! ###
+21 |     op.create_table('total_handle',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+24 |     sa.Column('id', sa.BigInteger(), nullable=False),
+   |
+
+migrations/versions/2025_02_04_2254-d80def2ed00e_add_total_handle_and_pickpoint_handle_.py:23:89: E501 Line too long (107 > 88)
+   |
+21 |     op.create_table('total_handle',
+22 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+23 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+24 |     sa.Column('id', sa.BigInteger(), nullable=False),
+25 |     sa.Column('add_shk_count', sa.Integer(), nullable=False),
+   |
+
+migrations/versions/2025_02_04_2254-d80def2ed00e_add_total_handle_and_pickpoint_handle_.py:40:89: E501 Line too long (107 > 88)
+   |
+38 |     )
+39 |     op.create_table('pick_point_handle',
+40 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+41 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+42 |     sa.Column('id', sa.BigInteger(), nullable=False),
+   |
+
+migrations/versions/2025_02_04_2254-d80def2ed00e_add_total_handle_and_pickpoint_handle_.py:41:89: E501 Line too long (107 > 88)
+   |
+39 |     op.create_table('pick_point_handle',
+40 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+41 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+42 |     sa.Column('id', sa.BigInteger(), nullable=False),
+43 |     sa.Column('add_shk_count', sa.Integer(), nullable=False),
+   |
+
+migrations/versions/2025_02_04_2254-d80def2ed00e_add_total_handle_and_pickpoint_handle_.py:57:89: E501 Line too long (90 > 88)
+   |
+55 |     sa.Column('total_handle_id', sa.Integer(), nullable=False),
+56 |     sa.ForeignKeyConstraint(['office_id'], ['office.id'], ondelete='CASCADE'),
+57 |     sa.ForeignKeyConstraint(['total_handle_id'], ['total_handle.id'], ondelete='CASCADE'),
+   |                                                                                         ^^ E501
+58 |     sa.PrimaryKeyConstraint('id')
+59 |     )
+   |
+
+migrations/versions/2025_03_10_0922-09b31d50ae50_add_user_management_fields.py:23:89: E501 Line too long (91 > 88)
+   |
+21 |     # ### commands auto generated by Alembic - please adjust! ###
+22 |     # First add is_subscription_active as nullable
+23 |     op.add_column('user', sa.Column('is_subscription_active', sa.Boolean(), nullable=True))
+   |                                                                                         ^^^ E501
+24 |     # Set default value for existing records
+25 |     op.execute(text("UPDATE \"user\" SET is_subscription_active = false"))
+   |
+
+migrations/versions/2025_03_10_0922-09b31d50ae50_add_user_management_fields.py:32:89: E501 Line too long (93 > 88)
+   |
+31 |     # Add other columns
+32 |     op.add_column('user', sa.Column('subscription_start_date', sa.DateTime(), nullable=True))
+   |                                                                                         ^^^^^ E501
+33 |     op.add_column('user', sa.Column('subscription_end_date', sa.DateTime(), nullable=True))
+34 |     op.add_column('user', sa.Column('subscription_approved_by', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |
+
+migrations/versions/2025_03_10_0922-09b31d50ae50_add_user_management_fields.py:33:89: E501 Line too long (91 > 88)
+   |
+31 |     # Add other columns
+32 |     op.add_column('user', sa.Column('subscription_start_date', sa.DateTime(), nullable=True))
+33 |     op.add_column('user', sa.Column('subscription_end_date', sa.DateTime(), nullable=True))
+   |                                                                                         ^^^ E501
+34 |     op.add_column('user', sa.Column('subscription_approved_by', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+35 |     op.add_column('user', sa.Column('subscription_approved_at', sa.DateTime(), nullable=True))
+   |
+
+migrations/versions/2025_03_10_0922-09b31d50ae50_add_user_management_fields.py:34:89: E501 Line too long (115 > 88)
+   |
+32 |     op.add_column('user', sa.Column('subscription_start_date', sa.DateTime(), nullable=True))
+33 |     op.add_column('user', sa.Column('subscription_end_date', sa.DateTime(), nullable=True))
+34 |     op.add_column('user', sa.Column('subscription_approved_by', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+35 |     op.add_column('user', sa.Column('subscription_approved_at', sa.DateTime(), nullable=True))
+36 |     op.add_column('user', sa.Column('created_by_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |
+
+migrations/versions/2025_03_10_0922-09b31d50ae50_add_user_management_fields.py:35:89: E501 Line too long (94 > 88)
+   |
+33 |     op.add_column('user', sa.Column('subscription_end_date', sa.DateTime(), nullable=True))
+34 |     op.add_column('user', sa.Column('subscription_approved_by', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+35 |     op.add_column('user', sa.Column('subscription_approved_at', sa.DateTime(), nullable=True))
+   |                                                                                         ^^^^^^ E501
+36 |     op.add_column('user', sa.Column('created_by_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |
+
+migrations/versions/2025_03_10_0922-09b31d50ae50_add_user_management_fields.py:36:89: E501 Line too long (104 > 88)
+   |
+34 |     op.add_column('user', sa.Column('subscription_approved_by', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+35 |     op.add_column('user', sa.Column('subscription_approved_at', sa.DateTime(), nullable=True))
+36 |     op.add_column('user', sa.Column('created_by_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^ E501
+37 |
+38 |     # Add created_at as nullable first
+   |
+
+migrations/versions/2025_03_10_0922-09b31d50ae50_add_user_management_fields.py:47:89: E501 Line too long (106 > 88)
+   |
+45 |                     nullable=False)
+46 |
+47 |     op.add_column('user', sa.Column('parent_admin_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^ E501
+48 |     # ### end Alembic commands ###
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:52:89: E501 Line too long (137 > 88)
+   |
+50 | …
+51 | …
+52 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+53 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+54 | …a.text("nextval('total_handle_id_seq'::regclass)"), autoincrement=True, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:53:89: E501 Line too long (137 > 88)
+   |
+51 | …
+52 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+53 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+54 | …a.text("nextval('total_handle_id_seq'::regclass)"), autoincrement=True, nullable=False),
+55 | …increment=False, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:54:89: E501 Line too long (137 > 88)
+   |
+52 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+53 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+54 | …a.text("nextval('total_handle_id_seq'::regclass)"), autoincrement=True, nullable=False),
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+55 | …increment=False, nullable=False),
+56 | …crement=False, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:64:89: E501 Line too long (91 > 88)
+   |
+62 |     sa.Column('hold_shk_count', sa.INTEGER(), autoincrement=False, nullable=False),
+63 |     sa.Column('hold_shk_sum', sa.INTEGER(), autoincrement=False, nullable=False),
+64 |     sa.Column('not_accepted_shk_count', sa.INTEGER(), autoincrement=False, nullable=False),
+   |                                                                                         ^^^ E501
+65 |     sa.Column('not_accepted_shk_sum', sa.INTEGER(), autoincrement=False, nullable=False),
+66 |     sa.Column('payments_suspended', sa.BOOLEAN(), autoincrement=False, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:65:89: E501 Line too long (89 > 88)
+   |
+63 |     sa.Column('hold_shk_sum', sa.INTEGER(), autoincrement=False, nullable=False),
+64 |     sa.Column('not_accepted_shk_count', sa.INTEGER(), autoincrement=False, nullable=False),
+65 |     sa.Column('not_accepted_shk_sum', sa.INTEGER(), autoincrement=False, nullable=False),
+   |                                                                                         ^ E501
+66 |     sa.Column('payments_suspended', sa.BOOLEAN(), autoincrement=False, nullable=False),
+67 |     sa.PrimaryKeyConstraint('id', name='total_handle_pkey'),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:71:89: E501 Line too long (137 > 88)
+   |
+69 | …
+70 | …
+71 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+72 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+73 | …a.text("nextval('weekly_payments_id_seq'::regclass)"), autoincrement=True, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:72:89: E501 Line too long (137 > 88)
+   |
+70 | …
+71 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+72 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+73 | …a.text("nextval('weekly_payments_id_seq'::regclass)"), autoincrement=True, nullable=False),
+74 | …(precision=53), autoincrement=False, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:73:89: E501 Line too long (140 > 88)
+   |
+71 | …, server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+72 | …, server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+73 | ….text("nextval('weekly_payments_id_seq'::regclass)"), autoincrement=True, nullable=False),
+   |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+74 | …precision=53), autoincrement=False, nullable=False),
+75 | …t=False, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:74:89: E501 Line too long (102 > 88)
+   |
+72 |     sa.Column('updated_at', postgresql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=Fals…
+73 |     sa.Column('id', sa.BIGINT(), server_default=sa.text("nextval('weekly_payments_id_seq'::regclass)"), autoincrement=True, nullable=F…
+74 |     sa.Column('base_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^ E501
+75 |     sa.Column('date_from', sa.DATE(), autoincrement=False, nullable=False),
+76 |     sa.Column('date_to', sa.DATE(), autoincrement=False, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:77:89: E501 Line too long (107 > 88)
+   |
+75 |     sa.Column('date_from', sa.DATE(), autoincrement=False, nullable=False),
+76 |     sa.Column('date_to', sa.DATE(), autoincrement=False, nullable=False),
+77 |     sa.Column('expensive_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+78 |     sa.Column('other_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+79 |     sa.Column('total', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:78:89: E501 Line too long (103 > 88)
+   |
+76 |     sa.Column('date_to', sa.DATE(), autoincrement=False, nullable=False),
+77 |     sa.Column('expensive_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+78 |     sa.Column('other_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^ E501
+79 |     sa.Column('total', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+80 |     sa.PrimaryKeyConstraint('id', name='weekly_payments_pkey'),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:79:89: E501 Line too long (95 > 88)
+   |
+77 |     sa.Column('expensive_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+78 |     sa.Column('other_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+79 |     sa.Column('total', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+   |                                                                                         ^^^^^^^ E501
+80 |     sa.PrimaryKeyConstraint('id', name='weekly_payments_pkey'),
+81 |     sa.UniqueConstraint('date_from', 'date_to', name='unique_date_from_date_to'),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:84:89: E501 Line too long (95 > 88)
+   |
+82 |     postgresql_ignore_search_path=False
+83 |     )
+84 |     op.create_index('ix_weekly_payments_date_to', 'weekly_payments', ['date_to'], unique=False)
+   |                                                                                         ^^^^^^^ E501
+85 |     op.create_index('ix_weekly_payments_date_from', 'weekly_payments', ['date_from'], unique=False)
+86 |     op.create_table('operation',
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:85:89: E501 Line too long (99 > 88)
+   |
+83 |     )
+84 |     op.create_index('ix_weekly_payments_date_to', 'weekly_payments', ['date_to'], unique=False)
+85 |     op.create_index('ix_weekly_payments_date_from', 'weekly_payments', ['date_from'], unique=False)
+   |                                                                                         ^^^^^^^^^^^ E501
+86 |     op.create_table('operation',
+87 |     sa.Column('created_at', postgresql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=Fals…
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:87:89: E501 Line too long (137 > 88)
+   |
+85 | …', 'weekly_payments', ['date_from'], unique=False)
+86 | …
+87 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+88 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+89 | …ue, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:88:89: E501 Line too long (137 > 88)
+   |
+86 | …
+87 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+88 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+89 | …ue, nullable=False),
+90 | …crement=False, nullable=True),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:92:89: E501 Line too long (94 > 88)
+   |
+90 |     sa.Column('operation_id', sa.BIGINT(), autoincrement=False, nullable=True),
+91 |     sa.Column('operation_type', sa.VARCHAR(), autoincrement=False, nullable=False),
+92 |     sa.Column('summ', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+   |                                                                                         ^^^^^^ E501
+93 |     sa.Column('rids', sa.VARCHAR(), autoincrement=False, nullable=False),
+94 |     sa.Column('created', postgresql.TIMESTAMP(), autoincrement=False, nullable=False),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:97:89: E501 Line too long (104 > 88)
+   |
+95 |     sa.Column('currency', sa.VARCHAR(), autoincrement=False, nullable=False),
+96 |     sa.Column('description', sa.VARCHAR(), autoincrement=False, nullable=False),
+97 |     sa.Column('summ_pickpoint', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^ E501
+98 |     sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=True),
+99 |     sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=True),
+   |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:100:89: E501 Line too long (117 > 88)
+    |
+ 98 |     sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=True),
+ 99 |     sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=True),
+100 |     sa.ForeignKeyConstraint(['employee_id'], ['employee.id'], name='operation_employee_id_fkey', ondelete='CASCADE'),
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+101 |     sa.ForeignKeyConstraint(['office_id'], ['office.id'], name='operation_office_id_fkey', ondelete='CASCADE'),
+102 |     sa.PrimaryKeyConstraint('id', name='operation_pkey')
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:101:89: E501 Line too long (111 > 88)
+    |
+ 99 |     sa.Column('employee_id', sa.INTEGER(), autoincrement=False, nullable=True),
+100 |     sa.ForeignKeyConstraint(['employee_id'], ['employee.id'], name='operation_employee_id_fkey', ondelete='CASCADE'),
+101 |     sa.ForeignKeyConstraint(['office_id'], ['office.id'], name='operation_office_id_fkey', ondelete='CASCADE'),
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^ E501
+102 |     sa.PrimaryKeyConstraint('id', name='operation_pkey')
+103 |     )
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:104:89: E501 Line too long (92 > 88)
+    |
+102 |     sa.PrimaryKeyConstraint('id', name='operation_pkey')
+103 |     )
+104 |     op.create_index('ix_operation_operation_id', 'operation', ['operation_id'], unique=True)
+    |                                                                                         ^^^^ E501
+105 |     op.create_table('category',
+106 |     sa.Column('created_at', postgresql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=Fal…
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:106:89: E501 Line too long (137 > 88)
+    |
+104 | …'operation', ['operation_id'], unique=True)
+105 | …
+106 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+107 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+108 | …a.text("nextval('category_id_seq'::regclass)"), autoincrement=True, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:107:89: E501 Line too long (137 > 88)
+    |
+105 | …
+106 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+107 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+108 | …a.text("nextval('category_id_seq'::regclass)"), autoincrement=True, nullable=False),
+109 | …crement=False, nullable=True),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:108:89: E501 Line too long (133 > 88)
+    |
+106 | …P(), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+107 | …P(), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+108 | …=sa.text("nextval('category_id_seq'::regclass)"), autoincrement=True, nullable=False),
+    |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+109 | …increment=False, nullable=True),
+110 | …nt=False, nullable=True),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:118:89: E501 Line too long (137 > 88)
+    |
+116 | …ategory', ['external_id'], unique=True)
+117 | …
+118 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+119 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+120 | …a.text("nextval('operation_name_id_seq'::regclass)"), autoincrement=True, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:119:89: E501 Line too long (137 > 88)
+    |
+117 | …
+118 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+119 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+120 | …a.text("nextval('operation_name_id_seq'::regclass)"), autoincrement=True, nullable=False),
+121 | …ement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:120:89: E501 Line too long (139 > 88)
+    |
+118 | …, server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+119 | …, server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+120 | ….text("nextval('operation_name_id_seq'::regclass)"), autoincrement=True, nullable=False),
+    |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+121 | …ment=False, nullable=False),
+122 | …rement=False, nullable=True),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:128:89: E501 Line too long (122 > 88)
+    |
+126 |     sa.Column('name', sa.VARCHAR(), autoincrement=False, nullable=False),
+127 |     sa.Column('category_id', sa.INTEGER(), autoincrement=False, nullable=False),
+128 |     sa.ForeignKeyConstraint(['category_id'], ['category.id'], name='operation_name_category_id_fkey', ondelete='CASCADE'),
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+129 |     sa.PrimaryKeyConstraint('id', name='operation_name_pkey'),
+130 |     sa.UniqueConstraint('external_id', name='operation_name_external_id_key'),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:135:89: E501 Line too long (137 > 88)
+    |
+133 | …
+134 | …
+135 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+136 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+137 | …ue, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:136:89: E501 Line too long (137 > 88)
+    |
+134 | …
+135 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+136 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+137 | …ue, nullable=False),
+138 | …increment=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:147:89: E501 Line too long (91 > 88)
+    |
+145 |     sa.Column('hold_shk_count', sa.INTEGER(), autoincrement=False, nullable=False),
+146 |     sa.Column('hold_shk_sum', sa.INTEGER(), autoincrement=False, nullable=False),
+147 |     sa.Column('not_accepted_shk_count', sa.INTEGER(), autoincrement=False, nullable=False),
+    |                                                                                         ^^^ E501
+148 |     sa.Column('not_accepted_shk_sum', sa.INTEGER(), autoincrement=False, nullable=False),
+149 |     sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:148:89: E501 Line too long (89 > 88)
+    |
+146 |     sa.Column('hold_shk_sum', sa.INTEGER(), autoincrement=False, nullable=False),
+147 |     sa.Column('not_accepted_shk_count', sa.INTEGER(), autoincrement=False, nullable=False),
+148 |     sa.Column('not_accepted_shk_sum', sa.INTEGER(), autoincrement=False, nullable=False),
+    |                                                                                         ^ E501
+149 |     sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=False),
+150 |     sa.Column('total_handle_id', sa.INTEGER(), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:151:89: E501 Line too long (119 > 88)
+    |
+149 |     sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=False),
+150 |     sa.Column('total_handle_id', sa.INTEGER(), autoincrement=False, nullable=False),
+151 |     sa.ForeignKeyConstraint(['office_id'], ['office.id'], name='pick_point_handle_office_id_fkey', ondelete='CASCADE'),
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+152 |     sa.ForeignKeyConstraint(['total_handle_id'], ['total_handle.id'], name='pick_point_handle_total_handle_id_fkey', ondelete='CASCAD…
+153 |     sa.PrimaryKeyConstraint('id', name='pick_point_handle_pkey')
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:152:89: E501 Line too long (137 > 88)
+    |
+150 | …toincrement=False, nullable=False),
+151 | …ce.id'], name='pick_point_handle_office_id_fkey', ondelete='CASCADE'),
+152 | …['total_handle.id'], name='pick_point_handle_total_handle_id_fkey', ondelete='CASCADE'),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+153 | …t_handle_pkey')
+154 | …
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:156:89: E501 Line too long (137 > 88)
+    |
+154 | …
+155 | …
+156 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+157 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+158 | …a.text("nextval('pickpoint_payments_id_seq'::regclass)"), autoincrement=True, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:157:89: E501 Line too long (137 > 88)
+    |
+155 | …
+156 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+157 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+158 | …a.text("nextval('pickpoint_payments_id_seq'::regclass)"), autoincrement=True, nullable=False),
+159 | …(precision=53), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:158:89: E501 Line too long (143 > 88)
+    |
+156 | …server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+157 | …server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+158 | …ext("nextval('pickpoint_payments_id_seq'::regclass)"), autoincrement=True, nullable=False),
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+159 | …ecision=53), autoincrement=False, nullable=False),
+160 | …ON(precision=53), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:159:89: E501 Line too long (102 > 88)
+    |
+157 |     sa.Column('updated_at', postgresql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=Fal…
+158 |     sa.Column('id', sa.BIGINT(), server_default=sa.text("nextval('pickpoint_payments_id_seq'::regclass)"), autoincrement=True, nullab…
+159 |     sa.Column('base_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+    |                                                                                         ^^^^^^^^^^^^^^ E501
+160 |     sa.Column('expensive_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+161 |     sa.Column('other_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:160:89: E501 Line too long (107 > 88)
+    |
+158 |     sa.Column('id', sa.BIGINT(), server_default=sa.text("nextval('pickpoint_payments_id_seq'::regclass)"), autoincrement=True, nullab…
+159 |     sa.Column('base_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+160 |     sa.Column('expensive_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+161 |     sa.Column('other_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+162 |     sa.Column('total', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:161:89: E501 Line too long (103 > 88)
+    |
+159 |     sa.Column('base_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+160 |     sa.Column('expensive_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+161 |     sa.Column('other_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+    |                                                                                         ^^^^^^^^^^^^^^^ E501
+162 |     sa.Column('total', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+163 |     sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:162:89: E501 Line too long (95 > 88)
+    |
+160 |     sa.Column('expensive_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+161 |     sa.Column('other_accrued', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+162 |     sa.Column('total', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+    |                                                                                         ^^^^^^^ E501
+163 |     sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=False),
+164 |     sa.Column('weekly_payments_id', sa.INTEGER(), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:165:89: E501 Line too long (120 > 88)
+    |
+163 |     sa.Column('office_id', sa.INTEGER(), autoincrement=False, nullable=False),
+164 |     sa.Column('weekly_payments_id', sa.INTEGER(), autoincrement=False, nullable=False),
+165 |     sa.ForeignKeyConstraint(['office_id'], ['office.id'], name='pickpoint_payments_office_id_fkey', ondelete='CASCADE'),
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+166 |     sa.ForeignKeyConstraint(['weekly_payments_id'], ['weekly_payments.id'], name='pickpoint_payments_weekly_payments_id_fkey', ondele…
+167 |     sa.PrimaryKeyConstraint('id', name='pickpoint_payments_pkey'),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:166:89: E501 Line too long (147 > 88)
+    |
+164 | …increment=False, nullable=False),
+165 | …'], name='pickpoint_payments_office_id_fkey', ondelete='CASCADE'),
+166 | …weekly_payments.id'], name='pickpoint_payments_weekly_payments_id_fkey', ondelete='CASCADE'),
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+167 | …ents_pkey'),
+168 | …id', name='unique_office_weekly'),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:172:89: E501 Line too long (137 > 88)
+    |
+170 | …
+171 | …
+172 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+173 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+174 | …ue, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:173:89: E501 Line too long (137 > 88)
+    |
+171 | …
+172 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+173 | …), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=False),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+174 | …ue, nullable=False),
+175 | …n=53), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:175:89: E501 Line too long (93 > 88)
+    |
+173 |     sa.Column('updated_at', postgresql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP(0)'), autoincrement=False, nullable=Fal…
+174 |     sa.Column('id', sa.BIGINT(), autoincrement=True, nullable=False),
+175 |     sa.Column('sum', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=False),
+    |                                                                                         ^^^^^ E501
+176 |     sa.Column('count', sa.INTEGER(), autoincrement=False, nullable=False),
+177 |     sa.Column('operation_name_id', sa.INTEGER(), autoincrement=False, nullable=False),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:179:89: E501 Line too long (90 > 88)
+    |
+177 |     sa.Column('operation_name_id', sa.INTEGER(), autoincrement=False, nullable=False),
+178 |     sa.Column('weekly_payments_id', sa.INTEGER(), autoincrement=False, nullable=False),
+179 |     sa.Column('pickpoint_payments_id', sa.INTEGER(), autoincrement=False, nullable=False),
+    |                                                                                         ^^ E501
+180 |     sa.ForeignKeyConstraint(['operation_name_id'], ['operation_name.id'], name='transaction_operation_name_id_fkey', ondelete='CASCAD…
+181 |     sa.ForeignKeyConstraint(['pickpoint_payments_id'], ['pickpoint_payments.id'], name='transaction_pickpoint_payments_id_fkey', onde…
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:180:89: E501 Line too long (137 > 88)
+    |
+178 | … autoincrement=False, nullable=False),
+179 | …(), autoincrement=False, nullable=False),
+180 | …, ['operation_name.id'], name='transaction_operation_name_id_fkey', ondelete='CASCADE'),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+181 | …id'], ['pickpoint_payments.id'], name='transaction_pickpoint_payments_id_fkey', ondelete='CASCADE'),
+182 | …], ['weekly_payments.id'], name='transaction_weekly_payments_id_fkey', ondelete='CASCADE'),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:181:89: E501 Line too long (149 > 88)
+    |
+179 | …toincrement=False, nullable=False),
+180 | …eration_name.id'], name='transaction_operation_name_id_fkey', ondelete='CASCADE'),
+181 | …['pickpoint_payments.id'], name='transaction_pickpoint_payments_id_fkey', ondelete='CASCADE'),
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+182 | …eekly_payments.id'], name='transaction_weekly_payments_id_fkey', ondelete='CASCADE'),
+183 | …y'),
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:182:89: E501 Line too long (140 > 88)
+    |
+180 | …['operation_name.id'], name='transaction_operation_name_id_fkey', ondelete='CASCADE'),
+181 | …'], ['pickpoint_payments.id'], name='transaction_pickpoint_payments_id_fkey', ondelete='CASCADE'),
+182 | … ['weekly_payments.id'], name='transaction_weekly_payments_id_fkey', ondelete='CASCADE'),
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+183 | …_pkey'),
+184 | …point_payments_id', 'operation_name_id', name='unique_transaction')
+    |
+
+migrations/versions/2025_04_03_1017-45fe0b07bcb2_remove_celery_related_models_and_tables.py:184:89: E501 Line too long (118 > 88)
+    |
+182 |     sa.ForeignKeyConstraint(['weekly_payments_id'], ['weekly_payments.id'], name='transaction_weekly_payments_id_fkey', ondelete='CAS…
+183 |     sa.PrimaryKeyConstraint('id', name='transaction_pkey'),
+184 |     sa.UniqueConstraint('weekly_payments_id', 'pickpoint_payments_id', 'operation_name_id', name='unique_transaction')
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+185 |     )
+186 |     # ### end Alembic commands ###
+    |
+
+migrations/versions/2025_04_03_1130-5374fc4155a6_add_office_expenses_model.py:21:89: E501 Line too long (107 > 88)
+   |
+19 |     # ### commands auto generated by Alembic - please adjust! ###
+20 |     op.create_table('office_expenses',
+21 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+22 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+23 |     sa.Column('id', sa.BigInteger(), nullable=False),
+   |
+
+migrations/versions/2025_04_03_1130-5374fc4155a6_add_office_expenses_model.py:22:89: E501 Line too long (107 > 88)
+   |
+20 |     op.create_table('office_expenses',
+21 |     sa.Column('created_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+22 |     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('current_timestamp(0)'), nullable=False),
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+23 |     sa.Column('id', sa.BigInteger(), nullable=False),
+24 |     sa.Column('rent', sa.Float(), nullable=False),
+   |
+
+models/__init__.py:2:15: F401 `.company` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all models there
+2 | from . import company, company_user, employee, office, office_expenses, user
+  |               ^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `company as company`
+
+models/__init__.py:2:24: F401 `.company_user` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all models there
+2 | from . import company, company_user, employee, office, office_expenses, user
+  |                        ^^^^^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `company_user as company_user`
+
+models/__init__.py:2:38: F401 `.employee` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all models there
+2 | from . import company, company_user, employee, office, office_expenses, user
+  |                                      ^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `employee as employee`
+
+models/__init__.py:2:48: F401 `.office` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all models there
+2 | from . import company, company_user, employee, office, office_expenses, user
+  |                                                ^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `office as office`
+
+models/__init__.py:2:56: F401 `.office_expenses` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all models there
+2 | from . import company, company_user, employee, office, office_expenses, user
+  |                                                        ^^^^^^^^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `office_expenses as office_expenses`
+
+models/__init__.py:2:73: F401 `.user` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all models there
+2 | from . import company, company_user, employee, office, office_expenses, user
+  |                                                                         ^^^^ F401
+  |
+  = help: Use an explicit re-export: `user as user`
+
+models/office.py:15:89: E501 Line too long (111 > 88)
+   |
+14 | class OfficeBase(SQLModel):
+15 |     office_id: int | None = Field(default=None, alias="id", sa_column=Column(Integer, unique=True, index=True))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^ E501
+16 |     name: str
+17 |     latitude: str
+   |
+
+models/office_expenses.py:17:60: RUF001 String contains ambiguous `У` (CYRILLIC CAPITAL LETTER U). Did you mean `Y` (LATIN CAPITAL LETTER Y)?
+   |
+15 |     cameras: float = Field(description="Оплата видеонаблюдения")
+16 |     vat_rate: float = Field(description="Ставка НДС")
+17 |     simplified_tax_rate: float = Field(description="Ставка УСН")
+   |                                                            ^ RUF001
+18 |     rf_payment: float = Field(description="ЗП руководителя филиала")
+19 |     revision_payment: float = Field(description="Оплата сотрудника по ревизии")
+   |
+
+models/office_expenses.py:17:61: RUF001 String contains ambiguous `С` (CYRILLIC CAPITAL LETTER ES). Did you mean `C` (LATIN CAPITAL LETTER C)?
+   |
+15 |     cameras: float = Field(description="Оплата видеонаблюдения")
+16 |     vat_rate: float = Field(description="Ставка НДС")
+17 |     simplified_tax_rate: float = Field(description="Ставка УСН")
+   |                                                             ^ RUF001
+18 |     rf_payment: float = Field(description="ЗП руководителя филиала")
+19 |     revision_payment: float = Field(description="Оплата сотрудника по ревизии")
+   |
+
+models/office_expenses.py:17:62: RUF001 String contains ambiguous `Н` (CYRILLIC CAPITAL LETTER EN). Did you mean `H` (LATIN CAPITAL LETTER H)?
+   |
+15 |     cameras: float = Field(description="Оплата видеонаблюдения")
+16 |     vat_rate: float = Field(description="Ставка НДС")
+17 |     simplified_tax_rate: float = Field(description="Ставка УСН")
+   |                                                              ^ RUF001
+18 |     rf_payment: float = Field(description="ЗП руководителя филиала")
+19 |     revision_payment: float = Field(description="Оплата сотрудника по ревизии")
+   |
+
+models/office_expenses.py:21:89: E501 Line too long (102 > 88)
+   |
+19 |     revision_payment: float = Field(description="Оплата сотрудника по ревизии")
+20 |     min_salary: float = Field(description="Минимальная ЗП на филиале")
+21 |     commission_rate: float = Field(description="Процент от оборота - влияет на ЗП сотрудника филиала")
+   |                                                                                         ^^^^^^^^^^^^^^ E501
+22 |     total_without_tax: float = Field(description="Сумма всех обязательных платежей за филиал без налогов")
+   |
+
+models/office_expenses.py:22:89: E501 Line too long (106 > 88)
+   |
+20 |     min_salary: float = Field(description="Минимальная ЗП на филиале")
+21 |     commission_rate: float = Field(description="Процент от оборота - влияет на ЗП сотрудника филиала")
+22 |     total_without_tax: float = Field(description="Сумма всех обязательных платежей за филиал без налогов")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^ E501
+   |
+
+models/user.py:24:89: E501 Line too long (123 > 88)
+   |
+23 |     # Subscription fields (for ADMIN role)
+24 |     is_subscription_active: bool = Field(default=False, nullable=True, description="Whether user's subscription is active")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+25 |     subscription_start_date: datetime | None = Field(default=None, description="When subscription started")
+26 |     subscription_end_date: datetime | None = Field(default=None, description="When subscription ends")
+   |
+
+models/user.py:25:89: E501 Line too long (107 > 88)
+   |
+23 |     # Subscription fields (for ADMIN role)
+24 |     is_subscription_active: bool = Field(default=False, nullable=True, description="Whether user's subscription is active")
+25 |     subscription_start_date: datetime | None = Field(default=None, description="When subscription started")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^ E501
+26 |     subscription_end_date: datetime | None = Field(default=None, description="When subscription ends")
+27 |     subscription_approved_by: str | None = Field(default=None, description="ID of super admin who approved subscription")
+   |
+
+models/user.py:26:89: E501 Line too long (102 > 88)
+   |
+24 |     is_subscription_active: bool = Field(default=False, nullable=True, description="Whether user's subscription is active")
+25 |     subscription_start_date: datetime | None = Field(default=None, description="When subscription started")
+26 |     subscription_end_date: datetime | None = Field(default=None, description="When subscription ends")
+   |                                                                                         ^^^^^^^^^^^^^^ E501
+27 |     subscription_approved_by: str | None = Field(default=None, description="ID of super admin who approved subscription")
+28 |     subscription_approved_at: datetime | None = Field(default=None, description="When subscription was approved")
+   |
+
+models/user.py:27:89: E501 Line too long (121 > 88)
+   |
+25 |     subscription_start_date: datetime | None = Field(default=None, description="When subscription started")
+26 |     subscription_end_date: datetime | None = Field(default=None, description="When subscription ends")
+27 |     subscription_approved_by: str | None = Field(default=None, description="ID of super admin who approved subscription")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+28 |     subscription_approved_at: datetime | None = Field(default=None, description="When subscription was approved")
+   |
+
+models/user.py:28:89: E501 Line too long (113 > 88)
+   |
+26 |     subscription_end_date: datetime | None = Field(default=None, description="When subscription ends")
+27 |     subscription_approved_by: str | None = Field(default=None, description="ID of super admin who approved subscription")
+28 |     subscription_approved_at: datetime | None = Field(default=None, description="When subscription was approved")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+29 |
+30 |     # User management fields
+   |
+
+models/user.py:31:89: E501 Line too long (100 > 88)
+   |
+30 |     # User management fields
+31 |     created_by_id: str | None = Field(default=None, description="ID of admin who created this user")
+   |                                                                                         ^^^^^^^^^^^^ E501
+32 |     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=True, description="When user was created")
+33 |     parent_admin_id: str | None = Field(default=None, description="ID of admin who manages this user (for MANAGER and CHECKER roles)")
+   |
+
+models/user.py:32:89: E501 Line too long (117 > 88)
+   |
+30 |     # User management fields
+31 |     created_by_id: str | None = Field(default=None, description="ID of admin who created this user")
+32 |     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=True, description="When user was created")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+33 |     parent_admin_id: str | None = Field(default=None, description="ID of admin who manages this user (for MANAGER and CHECKER roles)")
+   |
+
+models/user.py:33:89: E501 Line too long (134 > 88)
+   |
+31 |     created_by_id: str | None = Field(default=None, description="ID of admin who created this user")
+32 |     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=True, description="When user was created")
+33 |     parent_admin_id: str | None = Field(default=None, description="ID of admin who manages this user (for MANAGER and CHECKER roles)")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+   |
+
+schemas/__init__.py:2:15: F401 `.company` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all schemas there
+2 | from . import company, employee, office, office_expenses, response, user
+  |               ^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `company as company`
+
+schemas/__init__.py:2:24: F401 `.employee` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all schemas there
+2 | from . import company, employee, office, office_expenses, response, user
+  |                        ^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `employee as employee`
+
+schemas/__init__.py:2:34: F401 `.office` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all schemas there
+2 | from . import company, employee, office, office_expenses, response, user
+  |                                  ^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `office as office`
+
+schemas/__init__.py:2:42: F401 `.office_expenses` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all schemas there
+2 | from . import company, employee, office, office_expenses, response, user
+  |                                          ^^^^^^^^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `office_expenses as office_expenses`
+
+schemas/__init__.py:2:59: F401 `.response` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all schemas there
+2 | from . import company, employee, office, office_expenses, response, user
+  |                                                           ^^^^^^^^ F401
+  |
+  = help: Use an explicit re-export: `response as response`
+
+schemas/__init__.py:2:69: F401 `.user` imported but unused; consider removing, adding to `__all__`, or using a redundant alias
+  |
+1 | # import all schemas there
+2 | from . import company, employee, office, office_expenses, response, user
+  |                                                                     ^^^^ F401
+  |
+  = help: Use an explicit re-export: `user as user`
+
+services/api_service.py:18:89: E501 Line too long (89 > 88)
+   |
+16 |         if method and inspect.iscoroutinefunction(method):
+17 |             return self._create_method_wrapper(method)
+18 |         raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
+   |                                                                                         ^ E501
+19 |
+20 |     def _create_method_wrapper(self, method: Callable) -> Callable:
+   |
+
+services/api_service.py:28:25: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   |
+26 |                     phone = kwargs.get("phone")
+27 |                     if not phone:
+28 |                         raise Exception("Phone number must be provided to refresh token")
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+29 |
+30 |                     refresh_token = await self.redis_client.get(f"{phone}:refresh_token")
+   |
+
+services/api_service.py:28:89: E501 Line too long (89 > 88)
+   |
+26 |                     phone = kwargs.get("phone")
+27 |                     if not phone:
+28 |                         raise Exception("Phone number must be provided to refresh token")
+   |                                                                                         ^ E501
+29 |
+30 |                     refresh_token = await self.redis_client.get(f"{phone}:refresh_token")
+   |
+
+services/api_service.py:30:89: E501 Line too long (89 > 88)
+   |
+28 |                         raise Exception("Phone number must be provided to refresh token")
+29 |
+30 |                     refresh_token = await self.redis_client.get(f"{phone}:refresh_token")
+   |                                                                                         ^ E501
+31 |                     if not refresh_token:
+32 |                         raise Exception("Refresh token not found")
+   |
+
+services/api_service.py:32:25: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   |
+30 |                     refresh_token = await self.redis_client.get(f"{phone}:refresh_token")
+31 |                     if not refresh_token:
+32 |                         raise Exception("Refresh token not found")
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ B904
+33 |
+34 |                     new_tokens = await self.api_auth.connect_code(username=phone, refresh_token=refresh_token)
+   |
+
+services/api_service.py:34:89: E501 Line too long (110 > 88)
+   |
+32 |                         raise Exception("Refresh token not found")
+33 |
+34 |                     new_tokens = await self.api_auth.connect_code(username=phone, refresh_token=refresh_token)
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^ E501
+35 |                     self.api_client.update_access_token(new_tokens.access_token)
+36 |                     await self.redis_client.set(f"{phone}:access_token", new_tokens.access_token)
+   |
+
+services/api_service.py:36:89: E501 Line too long (97 > 88)
+   |
+34 |                     new_tokens = await self.api_auth.connect_code(username=phone, refresh_token=refresh_token)
+35 |                     self.api_client.update_access_token(new_tokens.access_token)
+36 |                     await self.redis_client.set(f"{phone}:access_token", new_tokens.access_token)
+   |                                                                                         ^^^^^^^^^ E501
+37 |
+38 |                     return await method(self.api_client, *args, **kwargs)
+   |
+
+services/bot/handlers.py:39:89: E501 Line too long (97 > 88)
+   |
+37 |         # update employee
+38 |         update_data = {"tg_id": tg_id}
+39 |         await employee_crud.update(obj_current=employee, obj_new=update_data, db_session=session)
+   |                                                                                         ^^^^^^^^^ E501
+40 |         await message.answer("Успешная регистрация!")
+   |
+
+services/bot/hash_check.py:21:89: E501 Line too long (98 > 88)
+   |
+19 |         msg = self.data_check_string().encode('utf-8')
+20 |         print(f"String to hash: {msg}")
+21 |         calculated_hash = hmac.new(self.secret_key, msg=msg, digestmod=hashlib.sha256).hexdigest()
+   |                                                                                         ^^^^^^^^^^ E501
+22 |         print(f"Calculated hash: {calculated_hash}")  # Для отладки
+23 |         return calculated_hash
+   |
+
+services/pvz_service.py:6:1: F403 `from pvz_client.models import *` used; unable to detect undefined names
+  |
+4 | from pvz_client.api_auth import ApiAuth
+5 | from pvz_client.api_client import ApiClient
+6 | from pvz_client.models import *
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ F403
+7 | from redis.asyncio import Redis
+  |
+
+services/pvz_service.py:23:40: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+22 |     async def _get_api_client(self) -> ApiClient:
+23 |         """Создает экземпляр ApiClient с токеном"""
+   |                                        ^ RUF002
+24 |         token = await self.get_token()
+25 |         return ApiClient(access_token=token)
+   |
+
+services/pvz_service.py:27:30: F405 `RequestCodeResponse` may be undefined, or defined from star imports
+   |
+25 |         return ApiClient(access_token=token)
+26 |
+27 |     async def login(self) -> RequestCodeResponse:
+   |                              ^^^^^^^^^^^^^^^^^^^ F405
+28 |         """Первый запрос для получения кода"""
+29 |         code_response = await self.auth.login(self.phone)
+   |
+
+services/pvz_service.py:45:86: F405 `SwitchTokenResponse` may be undefined, or defined from star imports
+   |
+43 |         return code_response
+44 |
+45 |     async def validate_code(self, code: str, pickpoint_id: str, external_id: str) -> SwitchTokenResponse:
+   |                                                                                      ^^^^^^^^^^^^^^^^^^^ F405
+46 |         """Второй запрос для получения токена"""
+47 |         # Получаем временный токен из Redis
+   |
+
+services/pvz_service.py:45:89: E501 Line too long (105 > 88)
+   |
+43 |         return code_response
+44 |
+45 |     async def validate_code(self, code: str, pickpoint_id: str, external_id: str) -> SwitchTokenResponse:
+   |                                                                                         ^^^^^^^^^^^^^^^^^ E501
+46 |         """Второй запрос для получения токена"""
+47 |         # Получаем временный токен из Redis
+   |
+
+services/pvz_service.py:62:42: RUF003 Comment contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+   |
+60 |         )
+61 |
+62 |         # Сохраняем access токен в Redis с TTL из ответа
+   |                                          ^ RUF003
+63 |         await self.redis.set(
+64 |             f"pvz:{self.phone}:access_token",
+   |
+
+services/pvz_service.py:86:43: F405 `List` may be undefined, or defined from star imports
+   |
+85 |     # api_client methods
+86 |     async def get_pickpoint_list(self) -> List[PickpointModel]:
+   |                                           ^^^^ F405
+87 |         """Получение списка пунктов выдачи"""
+88 |         client = await self._get_api_client()
+   |
+
+services/pvz_service.py:86:48: F405 `PickpointModel` may be undefined, or defined from star imports
+   |
+85 |     # api_client methods
+86 |     async def get_pickpoint_list(self) -> List[PickpointModel]:
+   |                                                ^^^^^^^^^^^^^^ F405
+87 |         """Получение списка пунктов выдачи"""
+88 |         client = await self._get_api_client()
+   |
+
+services/pvz_service.py:91:39: F405 `OwnerInfoModel` may be undefined, or defined from star imports
+   |
+89 |         return await client.get_pickpoint_list()
+90 |
+91 |     async def get_owner_info(self) -> OwnerInfoModel:
+   |                                       ^^^^^^^^^^^^^^ F405
+92 |         """Получение информации о владельце"""
+93 |         client = await self._get_api_client()
+   |
+
+services/pvz_service.py:92:33: RUF002 Docstring contains ambiguous `о` (CYRILLIC SMALL LETTER O). Did you mean `o` (LATIN SMALL LETTER O)?
+   |
+91 |     async def get_owner_info(self) -> OwnerInfoModel:
+92 |         """Получение информации о владельце"""
+   |                                 ^ RUF002
+93 |         client = await self._get_api_client()
+94 |         return await client.get_owner_info()
+   |
+
+services/pvz_service.py:101:47: F405 `CategoriesOperationsResponse` may be undefined, or defined from star imports
+    |
+ 99 |         return await client.get_pickpoint_rating(pickpoint_id)
+100 |
+101 |     async def get_operation_category(self) -> CategoriesOperationsResponse:
+    |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ F405
+102 |         """Получение категорий и названий операций - вознаграждений"""
+    |
+
+services/pvz_service.py:107:89: E501 Line too long (138 > 88)
+    |
+105 | …
+106 | …
+107 | …tr, date_to: str, chunk_size: int = 3, progress_callback: None) -> List[OperationModel]:
+    |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+108 | …араллельной пагинацией
+    |
+
+services/pvz_service.py:107:118: F405 `List` may be undefined, or defined from star imports
+    |
+105 |         return await client.get_operations_name()
+106 |
+107 |     async def get_operations(self, *, date_from: str, date_to: str, chunk_size: int = 3, progress_callback: None) -> List[OperationMo…
+    |                                                                                                                      ^^^^ F405
+108 |         """Получение списка операций за период с параллельной пагинацией
+    |
+
+services/pvz_service.py:107:123: F405 `OperationModel` may be undefined, or defined from star imports
+    |
+105 | …
+106 | …
+107 | …, chunk_size: int = 3, progress_callback: None) -> List[OperationModel]:
+    |                                                          ^^^^^^^^^^^^^^ F405
+108 | …нацией
+    |
+
+services/pvz_service.py:108:48: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+    |
+107 |     async def get_operations(self, *, date_from: str, date_to: str, chunk_size: int = 3, progress_callback: None) -> List[OperationMo…
+108 |         """Получение списка операций за период с параллельной пагинацией
+    |                                                ^ RUF002
+109 |
+110 |         Args:
+    |
+
+services/pvz_service.py:123:89: E501 Line too long (115 > 88)
+    |
+121 |         try:
+122 |             # Первый запрос для получения общего количества
+123 |             initial_response = await client.get_operations(date_from=date_from, date_to=date_to, offset=0, limit=1)
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+124 |             total_rows = initial_response.total_rows
+125 |             logger.info(f"Total operations to fetch: {total_rows}")
+    |
+
+services/pvz_service.py:153:89: E501 Line too long (90 > 88)
+    |
+151 |                 try:
+152 |                     # Выполняем запросы параллельно
+153 |                     chunk_responses = await asyncio.gather(*tasks, return_exceptions=True)
+    |                                                                                         ^^ E501
+154 |                     # Обрабатываем результаты, включая возможные исключения
+155 |                     for response in chunk_responses:
+    |
+
+services/pvz_service.py:162:89: E501 Line too long (103 > 88)
+    |
+160 |                         if progress_callback:
+161 |                             progress_callback(len(all_operations), total_rows)
+162 |                         logger.info(f"Fetched batch. Total so far: {len(all_operations)}/{total_rows}")
+    |                                                                                         ^^^^^^^^^^^^^^^ E501
+163 |
+164 |                     await asyncio.sleep(0.5)
+    |
+
+services/pvz_service.py:169:89: E501 Line too long (101 > 88)
+    |
+167 |                     continue
+168 |
+169 |             logger.info(f"Successfully fetched {len(all_operations)} operations out of {total_rows}")
+    |                                                                                         ^^^^^^^^^^^^^ E501
+170 |             if len(all_operations) < total_rows:
+171 |                 logger.warning(f"Only {len(all_operations)} operations fetched, but {total_rows} expected.")
+    |
+
+services/pvz_service.py:171:89: E501 Line too long (108 > 88)
+    |
+169 |             logger.info(f"Successfully fetched {len(all_operations)} operations out of {total_rows}")
+170 |             if len(all_operations) < total_rows:
+171 |                 logger.warning(f"Only {len(all_operations)} operations fetched, but {total_rows} expected.")
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^ E501
+172 |
+173 |             return all_operations
+    |
+
+services/pvz_service.py:179:89: E501 Line too long (162 > 88)
+    |
+179 | …from: str, date_to: str, offset: int, limit: int, max_retries: int = 3, initial_delay: float = 1.0):
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ E501
+180 | …
+181 | …"
+    |
+
+services/pvz_service.py:181:31: RUF002 Docstring contains ambiguous `с` (CYRILLIC SMALL LETTER ES). Did you mean `c` (LATIN SMALL LETTER C)?
+    |
+179 |     async def _fetch_operations_with_retry(self, client, date_from: str, date_to: str, offset: int, limit: int, max_retries: int = 3,…
+180 |
+181 |         """Получение операций с механизмом повторных попыток"""
+    |                               ^ RUF002
+182 |         delay = initial_delay
+183 |         last_exception = None
+    |
+
+services/pvz_service.py:196:89: E501 Line too long (94 > 88)
+    |
+194 |                 last_exception = e
+195 |                 if attempt < max_retries - 1:
+196 |                     logger.warning(f"Attempt {attempt + 1} failed for offset {offset}: {e!s}")
+    |                                                                                         ^^^^^^ E501
+197 |                     await asyncio.sleep(delay)
+198 |                     delay *= 2  # Экспоненциальная задержка
+    |
+
+services/pvz_service.py:201:17: B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    |
+199 |                 else:
+200 |                     logger.error(f"All retries failed for offset {offset}: {e!s}")
+201 |                 raise last_exception
+    |                 ^^^^^^^^^^^^^^^^^^^^ B904
+202 |
+203 |     async def get_all_weekly_payments(self) -> List[WeeklyTransaction]:
+    |
+
+services/pvz_service.py:203:48: F405 `List` may be undefined, or defined from star imports
+    |
+201 |                 raise last_exception
+202 |
+203 |     async def get_all_weekly_payments(self) -> List[WeeklyTransaction]:
+    |                                                ^^^^ F405
+204 |         """Получение всех недельных платежей"""
+205 |         client = await self._get_api_client()
+    |
+
+services/pvz_service.py:203:53: F405 `WeeklyTransaction` may be undefined, or defined from star imports
+    |
+201 |                 raise last_exception
+202 |
+203 |     async def get_all_weekly_payments(self) -> List[WeeklyTransaction]:
+    |                                                     ^^^^^^^^^^^^^^^^^ F405
+204 |         """Получение всех недельных платежей"""
+205 |         client = await self._get_api_client()
+    |
+
+services/pvz_service.py:213:27: F405 `WeeklyPaymentsResponse` may be undefined, or defined from star imports
+    |
+211 |         try:
+212 |             while True:
+213 |                 response: WeeklyPaymentsResponse = await client.get_partner_payments(
+    |                           ^^^^^^^^^^^^^^^^^^^^^^ F405
+214 |                     pickpoint_id=141685,
+215 |                     limit=limit,
+    |
+
+services/pvz_service.py:220:89: E501 Line too long (92 > 88)
+    |
+219 |                 result.extend(response.payments)
+220 |                 logger.info(f"Fetched {len(response.payments)} payments (offset={offset}).")
+    |                                                                                         ^^^^ E501
+221 |                 if len(result) >= response.total_weeks:
+222 |                     break
+    |
+
+services/pvz_service.py:224:89: E501 Line too long (94 > 88)
+    |
+222 |                     break
+223 |                 offset += limit
+224 |             logger.info(f"Successfully fetched all weekly transactions: {len(result)} weeks.")
+    |                                                                                         ^^^^^^ E501
+225 |             return result
+    |
+
+Found 299 errors.

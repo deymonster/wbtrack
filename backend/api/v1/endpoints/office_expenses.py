@@ -1,14 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from models.user import User
-from api.dependencies.user import current_active_user
-from crud.office_expenses import office_expenses_crud
-from crud.office import office_crud
-from schemas.office_expenses import (
-    IOfficeExpensesRead,
-    IOfficeExpensesCreate,
-    IOfficeExpensesUpdate
-)
+from fastapi import APIRouter, Depends, status
 
+from api.dependencies.user import current_active_user
+from crud.office import office_crud
+from crud.office_expenses import office_expenses_crud
+from models.user import User
+from schemas.office_expenses import (
+    IOfficeExpensesCreate,
+    IOfficeExpensesRead,
+    IOfficeExpensesUpdate,
+)
 
 router = APIRouter()
 
@@ -18,19 +18,19 @@ async def create_office_expenses(
     current_user: User = Depends(current_active_user)
 ):
     """Создание новых финансовых параметров для ПВЗ.
-    
+
     Parameters:
     - **expenses**: Параметры расходов офиса
         - rent: Аренда помещения филиала
         - utilities: Коммунальные платежи
         - internet: Оплата интернета
         - cameras: Оплата видеонаблюдения
-        - vat_rate: Ставка НДС 
-        - simplified_tax_rate: Ставка УСН 
+        - vat_rate: Ставка НДС
+        - simplified_tax_rate: Ставка УСН
         - rf_payment: ЗП руководителя филиала
         - revision_payment: Оплата сотрудника по ревизии
         - min_salary: Минимальная ЗП на филиале
-        - commission_rate: Процент от оборота 
+        - commission_rate: Процент от оборота
         - total_without_tax: Сумма всех обязательных платежей без налогов
     Returns:
     - **200**: Успешное создание
@@ -67,7 +67,7 @@ async def update_office_expenses(
     current_user: User = Depends(current_active_user)
 ):
     """Обновление финансовых параметров ПВЗ
-    
+
     Parameters:
     - **office_id**: ID офиса
     - **expenses_update**: Обновляемые параметры
@@ -100,7 +100,7 @@ async def delete_office_expenses(
     - **204**: Успешное удаление
     - **404**: Офис не найден или нет доступа
     """
-    office = await office_crud.get_office_by_user_id(
+    await office_crud.get_office_by_user_id(
         office_id=office_id,
         user_id=current_user.id
     )

@@ -1,21 +1,20 @@
 from uuid import UUID
+
 from fastapi import Depends
-import jwt
 from fastapi_async_sqlalchemy import db
-from fastapi_users import FastAPIUsers, models
-from fastapi_users.jwt import generate_jwt
+from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
-    JWTStrategy
+    JWTStrategy,
 )
+from fastapi_users.jwt import generate_jwt
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 
-from core.redis import redis_client
+from config import settings
 from models.employee import Employee
 from models.user import User
 from services.user import UserService
-from config import settings
 
 access_bearer_transport = BearerTransport(
     tokenUrl="api/v1/auth/login"
@@ -123,9 +122,9 @@ async def get_user_service(
 fastapi_users = FastAPIUsers[User, UUID](get_user_service, [access_backend])
 
 __all__ = [
-    "fastapi_users",
     "access_backend",
-    "refresh_backend",
     "create_employee_jwt_access",
-    "create_employee_jwt_refresh"
+    "create_employee_jwt_refresh",
+    "fastapi_users",
+    "refresh_backend"
 ]

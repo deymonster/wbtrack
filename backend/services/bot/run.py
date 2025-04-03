@@ -1,9 +1,10 @@
 import asyncio
 import logging
 import sys
-import contextvars
-from services.bot.bot_init import bot
+
 from aiogram import Dispatcher
+
+from services.bot.bot_init import bot
 from services.bot.handlers import router
 
 dp = Dispatcher()

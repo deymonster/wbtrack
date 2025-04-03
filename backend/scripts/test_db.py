@@ -1,15 +1,18 @@
 import asyncio
-from core.db import get_db_session_instance
+
 from sqlalchemy import text
+
+from core.db import get_db_session_instance
+
 
 async def test_db_connections():
     print("Testing database connections...")
-    
+
     # Test core.db connection (used by Celery and Alembic)
     print("\n1. Testing core.db connection:")
     try:
         async with get_db_session_instance() as session:
-            result = await session.execute(text("SELECT 1"))
+            await session.execute(text("SELECT 1"))
             await session.commit()
             print("✅ core.db connection successful")
     except Exception as e:

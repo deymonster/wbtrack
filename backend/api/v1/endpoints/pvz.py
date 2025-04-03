@@ -1,13 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, Header, Query
-from services.pvz_service import PVZService
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Header, HTTPException, Query
+
 from core.redis import redis_client
 from schemas.response import (
     PVZRequestCodeResponse,
     PVZValidateCodeResponse,
 )
-from typing import Annotated
-from api.dependencies.user import current_active_user
-from models.user import User
+from services.pvz_service import PVZService
 
 router = APIRouter(
     generate_unique_id_function=lambda route: f"pvz_{route.name}",
@@ -49,7 +49,7 @@ async def request_pvz_code(
 ):
     """
     Запрашивает код подтверждения для авторизации.
-    
+
     Требуется заголовок X-Phone-Number с номером телефона в формате 79XXXXXXXXX
     """
     try:
@@ -85,7 +85,7 @@ async def validate_pvz_code(
 ):
     """
     Подтверждает код и возвращает токен доступа.
-    
+
     - Требуется заголовок X-Phone-Number с номером телефона
     - Код подтверждения передается в параметре запроса
     """
@@ -94,7 +94,7 @@ async def validate_pvz_code(
         external_id = "141685"
         token_response = await pvz_service.validate_code(code, pickpoint_id, external_id)
         return {"access_token": token_response.access.token}
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -113,12 +113,12 @@ async def get_pickpoints(
 ):
     """
     Возвращает список доступных пунктов выдачи.
-    
+
     Требуется заголовок X-Phone-Number и действующий токен авторизации
     """
     try:
         return await pvz_service.get_pickpoint_list()
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -137,12 +137,12 @@ async def get_owner_info(
 ):
     """
     Возвращает информацию о владельце аккаунта.
-    
+
     Требуется заголовок X-Phone-Number и действующий токен авторизации
     """
     try:
         return await pvz_service.get_owner_info()
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -161,12 +161,12 @@ async def get_pickpoint_rating(
 ):
     """
     Возвращает рейтинг пункта выдачи.
-    
+
     Требуется заголовок X-Phone-Number и действующий токен авторизации
     """
     try:
         return await pvz_service.get_pickpoint_rating(pickpoint_id)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

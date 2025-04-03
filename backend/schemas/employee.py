@@ -1,15 +1,17 @@
-from typing import Optional
-from pydantic import Field, validator
-from models.employee import EmployeeBase
-from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel, Field, field_validator
+
+from models.employee import EmployeeBase
 
 
 class IEmployeeRead(EmployeeBase):
     id: int
     create_date: str = Field(..., description="Дата создания в формате YYYY-MM-DD")
 
-    @validator("create_date", pre=True)
+    @field_validator("create_date", mode='before')
+    @classmethod
     def format_create_date(cls, value: datetime) -> str:
         """Преобразование даты в строку формата YYYY-MM-DD."""
         if isinstance(value, datetime):

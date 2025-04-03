@@ -1,16 +1,9 @@
-from sqlmodel import (
-    Field,
-    Relationship,
-    SQLModel,
-    Column,
-    ForeignKey,
-    Integer,
-    ARRAY,
-    String
-)
-from models.base import BaseTableID
-from typing import TYPE_CHECKING, Any, List, Optional
 from datetime import datetime
+from typing import TYPE_CHECKING
+
+from sqlmodel import Column, Field, Relationship, SQLModel, String
+
+from models.base import BaseTableID
 
 
 class EmployeeOfficeLink(SQLModel, table=True):
@@ -33,7 +26,7 @@ class EmployeeBase(SQLModel):
 
 
 class Employee(EmployeeBase, BaseTableID, table=True):
-    
+
     offices: list["Office"] = Relationship(
         back_populates="employees",
         link_model=EmployeeOfficeLink

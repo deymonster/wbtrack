@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 
+
 class HashCheck:
     def __init__(self, data, secret):
         self.hash = data['hash']

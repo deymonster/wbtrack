@@ -1,6 +1,6 @@
 from typing import TypeVar
-from sqlalchemy.orm import QueryableAttribute
 
+from sqlalchemy.orm import QueryableAttribute
 
 _T = TypeVar("_T")
 

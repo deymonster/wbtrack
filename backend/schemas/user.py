@@ -1,8 +1,7 @@
-from typing import Optional
 from datetime import datetime
 
 from fastapi_users.schemas import BaseUser, BaseUserCreate, BaseUserUpdate
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 from enums.user import UserRoleEnum
 

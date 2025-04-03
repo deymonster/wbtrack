@@ -1,19 +1,19 @@
-from fastapi import HTTPException
-from typing import Any, Generic, Sequence, Tuple, TypeVar, cast, List
+import logging
+from typing import Any, Generic, Sequence, Tuple, TypeVar
 
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.ext.asyncio import AsyncSession
-from core.utils.pagination import paginate
-from enums.common import ListOrderEnum
+from fastapi import HTTPException
 from fastapi_async_sqlalchemy import db
-from fastapi_pagination import LimitOffsetParams, Page, Params
-from sqlmodel import SQLModel, col, select, func
-from sqlmodel.sql.expression import SelectOfScalar
+from fastapi_pagination import LimitOffsetParams, Page
 from sqlalchemy import exc
 from sqlalchemy.dialects._typing import _OnConflictIndexElementsT
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import SQLModel, col, func, select
+from sqlmodel.sql.expression import SelectOfScalar
 
+from core.utils.pagination import paginate
+from enums.common import ListOrderEnum
 from schemas.model import IModel, IModelUpdate
-import logging
 
 ModelType = TypeVar("ModelType", bound=IModel)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=SQLModel)
@@ -38,12 +38,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def get_db(self):
         return self.db
 
-    async def get_related_objects(self, related_model: type[RelatedType], 
-                                 join_conditions: list[Tuple[type[SQLModel], Any]], 
-                                 filters: list[Any] = None,
+    async def get_related_objects(self, related_model: type[RelatedType],
+                                 join_conditions: list[Tuple[type[SQLModel], Any]],
+                                 filters: list[Any] | None = None,
                                  ) -> SelectOfScalar[RelatedType]:
         """Универсальный метод для формирования запроса получения связанных объектов
-        
+
         :param related_model: Модель связанного объекта
         :param join_condition: Условие соединения (join)
         :param filters: Дополнительные условия (WHERE).
@@ -203,7 +203,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 query = query.order_by(columns[order_by].asc())
             else:
                 query = query.order_by(columns[order_by].desc())
-        
+
         # Добавляем подсчет уникальных записей
         count_query = select(func.count(func.distinct(self.model.id))).select_from(query.subquery())
 
@@ -336,11 +336,13 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         index_elements: _OnConflictIndexElementsT,
         exclude: set[str] | None = None,
         include: set[str] | None = None,
-        on_conflict_set: set[str] = set(),
+        on_conflict_set: set[str] | None = None,
         additionals: dict[str, Any] | None = None,
         db_session: AsyncSession | None = None,
     ) -> None:
         """Create or update an object."""
+        if on_conflict_set is None:
+            on_conflict_set = set()
         session: AsyncSession = db_session or self.db.session
 
         objs: list[ModelType] = []

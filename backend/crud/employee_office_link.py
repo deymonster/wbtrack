@@ -1,8 +1,12 @@
-from crud.base import CRUDBase
-from models.employee import EmployeeOfficeLink
-from schemas.employee_office_link import IEmployeeOfficeLinkCreate, IEmployeeOfficeLinkRead
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
+
+from crud.base import CRUDBase
+from models.employee import EmployeeOfficeLink
+from schemas.employee_office_link import (
+    IEmployeeOfficeLinkCreate,
+    IEmployeeOfficeLinkRead,
+)
 
 
 class CRUDEmployeeOfficeLink(CRUDBase[EmployeeOfficeLink, IEmployeeOfficeLinkCreate, IEmployeeOfficeLinkRead]):

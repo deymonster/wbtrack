@@ -1,17 +1,12 @@
-from aiogram import Router, F
+import base64
+
+from aiogram import Router
 from aiogram.filters import CommandStart
 from aiogram.filters.command import CommandObject
 from aiogram.types import Message
-import base64
 
 from core.db import get_db_session
-from core.redis import redis_client
 from crud.employee import employee_crud
-from fastapi import Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from schemas.user import IUserCreate
-from services.user import UserService
 
 router = Router()
 
@@ -42,7 +37,7 @@ async def start(message: Message, command: CommandObject):
         # update employee
         update_data = {"tg_id": tg_id}
         await employee_crud.update(obj_current=employee, obj_new=update_data, db_session=session)
-        await message.answer(f"Успешная регистрация!")
+        await message.answer("Успешная регистрация!")
 
 
 

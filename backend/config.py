@@ -1,6 +1,7 @@
-from pydantic import computed_field, PostgresDsn, RedisDsn
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from urllib.parse import quote_plus
+
+from pydantic import computed_field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -52,7 +53,7 @@ class Settings(BaseSettings):
             host = self.REDIS_HOST
         else:
             host = "localhost"
-        
+
         if self.REDIS_PASSWORD:
             # URL-кодируем пароль для безопасного использования в URL
             encoded_password = quote_plus(self.REDIS_PASSWORD)
@@ -83,7 +84,7 @@ class Settings(BaseSettings):
     def POSTGRES_POOL_SIZE_BY_SERVER(self) -> int:
         return self.POSTGRES_POOL_SIZE // self.WEB_CONCURRENCY
 
-    
+
 
     @computed_field
     @property
@@ -92,12 +93,12 @@ class Settings(BaseSettings):
             host = self.POSTGRES_HOST
         else:
             host = "localhost"
-            
+
         # URL-кодируем параметры для безопасного использования в URL
         username = quote_plus(self.POSTGRES_USER)
         password = quote_plus(self.POSTGRES_PASSWORD)
         database = quote_plus(self.POSTGRES_DB)
-        
+
         return f"postgresql+asyncpg://{username}:{password}@{host}:{self.POSTGRES_PORT}/{database}"
 
 

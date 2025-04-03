@@ -2,14 +2,14 @@ from fastapi import APIRouter
 
 from .endpoints import (
     auth,
-    user,
+    checkpoint,
     # company,
     employee,
+    office_expenses,
     pvz,
-    checkpoint,
     subscription,
+    user,
     user_management,
-    office_expenses
 )
 
 api_router = APIRouter()

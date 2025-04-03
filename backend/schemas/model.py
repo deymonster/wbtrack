@@ -1,8 +1,6 @@
-from typing import Any, Dict, Literal, Protocol, Self, Type, Union, runtime_checkable
-from uuid import UUID
+from typing import Any, Dict, Literal, Protocol, Self, Union, runtime_checkable
 
 from sqlalchemy import Table
-from sqlmodel import SQLModel
 from sqlmodel.main import FieldInfo, IncEx
 
 
