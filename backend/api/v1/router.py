@@ -9,6 +9,7 @@ from .endpoints import (
     checkpoint,
     subscription,
     user_management,
+    office_expenses
 )
 
 api_router = APIRouter()
@@ -61,6 +62,12 @@ api_router.include_router(
     user_management.router,
     prefix="/user-management",
     tags=["user-management"],
+)
+
+api_router.include_router(
+    office_expenses.router,
+    prefix="/office-expenses",
+    tags=["office-expenses"]
 )
 
 

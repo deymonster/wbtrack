@@ -3,5 +3,6 @@ from . import (
     company,
     employee,
     office,
-    employee_office_link
+    employee_office_link,
+    office_expenses
 )
