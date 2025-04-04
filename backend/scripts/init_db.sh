@@ -12,11 +12,15 @@ handle_error() {
 
 echo "🔄 Starting database initialization..."
 
+# Настройка переменных для wait
+export WAIT_HOSTS=${POSTGRES_HOST}:${POSTGRES_PORT}
+export WAIT_TIMEOUT=300
+export WAIT_SLEEP_INTERVAL=2
+export WAIT_HOST_CONNECT_TIMEOUT=30
+
 # Wait for database
-until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c '\q' 2>/dev/null; do
-  echo "🕒 Waiting for PostgreSQL to become available..."
-  sleep 2
-done
+echo "🕒 Waiting for PostgreSQL to become available..."
+/wait
 
 echo "✅ Database is available"
 

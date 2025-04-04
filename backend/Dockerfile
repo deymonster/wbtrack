@@ -33,6 +33,10 @@ FROM python-base as production
 ENV FASTAPI_ENV=production
 ENV PYTHONPATH=/app
 
+# Добавляем инструмент wait для проверки доступности сервисов
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
+RUN chmod +x /wait
+
 # Копируем установленные пакеты и зависимости
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
@@ -47,7 +51,8 @@ RUN addgroup --system app && adduser --system --group app
 # Add and configure entrypoint script
 COPY scripts/init_db.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh && \
-    chown app:app /entrypoint.sh
+    chown app:app /entrypoint.sh && \
+    chown app:app /wait
 
 RUN chown -R app:app /app
 USER app
