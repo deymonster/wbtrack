@@ -4,41 +4,40 @@ import os
 import sys
 from datetime import datetime, timedelta
 
-# Add the project root to the Python path
+# Добавляем корень проекта в путь Python
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from sqlmodel import select
-from sqlmodel.ext.asyncio.session import AsyncSession
 
 from core.config import settings
-from core.db import get_async_session
+from core.db import get_db_session_instance
 from core.security import get_password_hash
 from enums.user import UserRoleEnum
 from models.user import User
 
 
 async def create_superuser():
-    """Create a superuser with SUPER_ADMIN role"""
-    # Default superuser credentials
+    """Создание суперпользователя с ролью SUPER_ADMIN"""
+    # Учетные данные суперпользователя по умолчанию
     email = os.environ.get("SUPERUSER_EMAIL", "admin@wbtrack.app")
     password = os.environ.get("SUPERUSER_PASSWORD", "admin123")
     first_name = os.environ.get("SUPERUSER_FIRST_NAME", "Super")
     last_name = os.environ.get("SUPERUSER_LAST_NAME", "Admin")
     
-    # Get database session
-    async for session in get_async_session():
-        # Check if superuser already exists
+    # Получаем сессию базы данных с помощью вашего контекстного менеджера
+    async with get_db_session_instance() as session:
+        # Проверяем, существует ли уже суперпользователь
         result = await session.execute(select(User).where(User.email == email))
         existing_user = result.scalar_one_or_none()
         
         if existing_user:
-            print(f"Superuser with email {email} already exists.")
+            print(f"Суперпользователь с email {email} уже существует.")
             return
         
-        # Create new superuser
+        # Создаем нового суперпользователя
         hashed_password = get_password_hash(password)
         
-        # Set subscription dates for a year
+        # Устанавливаем даты подписки на год
         now = datetime.utcnow()
         one_year_later = now + timedelta(days=365)
         
@@ -61,9 +60,9 @@ async def create_superuser():
         await session.commit()
         await session.refresh(superuser)
         
-        print(f"Superuser created successfully with email: {email}")
-        print(f"User ID: {superuser.id}")
-        print("Please change the default password after first login!")
+        print(f"Суперпользователь успешно создан с email: {email}")
+        print(f"ID пользователя: {superuser.id}")
+        print("Пожалуйста, измените пароль по умолчанию после первого входа!")
 
 
 if __name__ == "__main__":
