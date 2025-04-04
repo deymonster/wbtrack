@@ -5,14 +5,7 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
-    POETRY_VERSION=1.4.2 \
-    POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_IN_PROJECT=true \
-    POETRY_NO_INTERACTION=1 \
-    PYSETUP_PATH="/opt/pysetup" \
-    VENV_PATH="/opt/pysetup/.venv"
-
-ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+    
 
 # Этап 2: Билдер для установки зависимостей
 FROM python-base as builder
@@ -20,25 +13,28 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     curl \
     build-essential \
-    libpq-dev
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Установка poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
+# Установка uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Копируем только файлы для установки зависимостей
-WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml ./
+WORKDIR /app
+COPY requirements.txt .
 COPY sqlmodel_dist/sqlmodel-0.0.22-py3-none-any.whl ./sqlmodel_dist/
 
-# Установка зависимостей
-RUN poetry install --no-root
+# Установка зависимостей через uv
+RUN /root/.cargo/bin/uv pip install --system -r requirements.txt
 
 # Этап 3: Финальный образ
 FROM python-base as production
 ENV FASTAPI_ENV=production
 ENV PYTHONPATH=/app
 
-COPY --from=builder $PYSETUP_PATH $PYSETUP_PATH
+# Копируем установленные пакеты и зависимости
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Копируем код приложения
 COPY . /app/

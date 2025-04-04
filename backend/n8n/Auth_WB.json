@@ -1,0 +1,735 @@
+{
+  "name": "Auth WB",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        -220
+      ],
+      "id": "ec6ce9aa-bc62-4fed-9001-dedcc66725c3",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a217a22a-e89d-400b-bed5-bf9c17ec5242",
+              "leftValue": "={{ $json.data && $json.data !==\"\"}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        -280
+      ],
+      "id": "3d489484-b9da-4049-9758-22c3c7789e2f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"phone\": \"79282951709\",\n  \"resend\": false,\n  \"device_uuid\": \"ba72b509f8d2417a882699ffdcac4f22\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -40,
+        -280
+      ],
+      "id": "5de942ae-6deb-40c8-b3ec-65f47aed3ee0",
+      "name": "Входные данные"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://r-point.wb.ru/api/v1/login",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "origin",
+              "value": "https://pvz.wb.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://pvz.wb.ru/"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "x-app-type",
+              "value": "prod"
+            },
+            {
+              "name": "x-app-version",
+              "value": "v9.7.281"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "body": "={{ $json}}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        -40
+      ],
+      "id": "de1d1de1-37fa-4069-ab66-1b7e9798f9b1",
+      "name": "Запрос кода"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wbx-bell-v3.wildberries.ru/shard-proxy/api/v3/notice/get",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "app_type",
+              "value": "web"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "*/*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDIxNDQzNTYsInZlcnNpb24iOjIsInVzZXIiOiI5OTA0OTE1NiIsInNoYXJkX2tleSI6IjE0IiwiY2xpZW50X2lkIjoid2IiLCJzZXNzaW9uX2lkIjoiMjE3NDM4NTE1MDY0NDZhZWI0NzgyODc5NjZkZGU4MmIiLCJ1c2VyX3JlZ2lzdHJhdGlvbl9kdCI6MTY3NjQ0NzM3NCwidmFsaWRhdGlvbl9rZXkiOiI2Y2IwOTExN2EwOGQ4NDMwYzUyMTY5NzM5NjIzMzcxZjM0NjRhNGI0OTNjOGY5NWUwMDRmMjc3N2QwYjdjMWE0IiwicGhvbmUiOiJBWHkzUFhYOTR3S29lYVpJemliS1FRPT0ifQ.Fs0ZNz5PlUWWMUckfrj0Gd1EeN-rJiidD23n_3BJY1S-uZ-OHgOCbuImbH1sTfmxHz7RmuPgjBZxH6uxs-2aJJVguePUc_nStOlSIQFE1uvx4snLNGlilifn4GZJQEBmYVjl120Cy8nH6I6AR7Q1bIYMckiPZRlXNcJ0DYAzfIntS7sW6mVGrcR7Hx0CRM-iluC4gUeXV_FUOHV-wrQ4i_9UpGz0NUNdRVF2yb7F3lOOuMMQqf4Tn-c0zqNmDm6JHrhyCqO31H2PnBvd6MCu8nzjXbA9ZsmtAf_vhwd87ljhF9F7LIfgJsLdzFhr1Rd9DL60lIR802FSOqfbOX_TzQ"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "content-length",
+              "value": "0"
+            },
+            {
+              "name": "origin",
+              "value": "https://www.wildberries.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://www.wildberries.ru/lk"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        -460
+      ],
+      "id": "95bef931-be32-4ae7-8638-5fd67dc73b87",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $input.all();\n\n\nlet code = null;\nfor (const item of payload) {\n  if (item.json && item.json.payload && Array.isArray(item.json.payload)) {\n    for (const payloadItem of item.json.payload) {\n      if (payloadItem && payloadItem.title === \"Код для входа в приложение\") {\n        const match = payloadItem.text.match(/\\d{6}/);\n        if (match) {\n          code = match[0]\n          break;\n        }\n      }\n    }\n    if (code) {\n      break;\n    }\n  }\n}\n\nreturn [{ json: { code }}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        240
+      ],
+      "id": "7aa61b3a-eb9e-4111-8954-54d0d95323fd",
+      "name": "получения кода из кабинета",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a217a22a-e89d-400b-bed5-bf9c17ec5242",
+              "leftValue": "={{ $json.code == null}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1180,
+        -60
+      ],
+      "id": "ce6ff2a8-8fb0-4abd-99bc-83687d5bbe3d",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "985718c3-97e5-4cca-8f81-9e1cf932eb22",
+              "name": "retryCount",
+              "value": "0",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        420,
+        -660
+      ],
+      "id": "87b1e8c6-b3ce-483c-b77b-e88eb5cff539",
+      "name": "Счетчик попыток"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "369c7d4a-754c-46f7-8a13-03b311a98090",
+              "name": "code",
+              "value": "={{ $json.code }}",
+              "type": "string"
+            },
+            {
+              "id": "4bbb6d6c-86ac-438a-8beb-a2eb2df30639",
+              "name": "token",
+              "value": "={{ $('If').item.json.data }}",
+              "type": "string"
+            },
+            {
+              "id": "fb56c952-9926-48f8-9dc3-20ce886df719",
+              "name": "device_type",
+              "value": "DEVICE_WEB",
+              "type": "string"
+            },
+            {
+              "id": "9e5c3c11-00eb-493d-ae13-4a4eb0580fd8",
+              "name": "app_version",
+              "value": "v9.7.281",
+              "type": "string"
+            },
+            {
+              "id": "ddc21ead-a077-4595-8d11-9c35b877dec9",
+              "name": "device_name",
+              "value": "macOS 12.6.3",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1420,
+        20
+      ],
+      "id": "efc3e8e1-2f9e-41aa-8e3c-c607ad562a3f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "amount": 20
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        540,
+        -380
+      ],
+      "id": "f0a0e0e0-4e03-4a38-8bc9-ae05d47e791c",
+      "name": "Wait1",
+      "webhookId": "b7569504-6100-41b1-aa02-191ab5c5207c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://r-point.wb.ru/api/v1/validate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "origin",
+              "value": "https://pvz.wb.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://pvz.wb.ru/"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "x-app-type",
+              "value": "prod"
+            },
+            {
+              "name": "x-app-version",
+              "value": "v9.7.281"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "code",
+              "value": "={{ $json.code }}"
+            },
+            {
+              "name": "token",
+              "value": "={{ $json.token }}"
+            },
+            {
+              "name": "device_type",
+              "value": "={{ $json.device_type }}"
+            },
+            {
+              "name": "app_version",
+              "value": "={{ $json.app_version }}"
+            },
+            {
+              "name": "device_name",
+              "value": "={{ $json.device_name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        -60
+      ],
+      "id": "7ddf5f9b-b0df-4b75-92f6-108699da7c80",
+      "name": "Get Tokes"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tokens",
+          "mode": "list",
+          "cachedResultName": "tokens"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "access_token": "={{ $json.access.token }}",
+            "refresh_token": "={{ $json.refresh.token }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "access_token",
+              "displayName": "access_token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "refresh_token",
+              "displayName": "refresh_token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2140,
+        -180
+      ],
+      "id": "fb4ecf89-5b91-4bfa-bf93-f22ad6e4943f",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "17Lqs91BHDoyqZxV",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        160
+      ],
+      "id": "66b4a717-0641-4ea9-ba13-e3f53c46f0b3",
+      "name": "Wait2",
+      "webhookId": "0d16c909-ecdb-48f5-8828-f6788ee7df11"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Входные данные",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Входные данные": {
+      "main": [
+        [
+          {
+            "node": "Запрос кода",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Запрос кода": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "получения кода из кабинета",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "получения кода из кабинета": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Счетчик попыток": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Get Tokes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tokes": {
+      "main": [
+        []
+      ]
+    },
+    "Postgres": {
+      "main": [
+        []
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b7b43904-4d64-4754-b892-315fb13c5f23",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "df57d58cfb34362139927968fadac0860eb4e78ca17259ef55197881142eb73d"
+  },
+  "id": "H2jjUc0sFIgEw0ye",
+  "tags": []
+}

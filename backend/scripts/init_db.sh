@@ -1,34 +1,42 @@
 #!/bin/bash
+set -e
 
-echo "Starting database initialization..."
+log() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
+}
 
-# Check if this is Celery container
-if [[ "$@" == *"celery"* ]]; then
-    echo "Celery container detected, applying existing migrations only..."
-    alembic upgrade head
+handle_error() {
+    log "❌ Error: $1"
+    exit 1
+}
+
+echo "🔄 Starting database initialization..."
+
+# Wait for database
+until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c '\q' 2>/dev/null; do
+  echo "🕒 Waiting for PostgreSQL to become available..."
+  sleep 2
+done
+
+echo "✅ Database is available"
+
+# Create migrations directory
+mkdir -p migrations/versions
+
+# Check and create migrations
+if [ -z "$(ls -A migrations/versions/)" ]; then
+    log "📝 No migrations found. Creating initial migration..."
+    alembic revision --autogenerate -m "Initial migration" || handle_error "Failed to create initial migration"
+elif [ -n "$(alembic revision --autogenerate --sql 2>/dev/null)" ]; then
+    log "📝 Model changes detected, creating new migration..."
+    alembic revision --autogenerate -m "Auto migration $(date +%Y%m%d_%H%M)" || handle_error "Failed to create new migration"
 else
-    # Create migrations directory
-    mkdir -p migrations/versions
-
-    # Check and create migrations
-    if [ -z "$(ls -A migrations/versions/)" ]; then
-        echo "No migrations found. Creating initial migration..."
-        alembic revision --autogenerate -m "Initial migration"
-    else
-        # Check if there are actual model changes before creating new migration
-        CHANGES=$(alembic revision --autogenerate --sql 2>/dev/null)
-        if [ -n "$CHANGES" ]; then
-            echo "Model changes detected, creating new migration..."
-            alembic revision --autogenerate -m "Auto migration $(date +%Y%m%d_%H%M)"
-        else
-            echo "No model changes detected, skipping migration creation"
-        fi
-    fi
-
-    # Apply migrations
-    echo "Applying migrations..."
-    alembic upgrade head
+    log "✅ No model changes detected"
 fi
+
+# Apply migrations
+log "⚡ Applying migrations..."
+alembic upgrade head || handle_error "Failed to apply migrations"
 
 echo "✅ Database initialization completed!"
 
