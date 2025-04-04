@@ -42,6 +42,10 @@ fi
 log "⚡ Applying migrations..."
 alembic upgrade head || handle_error "Failed to apply migrations"
 
+# Create superuser if needed
+log "🔑 Checking if superuser needs to be created..."
+python /app/scripts/create_superuser.py || log "⚠️ Note: Superuser creation skipped (may already exist)"
+
 echo "✅ Database initialization completed!"
 
 # Execute the main container command

@@ -45,6 +45,10 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY . /app/
 WORKDIR /app
 
+
+# Делаем скрипт создания суперпользователя исполняемым
+RUN chmod +x /app/scripts/create_superuser.py
+
 # Создаем пользователя без root прав
 RUN addgroup --system app && adduser --system --group app
 
