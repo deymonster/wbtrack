@@ -57,6 +57,8 @@ services:
     depends_on:
       - postgres
       - redis
+    volumes:
+      - /opt/wbtrack/backend:/app
     ports:
       - "8080:8000"
     networks:
