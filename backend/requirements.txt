@@ -82,8 +82,8 @@ propcache==0.2.1
 pvz-client @ git+https://github.com/deymonster/pvz_client.git@1bd5995356c8d718e2d306e9f5dc921d0694bb6a
 pwdlib==0.2.0
 pycparser==2.22
-pydantic==2.7.2
-pydantic-core==2.18.3
+pydantic==2.9.2
+pydantic-core==2.23.4
 pydantic-settings==2.7.0
 pygments==2.18.0
 pyjwt==2.8.0
@@ -110,13 +110,13 @@ shellingham==1.5.4
 six==1.17.0
 sniffio==1.3.1
 sqlalchemy==2.0.36
-sqlmodel @ file:///Users/deymonster/My%20projects/WBTrack%20App/backend/sqlmodel_dist/sqlmodel-0.0.22-py3-none-any.whl
+sqlmodel @ file:./sqlmodel_dist/sqlmodel-0.0.22-py3-none-any.whl
 starlette==0.37.2
 text-unidecode==1.3
 time-machine==2.16.0
 toml==0.10.2
 typer==0.12.5
-typing-extensions==4.12.2
+typing-extensions==4.13.1
 tzdata==2024.2
 tzlocal==5.2
 ujson==5.10.0

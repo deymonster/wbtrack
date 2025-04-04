@@ -14,18 +14,19 @@ RUN apt-get update \
     curl \
     build-essential \
     libpq-dev \
+    git \
     && rm -rf /var/lib/apt/lists/*
-
-# Установка uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Копируем только файлы для установки зависимостей
 WORKDIR /app
 COPY requirements.txt .
 COPY sqlmodel_dist/sqlmodel-0.0.22-py3-none-any.whl ./sqlmodel_dist/
 
-# Установка зависимостей через uv
-RUN /root/.cargo/bin/uv pip install --system -r requirements.txt
+# Установка uv и зависимостей
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    export PATH="/root/.local/bin:$PATH" && \
+    uv pip install --system ./sqlmodel_dist/sqlmodel-0.0.22-py3-none-any.whl && \
+    uv pip install --system -r requirements.txt
 
 # Этап 3: Финальный образ
 FROM python-base as production
