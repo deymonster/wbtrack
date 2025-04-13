@@ -6,10 +6,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -240,
-        -220
+        -880,
+        440
       ],
-      "id": "ec6ce9aa-bc62-4fed-9001-dedcc66725c3",
+      "id": "9e7c918a-9c57-45c1-bc74-65f0b701b13d",
       "name": "When clicking ‘Test workflow’"
     },
     {
@@ -40,117 +40,11 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        220,
-        -280
+        -200,
+        380
       ],
-      "id": "3d489484-b9da-4049-9758-22c3c7789e2f",
+      "id": "788b5f9f-4865-4bd7-8301-ae089f1d8074",
       "name": "If"
-    },
-    {
-      "parameters": {
-        "mode": "raw",
-        "jsonOutput": "{\n  \"phone\": \"79282951709\",\n  \"resend\": false,\n  \"device_uuid\": \"ba72b509f8d2417a882699ffdcac4f22\"\n}\n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -40,
-        -280
-      ],
-      "id": "5de942ae-6deb-40c8-b3ec-65f47aed3ee0",
-      "name": "Входные данные"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://r-point.wb.ru/api/v1/login",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "accept",
-              "value": "application/json, text/plain, */*"
-            },
-            {
-              "name": "accept-language",
-              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
-            },
-            {
-              "name": "cache-control",
-              "value": "no-cache"
-            },
-            {
-              "name": "origin",
-              "value": "https://pvz.wb.ru"
-            },
-            {
-              "name": "pragma",
-              "value": "no-cache"
-            },
-            {
-              "name": "priority",
-              "value": "u=1, i"
-            },
-            {
-              "name": "referer",
-              "value": "https://pvz.wb.ru/"
-            },
-            {
-              "name": "sec-ch-ua",
-              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
-            },
-            {
-              "name": "sec-ch-ua-mobile",
-              "value": "?0"
-            },
-            {
-              "name": "sec-ch-ua-platform",
-              "value": "\"macOS\""
-            },
-            {
-              "name": "sec-fetch-dest",
-              "value": "empty"
-            },
-            {
-              "name": "sec-fetch-mode",
-              "value": "cors"
-            },
-            {
-              "name": "sec-fetch-site",
-              "value": "same-site"
-            },
-            {
-              "name": "user-agent",
-              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
-            },
-            {
-              "name": "x-app-type",
-              "value": "prod"
-            },
-            {
-              "name": "x-app-version",
-              "value": "v9.7.281"
-            }
-          ]
-        },
-        "sendBody": true,
-        "contentType": "raw",
-        "body": "={{ $json}}",
-        "options": {
-          "redirect": {
-            "redirect": {}
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        100,
-        -40
-      ],
-      "id": "de1d1de1-37fa-4069-ab66-1b7e9798f9b1",
-      "name": "Запрос кода"
     },
     {
       "parameters": {
@@ -243,10 +137,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        840,
-        -460
+        420,
+        200
       ],
-      "id": "95bef931-be32-4ae7-8638-5fd67dc73b87",
+      "id": "177c81fe-41b0-4eda-a305-5700239fc6b2",
       "name": "HTTP Request"
     },
     {
@@ -256,10 +150,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1020,
-        240
+        600,
+        900
       ],
-      "id": "7aa61b3a-eb9e-4111-8954-54d0d95323fd",
+      "id": "1a12e9c9-18e8-4761-b787-c97634a355e4",
       "name": "получения кода из кабинета",
       "alwaysOutputData": true
     },
@@ -291,10 +185,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1180,
-        -60
+        760,
+        600
       ],
-      "id": "ce6ff2a8-8fb0-4abd-99bc-83687d5bbe3d",
+      "id": "632f9639-b34a-49b7-b076-dfe0d2b34c35",
       "name": "If1"
     },
     {
@@ -314,10 +208,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        420,
-        -660
+        0,
+        0
       ],
-      "id": "87b1e8c6-b3ce-483c-b77b-e88eb5cff539",
+      "id": "ac877d5b-c094-4d7a-9ffd-7e2491483ca7",
       "name": "Счетчик попыток"
     },
     {
@@ -361,10 +255,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1420,
-        20
+        1000,
+        680
       ],
-      "id": "efc3e8e1-2f9e-41aa-8e3c-c607ad562a3f",
+      "id": "5eff0897-71e7-4dfb-b079-9b07e6f4319e",
       "name": "Edit Fields1"
     },
     {
@@ -374,10 +268,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        540,
-        -380
+        120,
+        280
       ],
-      "id": "f0a0e0e0-4e03-4a38-8bc9-ae05d47e791c",
+      "id": "b1c532fb-b994-4fd9-a063-2ba7e7887ae4",
       "name": "Wait1",
       "webhookId": "b7569504-6100-41b1-aa02-191ab5c5207c"
     },
@@ -484,31 +378,132 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1680,
-        -60
+        1180,
+        680
       ],
-      "id": "7ddf5f9b-b0df-4b75-92f6-108699da7c80",
+      "id": "da446e2b-b7b9-4f9b-93cd-fd435a55436d",
       "name": "Get Tokes"
     },
     {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        820
+      ],
+      "id": "48d943a0-5cba-41c9-aa21-85d63f7910c8",
+      "name": "Wait2",
+      "webhookId": "0d16c909-ecdb-48f5-8828-f6788ee7df11"
+    },
+    {
       "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT \n    (SELECT token_value FROM token WHERE phone = '{{ $json.body.phone }}' AND token_type = 'access') as access_token,\n    (SELECT token_value FROM token WHERE phone = '{{ $json.body.phone }}' AND token_type = 'refresh') as refresh_token,\n    (SELECT expires_at FROM token WHERE phone = '{{ $json.body.phone }}' AND token_type = 'access') as expires_at",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -920,
+        1660
+      ],
+      "id": "3c7d500c-84da-4cab-aa71-1e2b831331fc",
+      "name": "Проверка наличия токенов",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "qF6HVJ098uCSVoq5",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23508af7-3be1-4c00-a580-5be55039a879",
+              "name": "access_token",
+              "value": "={{ $('Get Tokes').item.json.access.token }}",
+              "type": "string"
+            },
+            {
+              "id": "5f3c5f9f-7645-48fa-892a-b15f6b7931fd",
+              "name": "access_ttl",
+              "value": "={{ $json.access.ttl }}",
+              "type": "string"
+            },
+            {
+              "id": "e2d0c265-f551-4142-8cf8-40ad0b5bb0f4",
+              "name": "refresh_token",
+              "value": "={{ $json.refresh.token }}",
+              "type": "string"
+            },
+            {
+              "id": "093334a1-b68d-40df-ac8e-9dd43172a92b",
+              "name": "refresh_ttl",
+              "value": "={{ $json.refresh.ttl }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1380,
+        680
+      ],
+      "id": "8c117780-44e2-457e-81dd-10cfc8c521b8",
+      "name": "Set tokens"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-guuid-generator.UUID Generator",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        440
+      ],
+      "id": "a5e3bcc3-90c6-465c-87a3-fd7264161223",
+      "name": "UUID Generator access"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-guuid-generator.UUID Generator",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        800
+      ],
+      "id": "c23a6f7b-4754-4d14-afbe-156e19090730",
+      "name": "UUID Generator refresh"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
         "schema": {
           "__rl": true,
-          "value": "public",
           "mode": "list",
-          "cachedResultName": "public"
+          "value": "public"
         },
         "table": {
           "__rl": true,
-          "value": "tokens",
+          "value": "token",
           "mode": "list",
-          "cachedResultName": "tokens"
+          "cachedResultName": "token"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "access_token": "={{ $json.access.token }}",
-            "refresh_token": "={{ $json.refresh.token }}"
+            "id": "={{ $json.uuid }}",
+            "phone": "79282951709",
+            "token_type": "access",
+            "token_value": "={{ $('Set tokens').item.json.access_token }}",
+            "expires_at": "={{ new Date(Date.now() + ($('Set tokens').item.json.access_ttl * 1000)).toISOString() }}",
+            "created_at": "={{ new Date().toISOString() }}"
           },
           "matchingColumns": [
             "id"
@@ -517,39 +512,57 @@
             {
               "id": "id",
               "displayName": "id",
-              "required": false,
+              "required": true,
               "defaultMatch": true,
               "display": true,
-              "type": "number",
+              "type": "string",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             },
             {
-              "id": "access_token",
-              "displayName": "access_token",
-              "required": false,
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": false
             },
             {
-              "id": "refresh_token",
-              "displayName": "refresh_token",
-              "required": false,
+              "id": "token_type",
+              "displayName": "token_type",
+              "required": true,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "token_value",
+              "displayName": "token_value",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "expires_at",
+              "displayName": "expires_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
             },
             {
               "id": "created_at",
               "displayName": "created_at",
-              "required": false,
+              "required": true,
               "defaultMatch": false,
               "display": true,
               "type": "dateTime",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -558,44 +571,1503 @@
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
+      "typeVersion": 2.6,
       "position": [
-        2140,
-        -180
+        1860,
+        240
       ],
-      "id": "fb4ecf89-5b91-4bfa-bf93-f22ad6e4943f",
-      "name": "Postgres",
+      "id": "17ad0c8a-2c82-40e9-a306-82ae78cf16a6",
+      "name": "Save access token",
       "credentials": {
         "postgres": {
-          "id": "17Lqs91BHDoyqZxV",
+          "id": "qF6HVJ098uCSVoq5",
           "name": "Postgres account"
         }
       }
     },
     {
-      "parameters": {},
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "token",
+          "mode": "list",
+          "cachedResultName": "token"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.uuid }}",
+            "phone": "79282951709",
+            "token_type": "refresh",
+            "token_value": "={{ $('Set tokens').item.json.refresh_token }}",
+            "expires_at": "={{ new Date(Date.now() + ($('Set tokens').item.json.refresh_ttl * 1000)).toISOString() }}",
+            "created_at": "={{ new Date().toISOString() }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "token_type",
+              "displayName": "token_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "token_value",
+              "displayName": "token_value",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "expires_at",
+              "displayName": "expires_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1900,
+        1020
+      ],
+      "id": "40ede2b1-5fb0-4cfc-a89e-4d0838613bc5",
+      "name": "Save refresh token",
+      "credentials": {
+        "postgres": {
+          "id": "qF6HVJ098uCSVoq5",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "138dae8f-0216-4612-8733-0a7be48aea03",
+              "leftValue": "={{ $('Проверка наличия токенов').item.json.access_token }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -700,
+        1660
+      ],
+      "id": "1e692b14-782f-449d-9067-c5c6f91eaa33",
+      "name": "Есть ли токен по номеру?"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "token",
+          "mode": "list",
+          "cachedResultName": "token"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "phone",
+              "value": "79282951709"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -900,
+        2380
+      ],
+      "id": "2c608fd5-249a-49d2-880a-ecd97a5badea",
+      "name": "Удаление токена",
+      "credentials": {
+        "postgres": {
+          "id": "qF6HVJ098uCSVoq5",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"phone\": \"{{ $('Запрос токена').item.json.body.phone }}\",\n  \"resend\": false,\n  \"device_uuid\": \"ba72b509f8d2417a882699ffdcac4f22\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        1600
+      ],
+      "id": "67563a7d-7935-4736-9cf2-0088288ec44e",
+      "name": "Входные данные3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a217a22a-e89d-400b-bed5-bf9c17ec5242",
+              "leftValue": "={{ $json.data && $json.data !==\"\"}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        1600
+      ],
+      "id": "04ff3bbe-74b7-4f94-b5d3-8ad194aee192",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        660,
-        160
+        420,
+        1480
       ],
-      "id": "66b4a717-0641-4ea9-ba13-e3f53c46f0b3",
-      "name": "Wait2",
-      "webhookId": "0d16c909-ecdb-48f5-8828-f6788ee7df11"
+      "id": "131c9dd2-b028-4d0e-9043-7a2accdc1e5d",
+      "name": "Wait",
+      "webhookId": "b7569504-6100-41b1-aa02-191ab5c5207c"
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $input.all();\n\n\nlet code = null;\nfor (const item of payload) {\n  if (item.json && item.json.payload && Array.isArray(item.json.payload)) {\n    for (const payloadItem of item.json.payload) {\n      if (payloadItem && payloadItem.title === \"Код для входа в приложение\") {\n        const match = payloadItem.text.match(/\\d{6}/);\n        if (match) {\n          code = match[0]\n          break;\n        }\n      }\n    }\n    if (code) {\n      break;\n    }\n  }\n}\n\nreturn [{ json: { code }}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        1600
+      ],
+      "id": "eaae8260-dd24-43ac-9a2e-d1eaacd4e613",
+      "name": "получения кода из кабинета1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a217a22a-e89d-400b-bed5-bf9c17ec5242",
+              "leftValue": "={{ $json.code == null}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        980,
+        1600
+      ],
+      "id": "b71ea466-3a56-4396-9ea2-a3a9217352a1",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "369c7d4a-754c-46f7-8a13-03b311a98090",
+              "name": "code",
+              "value": "={{ $json.code }}",
+              "type": "string"
+            },
+            {
+              "id": "4bbb6d6c-86ac-438a-8beb-a2eb2df30639",
+              "name": "token",
+              "value": "={{ $('If2').item.json.data }}",
+              "type": "string"
+            },
+            {
+              "id": "fb56c952-9926-48f8-9dc3-20ce886df719",
+              "name": "device_type",
+              "value": "DEVICE_WEB",
+              "type": "string"
+            },
+            {
+              "id": "9e5c3c11-00eb-493d-ae13-4a4eb0580fd8",
+              "name": "app_version",
+              "value": "v9.7.281",
+              "type": "string"
+            },
+            {
+              "id": "ddc21ead-a077-4595-8d11-9c35b877dec9",
+              "name": "device_name",
+              "value": "macOS 12.6.3",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1180,
+        1600
+      ],
+      "id": "10871fd0-7b9d-428e-811c-081d3d82af22",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://r-point.wb.ru/api/v1/validate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "origin",
+              "value": "https://pvz.wb.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://pvz.wb.ru/"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "x-app-type",
+              "value": "prod"
+            },
+            {
+              "name": "x-app-version",
+              "value": "v9.7.281"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "code",
+              "value": "={{ $json.code }}"
+            },
+            {
+              "name": "token",
+              "value": "={{ $json.token }}"
+            },
+            {
+              "name": "device_type",
+              "value": "={{ $json.device_type }}"
+            },
+            {
+              "name": "app_version",
+              "value": "={{ $json.app_version }}"
+            },
+            {
+              "name": "device_name",
+              "value": "={{ $json.device_name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1380,
+        1600
+      ],
+      "id": "21a04f7d-0205-44e5-9575-3b1b365b86cd",
+      "name": "Get Tokes1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23508af7-3be1-4c00-a580-5be55039a879",
+              "name": "access_token",
+              "value": "={{ $json.access.token }}",
+              "type": "string"
+            },
+            {
+              "id": "5f3c5f9f-7645-48fa-892a-b15f6b7931fd",
+              "name": "access_ttl",
+              "value": "={{ $json.access.ttl }}",
+              "type": "string"
+            },
+            {
+              "id": "e2d0c265-f551-4142-8cf8-40ad0b5bb0f4",
+              "name": "refresh_token",
+              "value": "={{ $json.refresh.token }}",
+              "type": "string"
+            },
+            {
+              "id": "093334a1-b68d-40df-ac8e-9dd43172a92b",
+              "name": "refresh_ttl",
+              "value": "={{ $json.refresh.ttl }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1580,
+        1600
+      ],
+      "id": "a27f7aab-5f5d-4751-ab53-6481759c8a56",
+      "name": "Set tokens1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-guuid-generator.UUID Generator",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        1500
+      ],
+      "id": "22f0033e-edca-461f-b1c5-7c15c89ad945",
+      "name": "UUID Generator access1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-guuid-generator.UUID Generator",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        1720
+      ],
+      "id": "53ad7fbc-4e1d-4d70-a0fc-b9ccbc617975",
+      "name": "UUID Generator refresh1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "token",
+          "mode": "list",
+          "cachedResultName": "token"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.uuid }}",
+            "token_type": "access",
+            "token_value": "={{ $('Set tokens1').item.json.access_token }}",
+            "expires_at": "={{ new Date(Date.now() + ($('Set tokens1').item.json.access_ttl * 1000)).toISOString() }}",
+            "created_at": "={{ new Date().toISOString() }}",
+            "phone": "={{ $('Запрос токена').item.json.body.phone }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "token_type",
+              "displayName": "token_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "token_value",
+              "displayName": "token_value",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "expires_at",
+              "displayName": "expires_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2040,
+        1440
+      ],
+      "id": "eb46cefc-3f8c-44fb-a608-a21cabefe1f7",
+      "name": "Save access token1",
+      "credentials": {
+        "postgres": {
+          "id": "qF6HVJ098uCSVoq5",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "token",
+          "mode": "list",
+          "cachedResultName": "token"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.uuid }}",
+            "token_type": "refresh",
+            "token_value": "={{ $('Set tokens1').item.json.refresh_token }}",
+            "expires_at": "={{ new Date(Date.now() + ($('Set tokens1').item.json.refresh_ttl * 1000)).toISOString() }}",
+            "created_at": "={{ new Date().toISOString() }}",
+            "phone": "={{ $('Запрос токена').item.json.body.phone }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "token_type",
+              "displayName": "token_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "token_value",
+              "displayName": "token_value",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "expires_at",
+              "displayName": "expires_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2040,
+        1780
+      ],
+      "id": "08c7912e-1bde-4782-b57e-2d5caf39dfcd",
+      "name": "Save refresh token1",
+      "credentials": {
+        "postgres": {
+          "id": "qF6HVJ098uCSVoq5",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api-discovery.wb.ru/api/v2/pickpoint/list",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "origin",
+              "value": "https://pvz.wb.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://pvz.wb.ru/"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "x-app-type",
+              "value": "prod"
+            },
+            {
+              "name": "x-app-version",
+              "value": "v9.7.281"
+            },
+            {
+              "name": "x-pickpoint-external-id",
+              "value": "141685"
+            },
+            {
+              "name": "x-pickpoint-id",
+              "value": "65717"
+            },
+            {
+              "name": "x-token",
+              "value": "=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI5OTA0OTE1Njo0N2QxNmY3NWRhNzYwNThjIiwidWlkIjo5MDUzOTQsInd1aWQiOjk5MDQ5MTU2LCJwaWQiOjAsInhwaWQiOjAsInB0eXBlIjowLCJzIjowLCJyIjpudWxsLCJwZXJtaXNzaW9ucyI6W10sImFkbWluIjpmYWxzZSwiYmwiOmZhbHNlLCJhYyI6dHJ1ZSwiYWRtaW5fcm9sZXMiOm51bGwsImlzX3JlZnJlc2giOmZhbHNlLCJyZWZyZXNoX2tleSI6IiIsImNvdW50cnkiOiJSVSIsImFwaWRzIjpudWxsLCJlYXBpZHMiOm51bGwsImFsbG93ZWQiOiJHditCQWdFQkMwRnNiRzkzWldSTWFYTjBBZitDQUFIL2dBQUFRWDhEQVFML2dBQUJCQUVMVUdsamEzQnZhVzUwU1dRQkJBQUJEbEJwWTJ0d2IybHVkRVY0ZEVsa0FRUUFBUVZUYUdGeVpBRUVBQUVFVW05c1pRRUdBQUFBL2dKcS80SUFLUUg5QWhrTUFmMERYdW9CUUFFQ0FBSDlBaDRPQWYwRUhFd0JRQUVDQUFIOUFoaGdBZjBENHh3QlFBRUNBQUg5QWhzcUFmMEQyM3dCUUFFQ0FBSDlBaHJhQWY0cVpBRkFBUUlBQWYwQ0dpSUIvaS9nQVVBQkFnQUIvUUlkbWdIOUNZdFNBVUFCQWdBQi9RSWFKQUg5QS9uZ0FVQUJBZ0FCL1FJZCtnSDlDZUNLQVVBQkFnQUIvUUlXbUFIOUJxc0dBVUFCQWdBQi9RSVVjQUg5QTEvOEFVQUJBZ0FCL1FJZVlBSDlBM0JhQVVBQkFnQUIvUUliQ0FIOUEzNStBVUFCQWdBQi9RSVpMQUg5QTM5cUFVQUJBZ0FCL1FJYlNBSDlCRWlBQVVBQkFnQUIvUUlhV2dIOUJENDZBVUFCQWdBQi9RSWJWQUg5QkcwU0FVQUJBZ0FCL1FJWGdnSDlBOVpVQVVBQkFnQUIvUUlZeEFIOUJIellBVUFCQWdBQi9RSWNlQUg5QXhsWUFVQUJBZ0FCL1FJWTFnSDlDZWxjQVVBQkFnQUIvUUlkSGdIOUEyT21BVUFCQWdBQi9RSWJ5Z0g5QXptd0FVQUJBZ0FCL1FJYUFnSDlDYkh5QVVBQkFnQUIvUUlYVEFIOUJDQ2VBVUFCQWdBQi9RSUJhZ0g5QkZMcUFmL09BUUlBQWYwQ0Z0b0IvUVBwTmdGQUFRSUFBZjBDRnpBQi9RUWtEQUZBQVFJQUFmMENIb29CL1FhcG9BRkFBUUlBQWYwQ0d6Z0IvUVplOWdGQUFRSUFBZjBDRjJZQi9RUXpXQUZBQVFJQUFmMENHZzRCL1FhVVhnRkFBUUlBQWYwQ0ZqZ0IvUVB3dUFGQUFRSUFBZjBDSFhZQi9RUklhZ0ZBQVFJQUFmMENIandCL1FOUlpBRkFBUUlBQWYwQ0drSUIvUVBqUEFGQUFRSUFBZjBDSGVvQi9RUGQxQUZBQVFJQUFmMENGZDRCL1FOZjJBRkFBUUlBQWYwQ0YvSUIvUVJUc2dGQUFRSUFBZjBDR0JZQi9RUktLQUZBQVFJQUFmMENIY0lCL1FQZDVnRkFBUUlBIiwidmVyc2lvbiI6MSwiZGV2aWNlX3V1aWQiOiJiYTcyYjUwOWY4ZDI0MTdhODgyNjk5ZmZkY2FjNGYyMiIsImZpcm0iOmZhbHNlLCJleHAiOjE3NDQxMzA3OTgsImlhdCI6MTc0NDA0NDM5OH0.O2ZH3Mu7nuUMc7PFH7E-u4UnarHzWH66ZtGi11F14igERtgZq0GRJhRW5SiywAS4O0M5OZj-7odWZIaB-Jf0RhK8GAbn6TcVkuAUbMGTXucQEa0zGhHFHraUJszSz0y1e30zYCnANbIwZo4OwCwU-3Dk1JSWBo4RhkjcHux9CPR_bX8S7OYC2rrru-yOEN6BhwsOmwg7ubMPNZaTyrsEC-CGOglZP1330koNs0ANmGoXRs4NfKXNH9nzARKdJuXTq7NbL6RIIJ1tTxKSqXNlHBlZLfNrlMP7cgfYq1HIxfrL1FyNtrahEiTGXx2UlzlrpLCUjJA54gSZ72gaNdFl9A"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        1160
+      ],
+      "id": "861ddd15-1e24-47f6-9df0-7a04b1b96705",
+      "name": "Список ПВЗ"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        860,
+        1160
+      ],
+      "id": "79c63202-dc15-4bd2-ba53-f37f8f14b75d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://r-point.wb.ru/api/v1/login",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "origin",
+              "value": "https://pvz.wb.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://pvz.wb.ru/"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "x-app-type",
+              "value": "prod"
+            },
+            {
+              "name": "x-app-version",
+              "value": "v9.7.281"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "body": "={{ $json}}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        20,
+        1600
+      ],
+      "id": "5878fd30-335b-4abe-b4d1-6c685b54551d",
+      "name": "Запрос кода",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wbx-bell-v3.wildberries.ru/shard-proxy/api/v3/notice/get",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "app_type",
+              "value": "web"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "*/*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDIxNDQzNTYsInZlcnNpb24iOjIsInVzZXIiOiI5OTA0OTE1NiIsInNoYXJkX2tleSI6IjE0IiwiY2xpZW50X2lkIjoid2IiLCJzZXNzaW9uX2lkIjoiMjE3NDM4NTE1MDY0NDZhZWI0NzgyODc5NjZkZGU4MmIiLCJ1c2VyX3JlZ2lzdHJhdGlvbl9kdCI6MTY3NjQ0NzM3NCwidmFsaWRhdGlvbl9rZXkiOiI2Y2IwOTExN2EwOGQ4NDMwYzUyMTY5NzM5NjIzMzcxZjM0NjRhNGI0OTNjOGY5NWUwMDRmMjc3N2QwYjdjMWE0IiwicGhvbmUiOiJBWHkzUFhYOTR3S29lYVpJemliS1FRPT0ifQ.Fs0ZNz5PlUWWMUckfrj0Gd1EeN-rJiidD23n_3BJY1S-uZ-OHgOCbuImbH1sTfmxHz7RmuPgjBZxH6uxs-2aJJVguePUc_nStOlSIQFE1uvx4snLNGlilifn4GZJQEBmYVjl120Cy8nH6I6AR7Q1bIYMckiPZRlXNcJ0DYAzfIntS7sW6mVGrcR7Hx0CRM-iluC4gUeXV_FUOHV-wrQ4i_9UpGz0NUNdRVF2yb7F3lOOuMMQqf4Tn-c0zqNmDm6JHrhyCqO31H2PnBvd6MCu8nzjXbA9ZsmtAf_vhwd87ljhF9F7LIfgJsLdzFhr1Rd9DL60lIR802FSOqfbOX_TzQ"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "content-length",
+              "value": "0"
+            },
+            {
+              "name": "origin",
+              "value": "https://www.wildberries.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://www.wildberries.ru/lk"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        1600
+      ],
+      "id": "a218cfc9-877e-4f2c-8a18-981601d78d82",
+      "name": "Получение кода из кабинета WB ИП Калашникова"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        420,
+        1820
+      ],
+      "id": "863e5ec1-6207-4121-814b-572bac646e37",
+      "name": "Wait3",
+      "webhookId": "30ecd914-5767-4730-b78e-9728b4d29e7e"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"message\": \"Token already exists\",\n  \"data\": {\n    \"phone\": \"{{ $json.phone }}\",\n    \"expires_at\": \"{{ $json.expires_at }}\"\n  }\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        900
+      ],
+      "id": "90c634d2-2dfd-4a33-9211-77e3b284dd26",
+      "name": "Token exist response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"processing\",\n  \"message\": \"Token request initiated\",\n  \"check_status_url\": \"/api/token/status/{{ $('Запрос токена').item.json.body.phone }}\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -500,
+        920
+      ],
+      "id": "f2ba01ed-d8dd-4fe2-ad69-9e9a4b62dc8d",
+      "name": "Obtaining new token response"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/api/token/request",
+        "authentication": "basicAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1160,
+        1660
+      ],
+      "id": "a413579f-a8dd-43da-8aac-af191b5ad23e",
+      "name": "Запрос токена",
+      "webhookId": "5df4741a-d116-4d8d-9d8d-9d02d8307e75",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "zhpoAunMl8NFEWrz",
+          "name": "n8n_auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Запрос токена').item.json.body.action }}",
+                    "rightValue": "check_or_create",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2155283e-30b0-40af-a6fa-b5367544a5e6"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ee5451c2-5233-4373-b3dc-ff197e719028",
+                    "leftValue": "={{ $('Запрос токена').item.json.body.action }}",
+                    "rightValue": "refresh",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -660,
+        1960
+      ],
+      "id": "2fbeaf38-5bc9-4ce2-bcbe-d7a5c720218a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "984fc40d-7510-4568-94ec-a004757d7128",
+              "leftValue": "={{ $json.expires_at }}",
+              "rightValue": "={{new Date()}}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -420,
+        1320
+      ],
+      "id": "ab2d3659-f9b4-4f40-aabb-1b4da04c8295",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"data\": {\n    \"access_token\": \"{{ $input.first().json.token_value }}\",\n    \"expires_at\": \"{{ $input.first().json.expires_at }}\",\n    \"token_type\": \"{{ $input.first().json.token_type }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -100,
+        1140
+      ],
+      "id": "42784ba6-2162-4c5b-927e-7539456ea5dc",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"access_token\": \"{{ $json.token_value }}\",\n  \"expires_at\": \"{{ $json.expires_at }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2340,
+        1580
+      ],
+      "id": "a00c09ce-50cd-4d7f-8ee1-a2f18787cedc",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://r-point.wb.ru/api/v1/refresh",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "origin",
+              "value": "https://pvz.wb.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://pvz.wb.ru/"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "x-app-type",
+              "value": "prod"
+            },
+            {
+              "name": "x-app-version",
+              "value": "v9.7.281"
+            },
+            {
+              "name": "x-pickpoint-external-id",
+              "value": "141685"
+            },
+            {
+              "name": "x-pickpoint-id",
+              "value": "65717"
+            },
+            {
+              "name": "x-token",
+              "value": "={{ $json.token_value }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI5OTA0OTE1NjpiYmE4ZDQ0ZDk2YTM1NWY4IiwidWlkIjo5MDUzOTQsInd1aWQiOjk5MDQ5MTU2LCJwaWQiOjAsInhwaWQiOjAsInB0eXBlIjowLCJzIjowLCJyIjpudWxsLCJwZXJtaXNzaW9ucyI6W10sImFkbWluIjpmYWxzZSwiYmwiOmZhbHNlLCJhYyI6dHJ1ZSwiYWRtaW5fcm9sZXMiOm51bGwsImlzX3JlZnJlc2giOnRydWUsInJlZnJlc2hfa2V5IjoiMDY4OTBmMThhYiIsImNvdW50cnkiOiIiLCJhcGlkcyI6bnVsbCwiZWFwaWRzIjpudWxsLCJhbGxvd2VkIjoiR3YrQkFnRUJDMEZzYkc5M1pXUk1hWE4wQWYrQ0FBSC9nQUFBUVg4REFRTC9nQUFCQkFFTFVHbGphM0J2YVc1MFNXUUJCQUFCRGxCcFkydHdiMmx1ZEVWNGRFbGtBUVFBQVFWVGFHRnlaQUVFQUFFRVVtOXNaUUVHQUFBQS9nSnEvNElBS1FIOUFoNWdBZjBEY0ZvQlFBRUNBQUg5QWgyYUFmMEppMUlCUUFFQ0FBSDlBaFk0QWYwRDhMZ0JRQUVDQUFIOUFob0NBZjBKc2ZJQlFBRUNBQUg5QWhva0FmMEQrZUFCUUFFQ0FBSDlBaGN3QWYwRUpBd0JRQUVDQUFIOUFoUndBZjBEWC93QlFBRUNBQUg5QWg2S0FmMEdxYUFCUUFFQ0FBSDlBaHRVQWYwRWJSSUJRQUVDQUFIOUFocGFBZjBFUGpvQlFBRUNBQUg5QWhqV0FmMEo2VndCUUFFQ0FBSDlBaDBlQWYwRFk2WUJRQUVDQUFIOUFoYVlBZjBHcXdZQlFBRUNBQUg5QWhlQ0FmMEQxbFFCUUFFQ0FBSDlBaHJhQWY0cVpBRkFBUUlBQWYwQ0hYWUIvUVJJYWdGQUFRSUFBZjBDRnRvQi9RUHBOZ0ZBQVFJQUFmMENHUXdCL1FOZTZnRkFBUUlBQWYwQ0d3Z0IvUU4rZmdGQUFRSUFBZjBDSGc0Qi9RUWNUQUZBQVFJQUFmMENHaUlCL2kvZ0FVQUJBZ0FCL1FJYVFnSDlBK004QVVBQkFnQUIvUUlkK2dIOUNlQ0tBVUFCQWdBQi9RSVlZQUg5QStNY0FVQUJBZ0FCL1FJWkxBSDlBMzlxQVVBQkFnQUIvUUlhRGdIOUJwUmVBVUFCQWdBQi9RSVhUQUg5QkNDZUFVQUJBZ0FCL1FJQmFnSDlCRkxxQWYvT0FRSUFBZjBDR01RQi9RUjgyQUZBQVFJQUFmMENGMllCL1FReldBRkFBUUlBQWYwQ0d6Z0IvUVplOWdGQUFRSUFBZjBDR3lvQi9RUGJmQUZBQVFJQUFmMENISGdCL1FNWldBRkFBUUlBQWYwQ0hqd0IvUU5SWkFGQUFRSUFBZjBDSGVvQi9RUGQxQUZBQVFJQUFmMENGZDRCL1FOZjJBRkFBUUlBQWYwQ0cwZ0IvUVJJZ0FGQUFRSUFBZjBDRzhvQi9RTTVzQUZBQVFJQUFmMENGL0lCL1FSVHNnRkFBUUlBQWYwQ0dCWUIvUVJLS0FGQUFRSUFBZjBDSGNJQi9RUGQ1Z0ZBQVFJQSIsInZlcnNpb24iOjAsImRldmljZV91dWlkIjoiYmE3MmI1MDlmOGQyNDE3YTg4MjY5OWZmZGNhYzRmMjIiLCJmaXJtIjpmYWxzZSwiZXhwIjoxNzUxNjQ2ODcyLCJpYXQiOjE3NDM4NzA4NzJ9.IcUhg_FSDvM6KNFdK1HVK4_MAfkAPiZpAkA0lb8NgAO0AAOheSo8AP6CdHX3Jx4PJ2c4X7zOmsE8_rrijmw3d5or8VL26Bjty2lAXBj4IY-6X3OiavHbkObidv7DrcRb09XMnHBk1WBbcEUMJNHelohnF7PlsI8Bgqp5IbMO0Jm54WUFDP1AhD_T6PLNbt0mC0o_X91ic-M-yf14jcNgSy1yAu6XBS1b94pmtNE30I6Gp_mtrplkSbPcGoE7-GNTgALvxZnoW_pb-Xyw08D0fytolcr0OD6C73ER6iZWKuP3YeiCMB3v99EtlzdCUM3pymzg5xzyffU6GaixsaJEww"
+            },
+            {
+              "name": "backoffice",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -660,
+        2380
+      ],
+      "id": "e0eea714-90cf-4f33-b537-905aeda9fa67",
+      "name": "Обновление токена"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://r-point.wb.ru/api/v1/refresh",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "accept-language",
+              "value": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "origin",
+              "value": "https://pvz.wb.ru"
+            },
+            {
+              "name": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://pvz.wb.ru/"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "x-app-type",
+              "value": "prod"
+            },
+            {
+              "name": "x-app-version",
+              "value": "v9.7.281"
+            },
+            {
+              "name": "x-pickpoint-external-id",
+              "value": "141685"
+            },
+            {
+              "name": "x-pickpoint-id",
+              "value": "65717"
+            },
+            {
+              "name": "x-token",
+              "value": "={{ $json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "={{ $json.refresh_token }}"
+            },
+            {
+              "name": "backoffice",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -260,
+        2100
+      ],
+      "id": "60c2c3a0-629b-4ff6-8347-11b3d74a266a",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=UPDATE token \nSET token_value = CASE \n    WHEN token_type = 'access' THEN '{{ $json.access.token }}'\n    WHEN token_type = 'refresh' THEN '{{ $json.refresh.token }}'\n    END,\nexpires_at = CASE \n    WHEN token_type = 'access' THEN NOW() + INTERVAL '{{ $json.access.ttl }} seconds'\n    WHEN token_type = 'refresh' THEN NOW() + INTERVAL '{{ $json.refresh.ttl }} seconds'\n    END\nWHERE phone = '{{ $json.phone }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        2100
+      ],
+      "id": "704b733e-23d3-4f8e-9ffa-392e34143ef0",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "qF6HVJ098uCSVoq5",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"access_token\": \"{{ $json.token_value }}\",\n  \"expires_at\": \"{{ $json.expires_at }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        260,
+        2100
+      ],
+      "id": "06f57531-6301-4939-819a-93e839577f0d",
+      "name": "Respond to Webhook2"
     }
   ],
   "pinData": {},
   "connections": {
     "When clicking ‘Test workflow’": {
       "main": [
-        [
-          {
-            "node": "Входные данные",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "If": {
@@ -603,29 +2075,6 @@
         [
           {
             "node": "Wait1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        []
-      ]
-    },
-    "Входные данные": {
-      "main": [
-        [
-          {
-            "node": "Запрос кода",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Запрос кода": {
-      "main": [
-        [
-          {
-            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -672,11 +2121,6 @@
         ]
       ]
     },
-    "Счетчик попыток": {
-      "main": [
-        []
-      ]
-    },
     "Edit Fields1": {
       "main": [
         [
@@ -699,21 +2143,352 @@
         ]
       ]
     },
-    "Get Tokes": {
-      "main": [
-        []
-      ]
-    },
-    "Postgres": {
-      "main": [
-        []
-      ]
-    },
     "Wait2": {
       "main": [
         [
           {
             "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Проверка наличия токенов": {
+      "main": [
+        [
+          {
+            "node": "Есть ли токен по номеру?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tokes": {
+      "main": [
+        [
+          {
+            "node": "Set tokens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set tokens": {
+      "main": [
+        [
+          {
+            "node": "UUID Generator access",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "UUID Generator refresh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UUID Generator access": {
+      "main": [
+        [
+          {
+            "node": "Save access token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UUID Generator refresh": {
+      "main": [
+        [
+          {
+            "node": "Save refresh token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Есть ли токен по номеру?": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Входные данные3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Входные данные3": {
+      "main": [
+        [
+          {
+            "node": "Запрос кода",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Получение кода из кабинета WB ИП Калашникова",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "получения кода из кабинета1": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Входные данные3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get Tokes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set tokens1": {
+      "main": [
+        [
+          {
+            "node": "UUID Generator access1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "UUID Generator refresh1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UUID Generator access1": {
+      "main": [
+        [
+          {
+            "node": "Save access token1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UUID Generator refresh1": {
+      "main": [
+        [
+          {
+            "node": "Save refresh token1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tokes1": {
+      "main": [
+        [
+          {
+            "node": "Set tokens1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Запрос кода": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Получение кода из кабинета WB ИП Калашникова": {
+      "main": [
+        [
+          {
+            "node": "получения кода из кабинета1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save refresh token1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save access token1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Входные данные3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Запрос токена": {
+      "main": [
+        [
+          {
+            "node": "Проверка наличия токенов",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtaining new token response": {
+      "main": [
+        []
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Входные данные3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Обновление токена": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
             "type": "main",
             "index": 0
           }
@@ -725,11 +2500,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "b7b43904-4d64-4754-b892-315fb13c5f23",
+  "versionId": "40de570a-a307-4094-a77d-7525e2ff0289",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "df57d58cfb34362139927968fadac0860eb4e78ca17259ef55197881142eb73d"
+    "instanceId": "22b07ebdd71224ccc0f903ff6950edd990dbfe1f5f44ea84d78b238a5cad41e4"
   },
-  "id": "H2jjUc0sFIgEw0ye",
+  "id": "0XwDLa3J68vt6nFw",
   "tags": []
 }

@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from models.company import Company
     from models.employee import Employee
     from models.office_expenses import OfficeExpenses
+    from models.office_report import OfficeReport
 
 
 class OfficeBase(SQLModel):
@@ -35,6 +36,7 @@ class Office(OfficeBase, BaseTableID, table=True):
         link_model=EmployeeOfficeLink
     )
     expenses: "OfficeExpenses" = Relationship(back_populates="office")
+    reports: list["OfficeReport"] = Relationship(back_populates="office")
 
 
 
