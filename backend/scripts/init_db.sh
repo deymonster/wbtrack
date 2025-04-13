@@ -24,40 +24,7 @@ echo "🕒 Waiting for PostgreSQL to become available..."
 
 echo "✅ Database is available"
 
-# Проверяем и очищаем  таблицу alembic_version при необходимости
-python -c "
-import os, sys, asyncio
-import asyncpg
 
-async def check_and_clean():
-    try:
-        conn = await asyncpg.connect(
-            host=os.environ.get('POSTGRES_HOST'),
-            port=int(os.environ.get('POSTGRES_PORT', 5432)),
-            user=os.environ.get('POSTGRES_USER'),
-            password=os.environ.get('POSTGRES_PASSWORD'),
-            database=os.environ.get('POSTGRES_DB')
-        )
-        
-        # Проверяем существование таблицы alembic_version
-        exists = await conn.fetchval(\"\"\"
-            SELECT EXISTS (
-                SELECT FROM information_schema.tables 
-                WHERE table_name = 'alembic_version'
-            )
-        \"\"\")
-        
-        if exists:
-            print('⚠️ Found existing alembic_version table, cleaning it...')
-            await conn.execute('DELETE FROM alembic_version')
-            print('✅ alembic_version table cleaned')
-        
-        await conn.close()
-    except Exception as e:
-        print(f'❌ Error checking/cleaning alembic_version: {e}')
-
-asyncio.run(check_and_clean())
-"
 
 # Create migrations directory
 mkdir -p migrations/versions
@@ -66,10 +33,13 @@ mkdir -p migrations/versions
 if [ -z "$(ls -A migrations/versions/)" ]; then
     log "📝 No migrations found. Creating initial migration..."
     alembic revision --autogenerate -m "Initial migration" || handle_error "Failed to create initial migration"
+    alembic upgrade head || handle_error "Failed to apply initial migration"
 else
-    log "📝 Checking for model changes..."
-    # Пытаемся создать миграцию, но игнорируем ошибки
-    alembic revision --autogenerate -m "Auto migration $(date +%Y%m%d_%H%M)" || log "⚠️ Warning: Could not create migration, continuing anyway"
+    log "📝 Checking and applying model changes..."
+    # Создаем новую миграцию для изменений
+    alembic revision --autogenerate -m "Auto migration $(date +%Y%m%d_%H%M)"
+    # Применяем только новые миграции
+    alembic upgrade head
 fi
 
 # Apply migrations
