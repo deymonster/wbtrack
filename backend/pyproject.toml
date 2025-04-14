@@ -32,6 +32,9 @@ pvz-client = {git = "https://github.com/deymonster/pvz_client.git", rev = "main"
 
 
 
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.3.6"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

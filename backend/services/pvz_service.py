@@ -27,8 +27,7 @@ class PVZService:
     async def login(self) -> RequestCodeResponse:
         """Первый запрос для получения кода"""
         code_response = await self.auth.login(self.phone)
-
-
+        
         # Сохраняем временный токен в Redis
         redis_key = f"pvz:{self.phone}:temp_token"
         await self.redis.set(
@@ -38,8 +37,7 @@ class PVZService:
         )
 
         saved_token = await self.redis.get(redis_key)
-        print(f"Saved token in Redis: {saved_token}")
-
+        
         return code_response
 
     async def validate_code(self, code: str, pickpoint_id: str, external_id: str) -> SwitchTokenResponse:

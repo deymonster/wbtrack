@@ -20,7 +20,7 @@ class CRUDEmployeeOfficeLink(CRUDBase[EmployeeOfficeLink, IEmployeeOfficeLinkCre
         link = EmployeeOfficeLink(employee_id=employee_id, office_id=office_id)
         session.add(link)
         await session.commit()
-        await db_session.refresh(link)
+        await session.refresh(link)
         return link
 
     async def get_link(
@@ -29,7 +29,7 @@ class CRUDEmployeeOfficeLink(CRUDBase[EmployeeOfficeLink, IEmployeeOfficeLinkCre
         office_id: int,
         db_session: AsyncSession | None = None,
     ) -> EmployeeOfficeLink | None:
-        session = db_session or self.db.session
+        session: AsyncSession = db_session or self.db.session
         query = select(EmployeeOfficeLink).where(
         EmployeeOfficeLink.employee_id == employee_id,
         EmployeeOfficeLink.office_id == office_id

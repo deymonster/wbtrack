@@ -1,0 +1,17 @@
+{
+    "exclude": [
+        "**/node_modules",
+        "**/__pycache__",
+        ".venv",
+        ".git",
+        ".pytest_cache",
+        "**/.mypy_cache"
+    ],
+    "ignore": [
+        "**/.venv"
+    ],
+    "reportMissingImports": true,
+    "reportMissingTypeStubs": false,
+    "pythonVersion": "3.11",
+    "typeCheckingMode": "basic"
+}

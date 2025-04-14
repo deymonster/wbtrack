@@ -1,0 +1,28 @@
+{
+    "python.analysis.indexing": false,
+    "python.analysis.autoSearchPaths": false,
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.packageIndexDepths": [
+        {
+            "name": "sklearn",
+            "depth": 1
+        },
+        {
+            "name": "matplotlib",
+            "depth": 1
+        },
+        {
+            "name": "scipy",
+            "depth": 1
+        },
+        {
+            "name": "fastapi",
+            "depth": 2
+        },
+        {
+            "name": "*",
+            "depth": 1
+        }
+    ]
+}
