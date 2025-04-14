@@ -1,12 +1,13 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from api.dependencies.pvz import pvz_service_dependency
 from api.dependencies.user import current_active_user
 from crud.company import company_crud
 from models.user import User
 from schemas.company import ICompanyRead
 from services.pvz_service import PVZService
+from enums.user import UserRoleEnum
 
 
 
@@ -238,10 +239,24 @@ async def register_company(
 ):
     """
     Регистрация компании.
+    Доступно только для пользователей с ролью admin
     """
     
+    if current_user.role not in [UserRoleEnum.ADMIN, UserRoleEnum.SUPER_ADMIN]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions. Admin role required."
+        )
+
     # 1. Get company info from WB
     owner_info = await pvz_service.get_owner_info()
+
+    existing_company = await company_crud.get_company_by_wb_user_id(owner_info.wb_user_id)
+    if existing_company:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Company is already registered"
+        )
     
     offices = await pvz_service.get_pickpoint_list()
     
