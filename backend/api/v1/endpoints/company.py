@@ -1,23 +1,11 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 from api.dependencies.pvz import pvz_service_dependency
 from api.dependencies.user import current_active_user
-from core.exceptions import NotFound
 from crud.company import company_crud
-from crud.employee import employee_crud
-from crud.employee_office_link import employee_office_link_crud
-from crud.office import office_crud
-from models.company import Company
-from models.employee import Employee 
 from models.user import User
-from models.office import Office
-from schemas.company import ICompanyCreate, ICompanyRead
-from schemas.employee import IEmployeeCreate
-from schemas.employee_office_link import IEmployeeOfficeLinkCreate 
-from schemas.office import IOfficeCreate
+from schemas.company import ICompanyRead
 from services.pvz_service import PVZService
 
 
@@ -257,102 +245,11 @@ async def register_company(
     
     offices = await pvz_service.get_pickpoint_list()
     
-
-    # 2. Create company
-    company = await company_crud.create_or_update(
-        obj_in=ICompanyCreate(
-            wb_user_id=owner_info.wb_user_id,
-            name=owner_info.name,
-            phone=str(owner_info.phone),
-            org_name=owner_info.org_name,
-        ),
-        index_elements=["wb_user_id"],
-        create_exclude={"id"},
-        update_exclude={"id"}
+     # Register company with all relations
+    company = await company_crud.register_company(
+        owner_info=owner_info,
+        offices=offices,
+        current_user=current_user
     )
-
-    # 3. Link company to user
-    await company_crud.add_user(company=company, user=current_user)
-
-    # 4. Bulk create/update employees
-    unique_employees = {
-        emp.user_id: IEmployeeCreate(
-            user_id=emp.user_id,
-            name=emp.name,
-            last_name=emp.last_name,
-            phone=str(emp.phone),
-            is_deleted=False
-        )
-        for office in offices 
-        if office.is_active
-        for emp in office.users 
-        if not emp.is_deleted
-    }
-
-    await employee_crud.create_or_update_multi(
-        list_in=unique_employees.values(),
-        index_elements=["user_id"],
-        on_conflict_set={"name", "last_name", "phone", "is_deleted"}
-    )
-    employees = await employee_crud.get_multi(
-        query=select(Employee).where(
-            Employee.user_id.in_([emp.user_id for emp in unique_employees.values()])
-        )
-    )
-
-
-    # 5. Bulk create/update offices
-    await office_crud.create_or_update_multi(
-        list_in=(
-            IOfficeCreate(
-                office_id=office.id,
-                name=office.name,
-                latitude=office.latitude,
-                longitude=office.longitude,
-                is_active=True,
-                external_id=office.external_id,
-                rate=office.rate,
-                company_id=company.id
-            ) 
-            for office in offices 
-            if office.is_active
-        ),
-        index_elements=["office_id"],
-        on_conflict_set={"name", "latitude", "longitude", "is_active", "rate"},
-        additionals={"company_id": company.id}
-    )
-    # Получаем созданные офисы
-    created_offices = await office_crud.get_multi(
-        query=select(Office).where(
-            Office.office_id.in_([office.id for office in offices if office.is_active])
-        )
-    )
-
-    # 6. Bulk create employee-office links
-    unique_links = [
-        IEmployeeOfficeLinkCreate(
-            employee_id=next(e.id for e in employees if e.user_id == emp.user_id),
-            office_id=next(o.id for o in created_offices if o.office_id == office.id)
-        )
-        for office in offices
-        if office.is_active
-        for emp in office.users
-        if not emp.is_deleted
-    ]
-
-    await employee_office_link_crud.create_multi(
-        list_in=unique_links
-    )
-
-    result = await company_crud.get_multi(
-        query=(
-            select(Company)
-            .where(Company.id == company.id)
-            .options(
-                selectinload(Company.users),
-                selectinload(Company.offices)
-            )
-        )
-    )
-
-    return result[0] 
+    
+    return company
