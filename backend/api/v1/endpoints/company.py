@@ -4,10 +4,14 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from api.dependencies.pvz import pvz_service_dependency
 from api.dependencies.user import current_active_user
 from crud.company import company_crud
+from crud.office import office_crud
 from models.user import User
 from schemas.company import ICompanyRead
 from services.pvz_service import PVZService
 from enums.user import UserRoleEnum
+from api.dependencies.api_key import get_api_key 
+from schemas.office import IOfficeUpdate, UpdateOfficesRequest
+from typing import List
 
 
 
@@ -231,6 +235,7 @@ router = APIRouter(
 )
 
 current_user_dependency = Depends(current_active_user)
+api_key_dependency = Depends(get_api_key)
 
 @router.post("/register-company", response_model=ICompanyRead)
 async def register_company(
@@ -268,3 +273,28 @@ async def register_company(
     )
     
     return company
+
+@router.post("/update-offices", response_model=ICompanyRead)
+async def update_offices(
+    request: UpdateOfficesRequest,
+    api_key: Annotated[str, api_key_dependency]
+):
+    """
+    Обновление списка офисов компании.
+    
+    """
+    company = await company_crud.get_or_404(request.company_id)
+
+    success = await office_crud.update_list_offices_by_external_id(
+        offices=request.offices,
+        company_id=company.id
+    )
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No matching offices found for company {company.id}"
+        )
+
+    updated_company = await company_crud.get_or_404(request.company_id)
+    return updated_company
+    

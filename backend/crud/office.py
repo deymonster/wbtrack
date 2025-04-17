@@ -12,7 +12,7 @@ from models.company import Company
 from models.company_user import CompanyUser
 from models.employee import Employee, EmployeeOfficeLink
 from models.office import Office
-from schemas.office import IOfficeCreate, IOfficeUpdate
+from schemas.office import IOfficeCreate, IOfficeUpdate, IOfficeUpdateFromWB
 from schemas.response import IResponsePaginated
 
 logger = logging.getLogger(__name__)
@@ -158,6 +158,49 @@ class OfficeCRUD(CRUDBase[Office, IOfficeCreate, IOfficeUpdate]):
         
         await self.delete(id=office.id, db_session=session)
         return True
+
+    async def update_list_offices_by_external_id(self, *, offices: list[IOfficeUpdateFromWB], db_session: AsyncSession | None = None) -> bool:
+        """Обновление списка офисов по external_id.
+        
+        Args:
+            offices: Список офисов
+            db_session: Сессия базы данных
+        Returns:
+            list[Office]: Список обновленных офисов
+        """
+
+        try:
+            session: AsyncSession = db_session or self.db.session
+        
+
+            # Get existing offices for this company
+            query = select(self.model).where(self.model.company_id == company_id)
+            existing_offices = await self.get_multi(query=query, db_session=session)
+
+            existing_external_ids = {
+                office.external_id for office in existing_offices
+            }
+
+            # Filter only existing offices
+            offices_to_update = [
+                office for office in offices 
+                if office.id in existing_external_ids  # используем id так как в схеме он мапится на external_id
+            ]
+
+            # Update existing offices
+            if offices_to_update:
+                await self.create_or_update_multi(
+                    list_in=offices_to_update,
+                    index_elements=["external_id"],
+                    on_conflict_set={"name", "latitude", "longitude", "is_active", "rate"},
+                    additionals={"company_id": company_id}
+                )
+                return True
+            return False
+        except Exception as e:
+            logger.error(f"Error updating offices for company {company_id}: {str(e)}")
+            raise
+
 
 office_crud = OfficeCRUD(Office)
 
