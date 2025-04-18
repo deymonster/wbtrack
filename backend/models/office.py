@@ -18,7 +18,7 @@ class OfficeBase(SQLModel):
     latitude: str
     longitude: str
     is_active: bool = Field(default=True)
-    external_id: int | None
+    external_id: int = Field(unique=True, index=True)
     rate: float | None = Field(default=0.0)
 
 

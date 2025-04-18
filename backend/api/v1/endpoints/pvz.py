@@ -2,12 +2,15 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from api.dependencies.pvz import pvz_service_dependency
+from api.dependencies.user import current_active_user_dependency
 from core.redis import redis_client
 from schemas.response import (
     PVZRequestCodeResponse,
     PVZValidateCodeResponse,
 )
 from services.pvz_service import PVZService
+from models.user import User
+from enums.user import UserRoleEnum
 
 router = APIRouter(
     generate_unique_id_function=lambda route: f"pvz_{route.name}",
@@ -30,9 +33,11 @@ router = APIRouter(
             }
         },
         400: {"description": "Ошибка в запросе"},
+        403: {"description": "Недостаточно прав"},
     }
 )
 async def request_pvz_code(
+    current_user: Annotated[User, current_active_user_dependency],
     pvz_service: Annotated[PVZService, pvz_service_dependency]
 ):
     """
@@ -40,6 +45,11 @@ async def request_pvz_code(
 
     Требуется заголовок X-Phone-Number с номером телефона в формате 79XXXXXXXXX
     """
+    if current_user.role not in [UserRoleEnum.ADMIN, UserRoleEnum.SUPER_ADMIN]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions. Admin role required."
+        )
     try:
         
         code_response = await pvz_service.login()

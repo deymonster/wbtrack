@@ -1,5 +1,6 @@
 from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from fastapi import HTTPException, status
 from sqlmodel import col, select
 from sqlalchemy.orm import selectinload
@@ -201,6 +202,22 @@ class CRUDCompany(CRUDBase[Company, ICompanyCreate, ICompanyUpdate]):
         )
 
         return company
+
+
+    async def get_with_relations(self, *, id: int, db_session: AsyncSession | None = None) -> Company | None:
+        """Получение компании по id с связями"""
+        session = db_session or self.db.session
+
+        query = (
+            select(Company)
+            .options(
+                selectinload(Company.users),
+                selectinload(Company.offices)
+            )
+            .where(Company.id == id)
+        )
+        result = await session.execute(query)
+        return result.scalar_one_or_none()
 
 company_crud = CRUDCompany(Company)  # type: ignore
 

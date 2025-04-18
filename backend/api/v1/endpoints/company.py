@@ -295,6 +295,6 @@ async def update_offices(
             detail=f"No matching offices found for company {company.id}"
         )
 
-    updated_company = await company_crud.get_or_404(request.company_id)
+    updated_company = await company_crud.get_with_relations(id=request.company_id)
     return updated_company
     
