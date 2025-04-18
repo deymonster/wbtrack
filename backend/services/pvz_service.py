@@ -73,6 +73,7 @@ class PVZService:
         """Получаем access токен из Redis"""
         access_token = await self.redis.get(f"pvz:{self.phone}:access_token")
         if not access_token:
+            # TODO add response for user with HTTPException
             raise ValueError("Access token not found for this phone number")
         return access_token
 
