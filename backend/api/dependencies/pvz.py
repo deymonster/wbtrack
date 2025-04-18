@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import Depends, Header
+from fastapi import Depends, Header, HTTPException
 
 from core.redis import redis_client
 from services.pvz_service import PVZService
@@ -11,7 +11,10 @@ async def get_phone_number(
 ) -> str:
     """Get phone number from header."""
     if not x_phone_number:
-        raise ValueError("Phone number is required")
+        raise HTTPException(
+            status_code=401,
+            detail="X-Phone-Number header is required"
+        )
     return x_phone_number
 
 

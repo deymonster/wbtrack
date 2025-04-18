@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
 from api.dependencies.pvz import pvz_service_dependency
 from api.dependencies.user import current_active_user_dependency
 from core.redis import redis_client
@@ -11,12 +11,13 @@ from schemas.response import (
 from services.pvz_service import PVZService
 from models.user import User
 from enums.user import UserRoleEnum
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     generate_unique_id_function=lambda route: f"pvz_{route.name}",
 )
-
-
 
 
 @router.post(
@@ -37,6 +38,7 @@ router = APIRouter(
     }
 )
 async def request_pvz_code(
+    request: Request,
     current_user: Annotated[User, current_active_user_dependency],
     pvz_service: Annotated[PVZService, pvz_service_dependency]
 ):
@@ -45,21 +47,23 @@ async def request_pvz_code(
 
     Требуется заголовок X-Phone-Number с номером телефона в формате 79XXXXXXXXX
     """
+    logger.info(f"Request headers: {dict(request.headers)}")
+    logger.info(f"Current user: {current_user.dict()}")
     if current_user.role not in [UserRoleEnum.ADMIN, UserRoleEnum.SUPER_ADMIN]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not enough permissions. Admin role required."
         )
     try:
-        
+        logger.info("Attempting to request code")
         code_response = await pvz_service.login()
-        
+        logger.info("Code request successful")
         return {
             "message": "Code sent successfully",
             "code_length": code_response.code_length
         }
     except Exception as e:
-        
+        logger.error(f"Error requesting code: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
 
