@@ -283,7 +283,7 @@ async def update_offices(
     Обновление списка офисов компании.
     
     """
-    company = await company_crud.get_or_404(request.company_id)
+    company = await company_crud.get_or_404(id=request.company_id)
 
     success = await office_crud.update_list_offices_by_external_id(
         offices=request.offices,
