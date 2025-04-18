@@ -22,8 +22,8 @@ services:
       retries: 3
     networks:
       - backend
-    ports:
-      - "5432:5432"
+    #ports:
+    #  - "5432:5432"
 
   redis:
     image: redis:7.0.11
