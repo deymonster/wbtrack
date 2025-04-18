@@ -1,6 +1,6 @@
 from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlmodel import col, select
 from sqlalchemy.orm import selectinload
 from core.utils.sqlmodel import relations
@@ -194,7 +194,6 @@ class CRUDCompany(CRUDBase[Company, ICompanyCreate, ICompanyUpdate]):
         """Получение компании по id"""
         session = db_session or self.db.session
         company =await self.get(id=id, db_session=session)
-
         if not company:
             raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
